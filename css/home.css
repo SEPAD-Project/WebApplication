@@ -1,0 +1,49 @@
+body {
+  background-color: #2A2A2A;
+  font-family: Vazir, sans-serif;
+  margin: 15px;
+  text-align: center;
+}
+
+.navbar {
+  background: #3A3A3A;
+  border-radius: 20px;
+  box-sizing: border-box;
+  direction: rtl;
+  display: inline-block;
+  margin: 0 auto;
+  padding: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar a {
+  border-radius: 20px;
+  color: #F1F1F1;
+  display: inline-block;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 10px;
+  padding: 12px 20px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.navbar a:hover {
+  background-color: #FF6F61;
+  transform: scale(1.1);
+}
+
+.navbar a:active {
+  background-color: #ffffff;
+  color: #00B8A9;
+}
+
+.paragraph {
+  color: #E0E0E0;
+  direction: rtl;
+  font-size: 15px;
+  line-height: 30px;
+  text-align: justify;
+}
