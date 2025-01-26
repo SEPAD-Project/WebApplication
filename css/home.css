@@ -1,0 +1,41 @@
+body {
+    font-family: Vazir;
+    margin: 0;
+  }
+  
+  .navbar {
+    align-items: center;
+    background: rgb(43, 43, 43);
+    direction: rtl;
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .navbar a {
+    border-radius: 20px;
+    color: white;
+    font-size: 18px;
+    margin: 0 10px;
+    padding: 12px 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  
+  .navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+  }
+  
+  .navbar a:active {
+    background-color: #ffffff;
+    color: #2575fc;
+  }
+  
+  .paragraph {
+    direction: rtl;
+  }
+  
