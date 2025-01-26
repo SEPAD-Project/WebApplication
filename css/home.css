@@ -1,11 +1,12 @@
 body {
+  background-color: #2A2A2A;
   font-family: Vazir, sans-serif;
   margin: 15px;
   text-align: center;
 }
 
 .navbar {
-  background: rgb(43, 43, 43);
+  background: #3A3A3A;
   border-radius: 20px;
   box-sizing: border-box;
   direction: rtl;
@@ -19,7 +20,7 @@ body {
 
 .navbar a {
   border-radius: 20px;
-  color: white;
+  color: #F1F1F1;
   display: inline-block;
   font-size: 20px;
   font-weight: bold;
@@ -30,16 +31,17 @@ body {
 }
 
 .navbar a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #FF6F61;
   transform: scale(1.1);
 }
 
 .navbar a:active {
   background-color: #ffffff;
-  color: #2575fc;
+  color: #00B8A9;
 }
 
 .paragraph {
+  color: #E0E0E0;
   direction: rtl;
   font-size: 15px;
   line-height: 30px;
