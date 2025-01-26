@@ -9,7 +9,7 @@ body {
   background: #3A3A3A;
   border-radius: 20px;
   box-sizing: border-box;
-  direction: rtl;
+  direction: ltr;
   display: inline-block;
   margin: 0 auto;
   padding: 8px;
@@ -42,7 +42,7 @@ body {
 
 .paragraph {
   color: #E0E0E0;
-  direction: rtl;
+  direction: ltr;
   font-size: 15px;
   line-height: 30px;
   text-align: justify;
