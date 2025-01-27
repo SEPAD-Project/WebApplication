@@ -2,7 +2,7 @@ body {
     align-items: center;
     background-color: #0B0C10;
     display: flex;
-    font-family: Vazir, sans-serif;
+    font-family: Catamaran;
     height: 100vh;
     justify-content: center;
     margin: 15px;
@@ -40,6 +40,7 @@ button {
     border-color: #66FCF1;
     border-radius: 5px;
     color: #F1F1F1;
+    font-family: Catamaran;
     font-size: 15px;
     height: 42px;
     margin-bottom: 10px;
