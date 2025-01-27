@@ -83,3 +83,9 @@ p{
 p:hover {
     scale: 1.05;
 }
+
+.go_back_home {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
