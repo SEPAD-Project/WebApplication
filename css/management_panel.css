@@ -1,0 +1,32 @@
+body{
+    background-color: #0B0C10;
+    font-family: Catamaran;
+}
+
+#sidebar{
+    font-size: 30px;
+    position: fixed;
+    background: #1f2833;
+    color: #C5C6C7;
+    border-radius: 5px;
+    height: 100%;
+    width: 200px;
+    padding-top: 20px;
+}
+
+.sidebar_item{
+    display: block;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.sidebar_item:hover{
+    background-color: #45A29E;
+    border-color: #45A29E;
+    font-style: bold;
+    box-shadow: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
