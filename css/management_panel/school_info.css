@@ -9,9 +9,11 @@ body {
   #sidebar {
     background: #1f2833;
     border-radius: 5px;
-    font-size: 30px;
+    font-size: 25px;
     height: 100%;
     padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
     position: fixed;
     width: 200px;
   }
@@ -20,7 +22,7 @@ body {
     color: #F1F1F1;
     display: block;
     margin-bottom: 20px;
-    text-align: center;
+    text-align: left;
     text-decoration: none;
     transition: all 0.3s ease;
     width: 100%;
