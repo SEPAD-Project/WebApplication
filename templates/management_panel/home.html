@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Management Panel</title>
+    <link rel='stylesheet' type='text/css' media='screen' href='../../static/css/management_panel/home.css'>
+</head>
+<body>
+    <div id="sidebar">
+        <a href="{{ url_for('go_to_panel_school_info') }}" class="sidebar_item">School info</a>
+        <a href="{{ url_for('go_to_panel_classes') }}" class="sidebar_item">Classes</a>
+        <a href="{{ url_for('go_to_panel_teachers') }}" class="sidebar_item">Teachers</a>
+        <a href="{{ url_for('go_to_panel_students') }}" class="sidebar_item">Students</a>
+    </div>
+
+    <div id="content_area">
+        <h1>Welcome!</h1>
+        <p>Here is the school panel. enjoy our features.</p>
+    </div>
+</body>
+</html>
