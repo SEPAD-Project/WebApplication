@@ -1,0 +1,123 @@
+body {
+    background-color: #0B0C10;
+    display: flex;
+    font-family: Catamaran;
+    margin: 0;
+    padding: 0;
+}
+  
+  
+#sidebar {
+    background: #1f2833;
+    border-radius: 5px;
+    font-size: 25px;
+    height: 100%;
+    padding-top: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    position: fixed;
+    width: 200px;
+}
+    
+.sidebar_item {
+    color: #F1F1F1;
+    display: block;
+    margin-bottom: 20px;
+    text-align: left;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+  
+.sidebar_item:hover {
+    background-color: #45A29E;
+    border-color: #45A29E;
+    font-style: bold;
+    box-shadow: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+  
+#content_area {
+    position: absolute;
+    left: 210px;
+    padding: 20px;
+    color: #C5C6C7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: calc(100% - 210px);
+}
+  
+#search_div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+}
+
+#form {
+    display: flex;
+    align-items: center;
+}
+
+#query {
+    width: 200px;
+    height: 39px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #66FCF1;
+    background-color: #1f2833;
+    color: #F1F1F1;
+}
+
+#form button {
+    margin-left: 10px;
+    width: 80px;
+    height: 40px;
+}
+  
+#student_list{
+    background: #1f2833;
+    border-radius: 5px;
+    width: 400px;
+    height: 300px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding: 10px;
+    position: relative;
+    margin-top: 20px;
+}
+  
+.student_item {
+    font-size: 20px;
+    line-height:15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+  
+button {
+    background: none;
+    color: #F1F1F1;
+    border-color: #66FCF1;
+    border-radius: 5px;
+    width: 70px;
+    height: 30px;
+    margin-left: 90px;
+    transition: all 0.3s ease;
+}
+  
+button:hover {
+    background-color: #45A29E !important;
+    border-color: #45A29E !important;
+    font-style: bold;
+    cursor: pointer;
+}
+
+input{
+
+}
