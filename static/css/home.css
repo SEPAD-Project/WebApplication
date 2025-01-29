@@ -1,80 +1,82 @@
 body {
   background-color: #0B0C10;
-  font-family: Catamaran;
-  margin: 15px;
+  font-family: 'Catamaran', sans-serif;
+  color: #C5C6C7;
+  margin: 0;
+  padding: 0;
   text-align: center;
 }
 
 .navbar {
   background: #1f2833;
-  border-radius: 5px;
-  direction: ltr;
-  display: inline-block;
-  margin: 0 auto;
-  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 0;
   position: sticky;
   top: 0;
+  width: 100%;
   z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .navbar a {
-  border-radius: 5px;
   color: #F1F1F1;
-  display: inline-block;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
-  margin: 0 10px;
-  padding: 12px 20px;
+  margin: 0 15px;
+  padding: 10px 18px;
   text-decoration: none;
-  transition: all 0.3s ease;
+  border-radius: 5px;
+  transition: 0.3s ease-in-out;
 }
 
 .navbar a:hover {
   background-color: #45A29E;
-}
-
-.paragraph {
-  align-self: center;
-  color: #C5C6C7;
-  direction: ltr;
-  font-size: 15px;
-  line-height: 30px;
-  text-align: justify;
-  width: 400px;
+  color: #0B0C10;
 }
 
 .hello {
   color: #66FCF1;
-  font-size: 100px;
-  font-style: bold;
-  line-height: 80px;
-  margin-bottom: 0px;
+  font-size: 80px;
+  font-weight: bold;
+  margin: 40px 0 20px;
+  text-shadow: 4px 4px 10px rgba(102, 252, 241, 0.3);
 }
 
+/* Content Section */
 .content {
   display: flex;
   justify-content: center;
-  margin-bottom: 30px;
-  margin-top: 0px;
+  align-items: center;
+  padding: 20px;
+  max-width: 800px;
+  margin: auto;
+}
+
+.paragraph {
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: justify;
 }
 
 button {
-  background: none;
-  border-color: #66FCF1;
-  border-radius: 5px;
-  color: #F1F1F1;
-  font-family: Catamaran;
+  background: #66FCF1;
+  border: none;
+  border-radius: 8px;
+  color: #0B0C10;
   font-size: 20px;
+  font-weight: bold;
+  padding: 15px 30px;
   margin-top: 20px;
-  padding: 15px;
-  transition: all 0.3s ease;
-  box-shadow: none;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0px 4px 8px rgba(102, 252, 241, 0.3);
 }
 
 button:hover {
   background-color: #45A29E;
-  border-color: #45A29E;
-  font-style: bold;
-  box-shadow: none;
-  cursor: pointer;
+  color: #0B0C10;
+  box-shadow: 0px 6px 12px rgba(69, 162, 158, 0.3);
 }
