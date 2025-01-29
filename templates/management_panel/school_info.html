@@ -7,7 +7,7 @@
 </head>
 <body>
     <div id="sidebar">
-        <a href="{{ url_for('go_to_panel_home') }}" class="sidebar_item">School info</a>
+        <a href="{{ url_for('go_to_panel_school_info') }}" class="sidebar_item">School info</a>
         <a href="{{ url_for('go_to_panel_classes') }}" class="sidebar_item">Classes</a>
         <a href="{{ url_for('go_to_panel_teachers') }}" class="sidebar_item">Teachers</a>
         <a href="{{ url_for('go_to_panel_students') }}" class="sidebar_item">Students</a>
@@ -15,11 +15,11 @@
     
     <div id="content_area">
         <div id="primary_info">
-            <p>School name: </p>
-            <p>School code: </p>
-            <p>Manager personal code: </p>
-            <p>Province: </p>
-            <p>City: </p>
+            <p>School name: {{data.school_name}}</p>
+            <p>School code: {{data.school_code}}</p>
+            <p>Manager personal code: {{data.manager_personal_code}}</p>
+            <p>Province: {{data.province}}</p>
+            <p>City: {{data.city}}</p>
         </div>
         <div id="secondary_info">
             <p>Classes count: </p>

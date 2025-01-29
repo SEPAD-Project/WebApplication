@@ -104,7 +104,8 @@ def go_to_panel_home():
 
 @app.route('/panel_school_info')
 def go_to_panel_school_info():
-    return render_template('management_panel/school_info.html')
+    data = School.query.filter(School.school_code == session['username']).first()
+    return render_template('management_panel/school_info.html', data=data)
 
 @app.route('/panel_classes')
 def go_to_panel_classes():
