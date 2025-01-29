@@ -7,10 +7,10 @@
 </head>
 <body>
     <div id="sidebar">
-        <a href="school_info.html" class="sidebar_item">School info</a>
-        <a href="classes.html" class="sidebar_item">Classes</a>
-        <a href="teachers.html" class="sidebar_item">Teachers</a>
-        <a href="students.html" class="sidebar_item">Students</a>
+        <a href="{{ url_for('go_to_panel_home') }}" class="sidebar_item">School info</a>
+        <a href="{{ url_for('go_to_panel_classes') }}" class="sidebar_item">Classes</a>
+        <a href="{{ url_for('go_to_panel_teachers') }}" class="sidebar_item">Teachers</a>
+        <a href="{{ url_for('go_to_panel_students') }}" class="sidebar_item">Students</a>
     </div>
     
     <div id="content_area">

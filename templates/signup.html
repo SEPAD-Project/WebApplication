@@ -15,9 +15,9 @@
         <input type="text" id="province" placeholder="Province" required>
         <input type="text" id="city" placeholder="City" required>
         <button type="submit">Signup</button>
-        <p><a href="login.html">have an account? click here to login!</a></p>
+        <p><a href="{{ url_for('go_to_login') }}">have an account? click here to login!</a></p>
     </form>
-    <a class="go_back_home" href="home.html"><button>go back home</button></a>
+    <a class="go_back_home" href="{{ url_for('go_to_home') }}""><button>go back home</button></a>
 
     <script src="../js/signup.js"></script>
 </body>
