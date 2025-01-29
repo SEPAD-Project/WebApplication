@@ -7,13 +7,13 @@
     <link rel='stylesheet' type='text/css' media='screen' href='../static/css/signup.css'>
 </head>
 <body>
-    <form>
+    <form method="POST" action="{{ url_for('go_to_signup') }}">
         <h1>Signup</h1>
-        <input type="text" id="school-name" placeholder="ُSchool name" required>
-        <input type="text" id="school-code" placeholder="ُSchool code" required>
-        <input type="text" id="manager-personal-code" placeholder="ُManager personal code" required>
-        <input type="text" id="province" placeholder="Province" required>
-        <input type="text" id="city" placeholder="City" required>
+        <input type="text" name="school_name" placeholder="ُSchool name" required>
+        <input type="text" name="school_code" placeholder="ُSchool code" required>
+        <input type="text" name="manager_personal_code" placeholder="ُManager personal code" required>
+        <input type="text" name="province" placeholder="Province" required>
+        <input type="text" name="city" placeholder="City" required>
         <button type="submit">Signup</button>
         <p><a href="{{ url_for('go_to_login') }}">have an account? click here to login!</a></p>
     </form>
