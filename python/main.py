@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, make_response
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
@@ -33,9 +33,39 @@ def create_tables():
 def go_to_home():
     return render_template('home.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def go_to_login():
+    cookie_school_code = request.cookies.get("username")
+    cookie_manager_code = request.cookies.get("password")
+
+    if cookie_school_code is not None and cookie_manager_code is not None:
+        school = School.query.filter(School.school_code == cookie_school_code).first()
+        manager_code = school.manager_personal_code
+        if manager_code == cookie_manager_code:
+                return redirect(url_for('go_to_panel_home'))
+        
+    if request.method == 'POST':
+        given_school_code = request.form['username']
+        given_manager_code = request.form['password']
+
+        school = School.query.filter(School.school_code == given_school_code).first()
+        if school is None:
+            return redirect(url_for('go_to_incorrect_username_password'))
+        manager_code = school.manager_personal_code
+        
+        if manager_code == given_manager_code:
+            response = make_response("Cookie has been set!")
+            response.set_cookie("username", given_school_code, max_age=60*60*24*7)  
+            response.set_cookie("password", given_manager_code, max_age=60*60*24*7)
+            return redirect(url_for('go_to_panel_home'))
+        else:
+            return redirect(url_for('go_to_incorrect_username_password'))
+
     return render_template('login.html')
+
+@app.route('/incorrect_username_password')
+def go_to_incorrect_username_password():
+    return render_template('incorrect_username_password.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def go_to_signup():
