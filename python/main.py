@@ -101,7 +101,7 @@ def go_to_signup():
             db.session.add(new_school)
             db.session.commit()
         except:
-            return redirect(url_for("go_to_signup"))
+            return redirect(url_for('go_to_duplicated_school_info'))
         
         return redirect(url_for('go_to_notify_user'))
     
@@ -146,12 +146,19 @@ def go_to_add_class():
             db.session.add(new_class)
             db.session.commit()
         except:
-            return redirect(url_for('go_to_add_class'))
+            return redirect(url_for('go_to_duplicated_class_info'))
         
         return redirect(url_for('go_to_panel_classes'))
 
     return render_template('management_panel/add_class.html')
 
+@app.route('/duplicated_school_info')
+def go_to_duplicated_school_info():
+    return render_template('duplicated_school_info.html')
+
+@app.route('/duplicated_class_info')
+def go_to_duplicated_class_info():
+    return render_template('duplicated_class_info.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
