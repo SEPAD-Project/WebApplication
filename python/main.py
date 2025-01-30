@@ -28,6 +28,20 @@ class School(db.Model):
         self.province = province
         self.city = city
 
+class Class(db.Model):
+    __tablename__ = 'classes'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    class_name = db.Column(db.String(100), nullable=False)
+    class_code = db.Column(db.String(100), nullable=False)
+    class_student_count = db.Column(db.String(100), nullable=False)
+    school_code = db.Column(db.String(100), nullable=False)
+
+    def __init__(self, class_name, class_code, class_students_count, school_code):
+        self.class_name = class_name
+        self.class_code = class_code
+        self.class_student_count = class_students_count
+        self.school_code = school_code
 
 @app.before_request
 def create_tables():
@@ -119,6 +133,22 @@ def go_to_panel_teachers():
 def go_to_panel_students():
     return render_template('management_panel/students.html')
 
+@app.route('/add_class', methods=['GET', 'POST'])
+def go_to_add_class():
+    school_code = session['username']
+
+    if request.method == 'POST':
+        class_name = request.form['class_name']
+        class_code = request.form['class_code']
+        students_count = request.form['students_count']
+
+        new_class = Class(class_name, class_code, students_count, school_code)
+        db.session.add(new_class)
+        db.session.commit()
+
+        return render_template('management_panel/classes.html')
+
+    return render_template('management_panel/add_class.html')
 
 
 if __name__ == '__main__':

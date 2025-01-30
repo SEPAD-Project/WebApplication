@@ -1,0 +1,87 @@
+body {
+    align-items: center;
+    background-color: #0B0C10;
+    display: flex;
+    font-family: 'Catamaran', sans-serif;
+    height: 100vh;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+}
+  
+h1 {
+    color: #66FCF1;
+    font-size: 40px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(102, 252, 241, 0.4);
+}
+  
+form {
+    background-color: #1f2833;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+input {
+    background-color: #333C42;
+    border-radius: 5px;
+    color: #F1F1F1;
+    font-size: 16px;
+    height: 45px;
+    padding-left: 10px;
+    width: 97%;
+    transition: 0.3s ease;
+    margin-top: 10px;
+}
+  
+input::placeholder {
+    color: #B0B0B0;
+    font-size: 14px;
+}
+
+input:hover {
+    background-color: #3B454C;
+}
+
+input:focus {
+    outline: none;
+}
+  
+button {
+    background: #66FCF1;
+    border: none;
+    border-radius: 5px;
+    color: #0B0C10;
+    font-size: 16px;
+    font-weight: bold;
+    height: 45px;
+    width: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(102, 252, 241, 0.3);
+}
+  
+button:hover {
+    background-color: #45A29E;
+    color: #0B0C10;
+    box-shadow: 0px 6px 12px rgba(69, 162, 158, 0.4);
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.cancel-btn {
+    width: 50%;
+}
