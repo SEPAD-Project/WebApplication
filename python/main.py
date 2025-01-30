@@ -69,14 +69,10 @@ def go_to_login():
         if school is None:
             return redirect(url_for('go_to_incorrect_username_password'))
         manager_personal_code = school.manager_personal_code
-
-        session['username'] = given_school_code
-        session['password'] = given_manager_personal_code
         
         if manager_personal_code == given_manager_personal_code:
-            response = make_response("Cookie has been set!")
-            response.set_cookie("username", given_school_code, max_age=60*60*24*7, httponly=True, samesite='Lax')  
-            response.set_cookie("password", given_manager_personal_code, max_age=60*60*24*7, httponly=True, samesite='Lax')
+            session['username'] = given_school_code
+            session['password'] = given_manager_personal_code
             return redirect(url_for('go_to_panel_home'))
         else:
             return redirect(url_for('go_to_incorrect_username_password'))
