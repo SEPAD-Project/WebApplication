@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response, session
 from datetime import timedelta
 from flask_sqlalchemy import SQLAlchemy
+from generate_class_code import generate_class_code
 
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.config['SQLALCHEMY_DATABASE_URI'] = (
@@ -16,8 +17,8 @@ class School(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     school_name = db.Column(db.String(100), nullable=False)
-    school_code = db.Column(db.String(100), nullable=False)
-    manager_personal_code = db.Column(db.String(100), nullable=False)
+    school_code = db.Column(db.Integer, nullable=False, unique=True)
+    manager_personal_code = db.Column(db.Integer, nullable=False, unique=True)
     province = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(100), nullable=False)
 
@@ -33,14 +34,12 @@ class Class(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     class_name = db.Column(db.String(100), nullable=False)
-    class_code = db.Column(db.String(100), nullable=False)
-    class_student_count = db.Column(db.String(100), nullable=False)
-    school_code = db.Column(db.String(100), nullable=False)
+    class_code = db.Column(db.String(100), nullable=False, unique=True)
+    school_code = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, class_name, class_code, class_students_count, school_code):
+    def __init__(self, class_name, class_code, school_code):
         self.class_name = class_name
         self.class_code = class_code
-        self.class_student_count = class_students_count
         self.school_code = school_code
 
 @app.before_request
@@ -54,9 +53,9 @@ def go_to_home():
 @app.route('/login', methods=['GET', 'POST'])
 def go_to_login():
     try:
-        school = School.query.filter(School.school_code == session['username']).first()
+        school = School.query.filter(School.school_code == int(session['username'])).first()
         manager_personal_code = school.manager_personal_code
-        if manager_personal_code == session['password']:
+        if manager_personal_code == int(session['password']):
                 return redirect(url_for('go_to_panel_home'))
     except:
         pass
@@ -65,12 +64,12 @@ def go_to_login():
         given_school_code = request.form['username']
         given_manager_personal_code = request.form['password']
 
-        school = School.query.filter(School.school_code == given_school_code).first()
+        school = School.query.filter(School.school_code == int(given_school_code)).first()
         if school is None:
             return redirect(url_for('go_to_incorrect_username_password'))
         manager_personal_code = school.manager_personal_code
         
-        if manager_personal_code == given_manager_personal_code:
+        if manager_personal_code == int(given_manager_personal_code):
             session['username'] = given_school_code
             session['password'] = given_manager_personal_code
             return redirect(url_for('go_to_panel_home'))
@@ -97,8 +96,12 @@ def go_to_signup():
                             manager_personal_code=manager_personal_code,
                             province=province,
                             city=city)
-        db.session.add(new_school)
-        db.session.commit()
+        
+        try:
+            db.session.add(new_school)
+            db.session.commit()
+        except:
+            return redirect(url_for("go_to_signup"))
         
         return redirect(url_for('go_to_notify_user'))
     
@@ -119,7 +122,7 @@ def go_to_panel_school_info():
 
 @app.route('/panel_classes', methods=['GET', 'POST'])
 def go_to_panel_classes():
-    school_code = session['username']
+    school_code = int(session['username'])
     classes = Class.query.filter(Class.school_code == school_code).all()
     return render_template('management_panel/classes.html', classes=classes)
 
@@ -133,18 +136,19 @@ def go_to_panel_students():
 
 @app.route('/add_class', methods=['GET', 'POST'])
 def go_to_add_class():
-    school_code = session['username']
+    school_code = int(session['username'])
 
     if request.method == 'POST':
         class_name = request.form['class_name']
-        class_code = request.form['class_code']
-        students_count = request.form['students_count']
-
-        new_class = Class(class_name, class_code, students_count, school_code)
-        db.session.add(new_class)
-        db.session.commit()
-
-        return render_template('management_panel/classes.html')
+        class_code = generate_class_code(school_code, class_name)
+        try:
+            new_class = Class(class_name, class_code, school_code)
+            db.session.add(new_class)
+            db.session.commit()
+        except:
+            return redirect(url_for('go_to_add_class'))
+        
+        return redirect(url_for('go_to_panel_classes'))
 
     return render_template('management_panel/add_class.html')
 
