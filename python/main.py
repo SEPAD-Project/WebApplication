@@ -121,9 +121,11 @@ def go_to_panel_school_info():
     data = School.query.filter(School.school_code == session['username']).first()
     return render_template('management_panel/school_info.html', data=data)
 
-@app.route('/panel_classes')
+@app.route('/panel_classes', methods=['GET', 'POST'])
 def go_to_panel_classes():
-    return render_template('management_panel/classes.html')
+    school_code = session['username']
+    classes = Class.query.filter(Class.school_code == school_code).all()
+    return render_template('management_panel/classes.html', classes=classes)
 
 @app.route('/panel_teachers')
 def go_to_panel_teachers():

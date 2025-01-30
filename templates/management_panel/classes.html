@@ -21,30 +21,16 @@
         </div>
 
         <div id="class_list">
+            {% for class in classes %}
             <div class="class_item">
-                <p>Class Test 1</p>
+                <p>{{ class.class_name }}</p>
                 <div class="class_buttons">
                     <button class="action_button">See</button>
                     <button class="action_button">Edit</button>
                     <button class="action_button">Remove</button>
                 </div>
             </div>
-            <div class="class_item">
-                <p>Class Test 2</p>
-                <div class="class_buttons">
-                    <button class="action_button">See</button>
-                    <button class="action_button">Edit</button>
-                    <button class="action_button">Remove</button>
-                </div>
-            </div>
-            <div class="class_item">
-                <p>Class Test 3</p>
-                <div class="class_buttons">
-                    <button class="action_button">See</button>
-                    <button class="action_button">Edit</button>
-                    <button class="action_button">Remove</button>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
