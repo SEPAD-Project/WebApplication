@@ -30,4 +30,7 @@ def create_app():
 
     login_manager.login_view = 'auth_routes.login'
 
+    with app.app_context():
+        db.create_all()
+
     return app

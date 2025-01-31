@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Add a class</title>
+    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/student/add_student.css')}}">
+</head>
+<body>
+    <form method="POST" action="{{ url_for('student_routes.go_to_add_student') }}">
+        <h1>Add Student</h1>
+        <input type="text" name="student_name" placeholder="name" required>
+        <input type="text" name="student_family" placeholder="family" required>
+        <input type="text" name="student_national_code" placeholder="national code" required>
+        <input type="text" name="student_password" placeholder="password" required>
+        <select name="selected_class">
+            {% for class in classes %}
+            <option value="{{class.class_code}}">{{class.class_name}}</option>
+            {% endfor %}
+        </select>
+
+        <div class="button-group">
+            <button type="submit">Add</button>
+            <button type="button"class="cancel-btn" onclick="window.location.href=quot;{{ url_for('student_routes.go_to_panel_students') }}quot;">Cancel</button>
+        </div>
+    </form>    
+
+    <script src="../js/login.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset='utf-8'>
     <title>Students</title>
-    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/students/students.css')}}">
+    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/student/students.css')}}">
 </head>
 <body>
     <div id="sidebar">
@@ -14,12 +14,18 @@
     </div>
 
     <div id="content_area">
+        <div id="header">
+            <h1>Manage Students</h1>
+            <a href="{{url_for('student_routes.go_to_add_student')}}"><button id="add_student">Add Student</button></a>
+        </div>
+
         <div id="search_div">
             <form id="form"> 
                 <input type="search" id="query" name="q" placeholder="Search...">
                 <button>Search</button>
-              </form>
+            </form>
         </div>
+
         <div id="student_list">
             <div class="student_item">
                 <p>Student Test1</p>
@@ -35,6 +41,5 @@
             </div>
         </div>
     </div>
-
 </body>
 </html>

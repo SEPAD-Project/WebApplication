@@ -14,7 +14,7 @@ def go_to_panel_classes():
     return render_template('class/classes.html', classes=classes)
 
 
-@bp.route('/add_class', methods=['GET', 'POST'])
+@bp.route('/panel/add_class', methods=['GET', 'POST'])
 @login_required
 def go_to_add_class():
     school_code = int(current_user.school_code)
