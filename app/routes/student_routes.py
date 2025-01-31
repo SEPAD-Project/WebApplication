@@ -11,7 +11,18 @@ bp = Blueprint('student_routes', __name__)
 @bp.route('/panel/students')
 @login_required
 def go_to_panel_students():
-    return render_template('student/students.html')
+    query = request.args.get('q')
+
+    if query:
+        students = Student.query.filter(
+            (Student.student_name.ilike(f"%{query}%")) |
+            (Student.student_family.ilike(f"%{query}%")) |
+            (Student.student_national_code.ilike(f"%{query}%"))
+        ).all()
+    else:
+        students = Student.query.all()
+    
+    return render_template('student/students.html', students=students)
 
 @bp.route("/panel/add_student", methods=['GET', 'POST'])
 @login_required

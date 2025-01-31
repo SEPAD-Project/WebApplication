@@ -20,25 +20,19 @@
         </div>
 
         <div id="search_div">
-            <form id="form"> 
+            <form id="form" method="GET" action="{{ url_for('student_routes.go_to_panel_students') }}"> 
                 <input type="search" id="query" name="q" placeholder="Search...">
-                <button>Search</button>
+                <button type="submit">Search</button>
             </form>
         </div>
 
         <div id="student_list">
+            {% for student in students %}
             <div class="student_item">
-                <p>Student Test1</p>
+                <p>{{student.student_name}} {{student.student_family}}</p>
                 <a><button>See</button></a>
             </div>
-            <div class="student_item">
-                <p>Student Test2</p>
-                <a><button>See</button></a>
-            </div>
-            <div class="student_item">
-                <p>Student Test3</p>
-                <a><button>See</button></a>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
