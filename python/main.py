@@ -43,11 +43,13 @@ class Class(db.Model):
     class_name = db.Column(db.String(100), nullable=False)
     class_code = db.Column(db.String(100), nullable=False, unique=True)
     school_code = db.Column(db.Integer, nullable=False)
+    teachers = db.Column(db.JSON)
 
-    def __init__(self, class_name, class_code, school_code):
+    def __init__(self, class_name, class_code, school_code, teachers):
         self.class_name = class_name
         self.class_code = class_code
         self.school_code = school_code
+        self.teachers = teachers
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -147,12 +149,13 @@ def go_to_panel_students():
 @app.route('/add_class', methods=['GET', 'POST'])
 def go_to_add_class():
     school_code = int(current_user.school_code)
+    teachers = []
 
     if request.method == 'POST':
         class_name = request.form['class_name']
         class_code = generate_class_code(school_code, class_name)
         try:
-            new_class = Class(class_name, class_code, school_code)
+            new_class = Class(class_name, class_code, school_code, teachers)
             db.session.add(new_class)
             db.session.commit()
         except:
