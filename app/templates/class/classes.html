@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Classes</title>
-    <link rel="stylesheet" href="../../static/css/management_panel/classes.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/class/classes.css')}}">
 </head>
 <body>
     <div id="sidebar">
-        <a href="{{ url_for('go_to_panel_school_info') }}" class="sidebar_item">School info</a>
-        <a href="{{ url_for('go_to_panel_classes') }}" class="sidebar_item">Classes</a>
-        <a href="{{ url_for('go_to_panel_teachers') }}" class="sidebar_item">Teachers</a>
-        <a href="{{ url_for('go_to_panel_students') }}" class="sidebar_item">Students</a>
+        <a href="{{ url_for('school_routes.go_to_panel_school_info') }}" class="sidebar_item">School info</a>
+        <a href="{{ url_for('class_routes.go_to_panel_classes') }}" class="sidebar_item">Classes</a>
+        <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="sidebar_item">Teachers</a>
+        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="sidebar_item">Students</a>
     </div>
 
     <div id="content_area">
         <div id="header">
             <h1>Manage Classes</h1>
-            <a href="{{ url_for('go_to_add_class') }}"><button id="add" class="action_button">Add a class</button></a>
+            <a href="{{ url_for('class_routes.go_to_add_class') }}"><button id="add" class="action_button">Add a class</button></a>
         </div>
 
         <div id="class_list">

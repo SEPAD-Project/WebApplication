@@ -4,14 +4,14 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Your username and password</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='../static/css/duplicated_school_info.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/class/duplicated_class_info.css')}}">
 </head>
 <body>
     <div class="notif_area">
         <h1>OOPS!</h1>
         <p>Some of these values are registered before.</p>
         <p>Please try again!</p>
-        <a href="{{ url_for('go_to_signup') }}"><button>Got it!</button></a>
+        <a href="{{ url_for('class_routes.go_to_add_class') }}"><button>Got it!</button></a>
     </div>
 </body>
 </html>

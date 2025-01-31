@@ -4,16 +4,16 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Add a class</title>
-    <link rel='stylesheet' type='text/css' media='screen' href='../../static/css/management_panel/add_class.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/class/add_class.css')}}">
 </head>
 <body>
-    <form method="POST" action="{{ url_for('go_to_add_class') }}">
+    <form method="POST" action="{{ url_for('class_routes.go_to_add_class') }}">
         <h1>Add a class</h1>
         <input type="text" name="class_name" placeholder="name" required>
         
         <div class="button-group">
             <button type="submit">Add</button>
-            <button type="button"class="cancel-btn" onclick="window.location.href=&quot;{{ url_for('go_to_panel_classes') }}&quot;">Cancel</button>
+            <button type="button"class="cancel-btn" onclick="window.location.href=quot;{{ url_for('class_routes.go_to_panel_classes') }}quot;">Cancel</button>
         </div>
     </form>    
 
