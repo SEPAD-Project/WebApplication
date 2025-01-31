@@ -7,13 +7,13 @@ from app.models.school import School
 bp = Blueprint('school_routes', __name__)
 
 
-@bp.route('/panel_home')
+@bp.route('/panel/home')
 @login_required
 def go_to_panel_home():
     return render_template('school/home.html')
 
 
-@bp.route('/panel_school_info')
+@bp.route('/panel/school_info')
 @login_required
 def go_to_panel_school_info():
     data = School.query.filter(School.school_code == int(current_user.school_code)).first()

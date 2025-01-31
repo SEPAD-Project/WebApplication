@@ -6,7 +6,7 @@ from app import db
 bp = Blueprint('student_routes', __name__)
 
 
-@bp.route('/panel_students')
+@bp.route('/panel/students')
 @login_required
 def go_to_panel_students():
     return render_template('student/students.html')

@@ -7,7 +7,7 @@ from app.utils.generate_class_code import generate_class_code
 
 bp = Blueprint('class_routes', __name__)
 
-@bp.route('/panel_classes', methods=['GET', 'POST'])
+@bp.route('/panel/classes', methods=['GET', 'POST'])
 @login_required
 def go_to_panel_classes():
     classes = Class.query.filter(Class.school_code == int(current_user.school_code)).all()
