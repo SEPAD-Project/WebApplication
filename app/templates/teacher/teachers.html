@@ -18,30 +18,16 @@
             <h1>Manage Teachers</h1>
         </div>
         <div id="teacher_list">
+            {% for teacher in teachers %}
             <div class="teacher_item">
-                <p>Teacher Test 1</p>
+                <p>{{teacher.teacher_name}} {{teacher.teacher_family}}</p>
                 <div class="action_buttons">
                     <button class="action_button">See</button>
                     <button class="action_button">Edit</button>
                     <button class="action_button">Remove</button>
                 </div>
             </div>
-            <div class="teacher_item">
-                <p>Teacher Test 2</p>
-                <div class="action_buttons">
-                    <button class="action_button">See</button>
-                    <button class="action_button">Edit</button>
-                    <button class="action_button">Remove</button>
-                </div>
-            </div>
-            <div class="teacher_item">
-                <p>Teacher Test 3</p>
-                <div class="action_buttons">
-                    <button class="action_button">See</button>
-                    <button class="action_button">Edit</button>
-                    <button class="action_button">Remove</button>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 </body>
