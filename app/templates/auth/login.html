@@ -16,6 +16,6 @@
     </form>
     <a href="{{ url_for('home_route.go_to_home') }}"><button class="go_back_home">go back home</button></a>
 
-    <script src="../js/login.js"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>

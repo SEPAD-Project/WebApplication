@@ -9,16 +9,16 @@
 <body>
     <form method="POST" action="{{ url_for('auth_routes.go_to_signup') }}">
         <h1>Signup</h1>
-        <input type="text" name="school_name" placeholder="ُSchool name" required pattern="[A-Za-z\s\-]+" title="should only contain letters, space and '-'(dash)">
-        <input type="number" name="school_code" placeholder="ُSchool code" required>
-        <input type="number" name="manager_personal_code" placeholder="ُManager personal code" required>
-        <input type="text" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="should only contain letters, space and '-'(dash)">
-        <input type="text" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="should only contain letters, space and '-'(dash)">
+        <input type="text" id="school-name" name="school_name" placeholder="ُSchool name" required pattern="[A-Za-z\s\-]+" title="should only contain letters, space and '-'(dash)">
+        <input type="number" id="school-code" name="school_code" placeholder="ُSchool code" required>
+        <input type="number" id="manager-personal-code" name="manager_personal_code" placeholder="ُManager personal code" required>
+        <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="should only contain letters, space and '-'(dash)">
+        <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="should only contain letters, space and '-'(dash)">
         <button type="submit">Signup</button>
         <p><a href="{{ url_for('auth_routes.go_to_login') }}">have an account? click here to login!</a></p>
     </form>
     <a href="{{ url_for('home_route.go_to_home') }}""><button class="go_back_home" >go back home</button></a>
 
-    <script src="../js/signup.js"></script>
+    <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
 </body>
 </html>
