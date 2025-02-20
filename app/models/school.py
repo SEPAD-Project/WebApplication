@@ -7,8 +7,8 @@ class School(db.Model, UserMixin):
     
     id = db.Column(db.Integer, primary_key=True)
     school_name = db.Column(db.String(100), nullable=False)
-    school_code = db.Column(db.Integer, nullable=False, unique=True)
-    manager_personal_code = db.Column(db.Integer, nullable=False, unique=True)
+    school_code = db.Column(db.String(100), nullable=False, unique=True)
+    manager_personal_code = db.Column(db.String(100), nullable=False, unique=True)
     province = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(100), nullable=False)
 

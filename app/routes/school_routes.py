@@ -16,5 +16,5 @@ def go_to_panel_home():
 @bp.route('/panel/school_info')
 @login_required
 def go_to_panel_school_info():
-    data = School.query.filter(School.school_code == int(current_user.school_code)).first()
+    data = School.query.filter(School.school_code == current_user.school_code).first()
     return render_template('school/school_info.html', data=data)

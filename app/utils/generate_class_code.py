@@ -1,5 +1,5 @@
-def generate_class_code(school_code:int, class_name:str):
-    part1 = str(hex(school_code))[2:]
+def generate_class_code(school_code:str, class_name:str):
+    part1 = str(hex(int(school_code)))[2:]
     
     part2 = ''
     for char in class_name:

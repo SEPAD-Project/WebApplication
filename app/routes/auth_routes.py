@@ -14,11 +14,11 @@ def go_to_login():
         given_school_code = request.form['username']
         given_manager_personal_code = request.form['password']
 
-        school = School.query.filter(School.school_code == int(given_school_code)).first()
+        school = School.query.filter(School.school_code == given_school_code).first()
         if school is None:
             return redirect(url_for('auth_routes.go_to_incorrect_username_password'))
 
-        if school.manager_personal_code == int(given_manager_personal_code):
+        if school.manager_personal_code == given_manager_personal_code:
             login_user(school, remember=True)
             return redirect(url_for('school_routes.go_to_panel_home'))
         else:

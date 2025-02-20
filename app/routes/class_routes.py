@@ -10,14 +10,14 @@ bp = Blueprint('class_routes', __name__)
 @bp.route('/panel/classes', methods=['GET', 'POST'])
 @login_required
 def go_to_panel_classes():
-    classes = Class.query.filter(Class.school_code == int(current_user.school_code)).all()
+    classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     return render_template('class/classes.html', classes=classes)
 
 
 @bp.route('/panel/add_class', methods=['GET', 'POST'])
 @login_required
 def go_to_add_class():
-    school_code = int(current_user.school_code)
+    school_code = current_user.school_code
     teachers = []
 
     if request.method == 'POST':
