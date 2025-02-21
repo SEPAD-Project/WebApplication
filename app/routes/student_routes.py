@@ -15,12 +15,15 @@ def go_to_panel_students():
 
     if query:
         students = Student.query.filter(
-            (Student.student_name.ilike(f"%{query}%")) |
+            ((Student.student_name.ilike(f"%{query}%")) |
             (Student.student_family.ilike(f"%{query}%")) |
-            (Student.student_national_code.ilike(f"%{query}%"))
+            (Student.student_national_code.ilike(f"%{query}%"))) &
+            
+            (Student.school_code == current_user.school_code)
         ).all()
     else:
-        students = Student.query.all()
+        students = Student.query.filter(Student.school_code == current_user.school_code).all()
+        print(current_user.school_code)
     
     return render_template('student/students.html', students=students)
 

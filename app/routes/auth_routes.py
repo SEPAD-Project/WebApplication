@@ -46,7 +46,7 @@ def go_to_signup():
             db.session.add(new_school)
             db.session.commit()
         except:
-            return redirect(url_for('school_routes.go_to_duplicated_school_info'))
+            return redirect(url_for('auth_routes.go_to_duplicated_school_info'))
         
         return redirect(url_for('auth_routes.go_to_notify_user'))
     
