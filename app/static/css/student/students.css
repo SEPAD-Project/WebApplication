@@ -1,94 +1,95 @@
+/* General Styles */
 body {
-    background-color: #0B0C10;
+    background-color: #121212;
+    font-family: 'Inter', sans-serif;
     display: flex;
-    font-family: 'Catamaran', sans-serif;
     margin: 0;
     padding: 0;
-    height: 100vh;
-    color: #C5C6C7;
+    height: 100vh; /* Full viewport height */
+    color: #E0E0E0;
+    overflow: hidden; /* Prevent scrollbars on the body */
 }
 
+/* Sidebar */
 #sidebar {
-    background: #1f2833;
-    border-radius: 5px;
-    font-size: 20px;
-    height: 100%;
-    padding-top: 20px;
-    padding-left: 10px;
-    padding-right: 10px;
-    position: fixed;
-    width: 200px;
+    background: #1E1E1E;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    height: 100vh; /* Full viewport height */
+    padding: 20px 10px;
+    width: 200px; /* Fixed width for sidebar */
     display: flex;
     flex-direction: column;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+    overflow-y: auto; /* Add scrollbar only if sidebar content overflows */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
-.sidebar_item {
-    color: #F1F1F1;
+.sidebar-item {
+    color: #E0E0E0;
     display: block;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+    padding: 10px 15px;
     text-align: left;
     text-decoration: none;
-    transition: all 0.3s ease;
-    width: 100%;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    border-radius: 8px;
 }
 
-.sidebar_item:hover {
-    background-color: #45A29E;
-    border-color: #45A29E;
-    font-weight: bold;
+.sidebar-item:hover {
+    background-color: #6C63FF;
+    color: #FFFFFF;
+    font-weight: 500;
     cursor: pointer;
-    border-radius: 5px;
 }
 
-#content_area {
-    margin-left: 220px;
-    padding: 20px;
+/* Content Area */
+#content-area {
+    flex-grow: 1; /* Take up remaining space */
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    height: 100%;
-    width: calc(100% - 220px);
+    padding: 20px;
+    overflow: hidden; /* Prevent scrollbars on the content area */
 }
 
 /* Header Section */
 #header {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     width: 100%;
     margin-bottom: 20px;
 }
 
-h1 {
-    color: #66FCF1;
-    font-size: 40px;
+#header h1 {
+    color: #6C63FF;
+    font-size: 2.5rem;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(102, 252, 241, 0.4);
-  }
-
-#add_student {
-    font-size: 18px;
-    background-color: #66FCF1;
-    color: #0B0C10;
-    border: none;
-    border-radius: 5px;
-    width: 150px;
-    height: 45px;
-    cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(102, 252, 241, 0.3);
-    transition: all 0.3s ease;
-    font-weight: bold; 
+    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+    margin: 0;
 }
-  
-#add_student:hover {
-    background-color: #45A29E;
-    color: #0B0C10;
-    box-shadow: 0px 6px 12px rgba(69, 162, 158, 0.4);
+
+/* Add Student Button */
+#add-student {
+    background: #6C63FF;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+}
+
+#add-student:hover {
+    background-color: #4FC3F7;
+    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
 /* Search Section */
-#search_div {
+#search-div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -96,89 +97,108 @@ h1 {
     margin-bottom: 20px;
 }
 
-#form {
+#search-form {
     display: flex;
     align-items: center;
 }
 
-#query {
+#search-query {
     width: 250px;
     height: 40px;
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #66FCF1;
-    background-color: #1f2833;
-    color: #F1F1F1;
-    font-size: 16px;
+    padding: 0 15px;
+    border-radius: 8px;
+    border: 1px solid #6C63FF;
+    background-color: #1E1E1E;
+    color: #E0E0E0;
+    font-size: 1rem;
+    transition: border-color 0.3s ease-in-out;
 }
 
-#form button {
+#search-query:focus {
+    outline: none;
+    border-color: #4FC3F7;
+}
+
+#search-form button {
     margin-left: 10px;
     width: 80px;
     height: 40px;
-    background-color: #66FCF1;
-    color: #0B0C10;
+    background: #6C63FF;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1rem;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
 }
 
-#form button:hover {
-    background-color: #45A29E;
-    color: #0B0C10;
-    box-shadow: 0px 4px 6px rgba(69, 162, 158, 0.4);
+#search-form button:hover {
+    background-color: #4FC3F7;
+    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
 /* Student List */
-#student_list {
-    background: #1f2833;
-    border-radius: 5px;
-    width: calc(100% - 80px);
-    height: calc(100vh - 200px);
-    overflow: scroll;
-    overflow-x: hidden;
+#student-list {
+    background: #1E1E1E;
+    border-radius: 8px;
+    width: 98%;
+    flex-grow: 1; /* Take up remaining space */
+    overflow-y: auto; /* Add vertical scrollbar only if content overflows */
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
     padding: 20px;
-    position: relative;
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 10px;
-    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.student_item {
-    font-size: 20px;
-    line-height: 25px;
+.student-item {
+    background: #333C42;
+    border-radius: 8px;
+    padding: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
-    background-color: #333C42;
-    border-radius: 5px;
+    font-size: 1.1rem;
     margin-bottom: 10px;
+    width: 100%; /* Ensure it doesn't overflow */
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    position: relative; /* Required for absolute positioning */
 }
 
-.student_item p {
-    color: #F1F1F1;
+.student-item p {
+    color: #E0E0E0;
     margin: 0;
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
 }
 
-.student_item button {
-    margin-left: 10px;
-    width: 80px;
-    height: 30px;
-    background-color: #66FCF1;
-    color: #0B0C10;
+/* Visually Center National Code */
+.student-item p:nth-child(2) {
+    position: absolute; /* Position the national code absolutely */
+    left: 50%; /* Move to the horizontal center */
+    transform: translateX(-50%); /* Adjust for exact centering */
+    text-align: center; /* Center the text horizontally */
+    width: auto; /* Allow the national code to take its natural width */
+    padding: 0 10px; /* Add some padding for better spacing */
+}
+
+/* Action Button */
+.action-button {
+    background: #6C63FF;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1rem;
     font-weight: bold;
+    padding: 8px 15px;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+    flex-shrink: 0; /* Prevent button from shrinking */
 }
 
-.student_item button:hover {
-    background-color: #45A29E;
-    color: #0B0C10;
-    box-shadow: 0px 4px 6px rgba(69, 162, 158, 0.4);
+.action-button:hover {
+    background-color: #4FC3F7;
+    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
