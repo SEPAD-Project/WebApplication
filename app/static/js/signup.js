@@ -46,7 +46,7 @@ province.addEventListener('focus', () => {
     
 province.addEventListener('blur', () => {
 if (!province.value) {
-    province.placeholder = 'province';
+    province.placeholder = 'Province';
 }
 });
 
@@ -58,6 +58,6 @@ city.addEventListener('focus', () => {
     
 city.addEventListener('blur', () => {
 if (!city.value) {
-    city.placeholder = 'city';
+    city.placeholder = 'City';
 }
 });

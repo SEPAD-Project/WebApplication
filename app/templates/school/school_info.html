@@ -1,32 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset='utf-8'>
-    <title>Management Panel</title>
-    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/school/school_info.css')}}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Info - SAP</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/school/school_info.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Sidebar -->
     <div id="sidebar">
-        <a href="{{ url_for('school_routes.go_to_panel_school_info') }}" class="sidebar_item">School info</a>
-        <a href="{{ url_for('class_routes.go_to_panel_classes') }}" class="sidebar_item">Classes</a>
-        <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="sidebar_item">Teachers</a>
-        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="sidebar_item">Students</a>
-    </div>
-    
-    <div id="content_area">
-        <div id="primary_info">
-            <p>School name: {{data.school_name}}</p>
-            <p>School code: {{data.school_code}}</p>
-            <p>Manager personal code: {{data.manager_personal_code}}</p>
-            <p>Province: {{data.province}}</p>
-            <p>City: {{data.city}}</p>
-        </div>
-        <div id="secondary_info">
-            <p>Classes count: </p>
-            <p>Teachers count: </p>
-            <p>Students count: </p>
-        </div>
+        <a href="{{ url_for('school_routes.go_to_panel_school_info') }}" class="sidebar-item">School Info</a>
+        <a href="{{ url_for('class_routes.go_to_panel_classes') }}" class="sidebar-item">Classes</a>
+        <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="sidebar-item">Teachers</a>
+        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="sidebar-item">Students</a>
     </div>
 
+    <!-- Content Area -->
+    <div id="content-area">
+        <div id="primary-info">
+            <p>School Name: {{ data.school_name }}</p>
+            <p>School Code: {{ data.school_code }}</p>
+            <p>Manager Personal Code: {{ data.manager_personal_code }}</p>
+            <p>Province: {{ data.province }}</p>
+            <p>City: {{ data.city }}</p>
+        </div>
+        <div id="secondary-info">
+            <p>Classes Count: </p>
+            <p>Teachers Count: </p>
+            <p>Students Count: </p>
+        </div>
+    </div>
 </body>
 </html>
