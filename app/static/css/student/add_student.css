@@ -1,48 +1,53 @@
+/* General Styles */
 body {
     align-items: center;
-    background-color: #0B0C10;
+    background-color: #121212;
     display: flex;
-    font-family: 'Catamaran', sans-serif;
+    font-family: 'Inter', sans-serif;
     height: 100vh;
     justify-content: center;
     margin: 0;
     text-align: center;
 }
-  
-h1 {
-    color: #66FCF1;
-    font-size: 40px;
-    margin-bottom: 20px;
+
+/* Form Title */
+.form-title {
+    color: #6C63FF;
+    font-size: 2.5rem;
     font-weight: bold;
-    text-shadow: 2px 2px 8px rgba(102, 252, 241, 0.4);
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
 }
-  
+
+/* Form */
 form {
-    background-color: #1f2833;
+    background-color: #1E1E1E;
     border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     width: 400px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
-  
+
+/* Input Fields */
 input {
     background-color: #333C42;
-    border-radius: 5px;
-    color: #F1F1F1;
-    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+    color: #E0E0E0;
+    font-size: 1rem;
     height: 45px;
-    padding-left: 10px;
-    width: 97%;
-    transition: 0.3s ease;
+    padding: 0 15px;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
     margin-top: 10px;
 }
-  
+
 input::placeholder {
     color: #B0B0B0;
-    font-size: 14px;
+    font-size: 0.9rem;
 }
 
 input:hover {
@@ -51,49 +56,78 @@ input:hover {
 
 input:focus {
     outline: none;
+    background-color: #3B454C;
 }
 
-select{
+/* Select Field */
+select {
     background-color: #333C42;
-    border-radius: 5px;
-    color: #F1F1F1;
-    font-size: 16px;
-    height: 45px;
-    padding-left: 10px;
-    width: 60%;
-    transition: 0.3s ease;
-    margin-top: 20px;
-}
-  
-button {
-    background: #66FCF1;
     border: none;
-    border-radius: 5px;
-    color: #0B0C10;
-    font-size: 16px;
-    font-weight: bold;
+    border-radius: 8px;
+    color: #E0E0E0;
+    font-size: 1rem;
     height: 45px;
-    width: 100%;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(102, 252, 241, 0.3);
-}
-  
-button:hover {
-    background-color: #45A29E;
-    color: #0B0C10;
-    box-shadow: 0px 6px 12px rgba(69, 162, 158, 0.4);
+    padding: 0 15px;
+    width: 107%;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 10px;
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Remove default arrow for Safari */
+    -moz-appearance: none; /* Remove default arrow for Firefox */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E0E0E0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* Position the arrow */
+    background-size: 12px; /* Size of the arrow */
 }
 
+select:hover {
+    background-color: #3B454C;
+}
+
+select:focus {
+    outline: none;
+    background-color: #3B454C;
+}
+
+/* Button Group */
 .button-group {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 100%;
-    margin-top: 20px;
+    margin-top: 30px;
     align-items: center;
 }
 
+/* Action Buttons */
+.action-button {
+    background: #6C63FF;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 45px;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+}
+
+.action-button:hover {
+    background-color: #4FC3F7;
+    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+}
+
+/* Cancel Button */
 .cancel-btn {
-    width: 50%;
+    background: #1E1E1E; /* Dark gray background */
+    border: 2px solid #6C63FF; /* Border with primary color */
+    color: #6C63FF; /* Text color matching the border */
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out; /* Smooth transition */
+}
+
+.cancel-btn:hover {
+    color: #FFFFFF; /* White text on hover */
+    border-color: #4FC3F7; /* Border color changes to secondary color */
 }
