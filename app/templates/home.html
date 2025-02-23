@@ -1,24 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>SAP</title>
-    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/home.css')}}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAP - Student Attention Platform</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="../static/css/home.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="navbar">
-        <a href="{{ url_for('home_route.go_to_home') }}">Home</a>
-        <a href="{{ url_for('auth_routes.go_to_login') }}">Management Panel</a>
-        <a>Guide</a>
-        <a>About US</a>
-    </div>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="{{ url_for('home_route.go_to_home') }}" class="nav-link">Home</a>
+        <a href="{{ url_for('auth_routes.go_to_login') }}" class="nav-link">Management Panel</a>
+        <a href="#" class="nav-link">Guide</a>
+        <a href="#" class="nav-link">About Us</a>
+    </nav>
 
-    <div>
-        <h1 class="hello">HELLO</h1>
-    </div>
-    <div class="content">
-        <p class="paragraph">Here, our goal is to create an optimized experience for students and improve their attention accuracy in online classrooms. By using advanced technologies, we can simulate and provide precise analysis of student behavior. With this platform, you can gain a better understanding of student attention and achieve the best results in the online learning process using our tools.</p>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">HELLO</h1>
+        <p class="hero-subtitle">Welcome to the Student Attention Platform</p>
+    </section>
 
-    <a><button>Download desktop app</button></a>
+    <!-- Content Section -->
+    <section class="content">
+        <p class="content-text">
+            Here, our goal is to create an optimized experience for students and improve their attention accuracy in online classrooms. By using advanced technologies, we can simulate and provide precise analysis of student behavior. With this platform, you can gain a better understanding of student attention and achieve the best results in the online learning process using our tools.
+        </p>
+        <a href="#" class="cta-button">Download Desktop App</a>
+    </section>
 </body>
 </html>
