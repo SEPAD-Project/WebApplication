@@ -1,23 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Signup</title>
-    <link rel='stylesheet' type='text/css' media='screen' href="{{ url_for('static', filename='css/auth/signup.css')}}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup - SAP</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/auth/signup.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Go Back Home Button -->
+    <a href="{{ url_for('home_route.go_to_home') }}" class="go-back-home">Go Back Home</a>
+
+    <!-- Signup Form -->
     <form method="POST" action="{{ url_for('auth_routes.go_to_signup') }}">
-        <h1>Signup</h1>
-        <input type="text" id="school-name" name="school_name" placeholder="School name" required pattern="[A-Za-z0-9\s\-]+" title="should only contain letters, space and '-'(dash)">
-        <input type="number" id="school-code" name="school_code" placeholder="School code" required>
-        <input type="number" id="manager-personal-code" name="manager_personal_code" placeholder="Manager personal code" required>
-        <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="should only contain letters, space and '-'(dash)">
-        <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="should only contain letters, space and '-'(dash)">
-        <button type="submit">Signup</button>
-        <p><a href="{{ url_for('auth_routes.go_to_login') }}">have an account? click here to login!</a></p>
+        <h1 class="form-title">Signup</h1>
+        <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, spaces, and '-' (dash)">
+        <input type="number" id="school-code" name="school_code" placeholder="School Code" required>
+        <input type="number" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" required>
+        <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, spaces, and '-' (dash)">
+        <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, spaces, and '-' (dash)">
+        <button type="submit" class="submit-button">Signup</button>
+        <p class="form-footer">Have an account? <a href="{{ url_for('auth_routes.go_to_login') }}">Click here to login!</a></p>
     </form>
-    <a href="{{ url_for('home_route.go_to_home') }}""><button class="go_back_home" >go back home</button></a>
 
     <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
 </body>
