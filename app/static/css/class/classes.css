@@ -1,140 +1,143 @@
 /* General Styles */
 body {
-  background-color: #0B0C10;
+  background-color: #121212;
+  font-family: 'Inter', sans-serif;
   display: flex;
-  font-family: 'Catamaran', sans-serif;
   margin: 0;
   padding: 0;
-  height: 100vh;
-  color: #C5C6C7;
-}
-
-h1 {
-  color: #66FCF1;
-  font-size: 40px;
-  font-weight: bold;
-  text-shadow: 2px 2px 8px rgba(102, 252, 241, 0.4);
+  overflow: hidden; /* Prevent scrollbars */
+  height: 100vh; /* Full viewport height */
+  color: #E0E0E0;
 }
 
 /* Sidebar */
 #sidebar {
-  background: #1f2833;
-  border-radius: 5px;
-  font-size: 20px;
-  height: 100%;
-  padding-top: 20px;
-  padding-left: 10px;
-  padding-right: 10px;
-  position: fixed;
-  width: 200px;
+  background: #1E1E1E;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  height: 100vh; /* Full viewport height */
+  padding: 20px 10px;
+  width: 200px; /* Fixed width for sidebar */
   display: flex;
   flex-direction: column;
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+  overflow-y: auto; /* Add scrollbar only if sidebar content overflows */
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
-.sidebar_item {
-  color: #F1F1F1;
+.sidebar-item {
+  color: #E0E0E0;
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+  padding: 10px 15px;
   text-align: left;
   text-decoration: none;
-  transition: all 0.3s ease;
-  width: 100%;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  border-radius: 8px;
 }
 
-.sidebar_item:hover {
-  background-color: #45A29E;
-  border-color: #45A29E;
-  font-weight: bold;
+.sidebar-item:hover {
+  background-color: #6C63FF;
+  color: #FFFFFF;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 5px;
 }
 
 /* Content Area */
-#content_area {
-  margin-left: 220px;
-  padding: 20px;
+#content-area {
+  flex-grow: 1; /* Take up remaining space */
+  padding: 40px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  height: 100%;
-  width: calc(100% - 220px);
+  overflow-y: auto; /* Add scrollbar only if content overflows */
 }
 
+/* Header */
 #header {
   display: flex;
   justify-content: space-between;
-  width: 100%;
   align-items: center;
+  width: 100%;
   margin-bottom: 20px;
 }
 
+#header h1 {
+  color: #6C63FF;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+  margin: 0;
+}
+
+/* Add Button */
 #add {
-  font-size: 18px;
-  background-color: #66FCF1;
-  color: #0B0C10;
+  background: #6C63FF;
+  color: #FFFFFF;
   border: none;
-  border-radius: 5px;
-  width: 150px;
-  height: 45px;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(102, 252, 241, 0.3);
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
 }
 
 #add:hover {
-  background-color: #45A29E;
-  color: #0B0C10;
-  box-shadow: 0px 6px 12px rgba(69, 162, 158, 0.4);
+  background-color: #4FC3F7;
+  box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
 /* Class List */
-#class_list {
+#class-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
   width: 100%;
 }
 
-.class_item {
-  background: #1f2833;
-  border-radius: 5px;
+.class-item {
+  background: #1E1E1E;
+  border-radius: 8px;
   padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 18px;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.class_item p {
-  color: #C5C6C7;
+.class-item p {
+  color: #E0E0E0;
   margin: 0;
 }
 
-.class_buttons {
+/* Class Buttons */
+.class-buttons {
   display: flex;
   gap: 10px;
 }
 
-.action_button {
-  background: #66FCF1;
-  color: #0B0C10;
+.action-button {
+  background: #6C63FF;
+  color: #FFFFFF;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 8px 15px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: bold;
-  transition: all 0.3s ease;
   cursor: pointer;
-  box-shadow: 0px 4px 6px rgba(102, 252, 241, 0.3);
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
 }
 
-.action_button:hover {
-  background-color: #45A29E;
-  color: #0B0C10;
-  box-shadow: 0px 6px 12px rgba(69, 162, 158, 0.4);
+.action-button:hover {
+  background-color: #4FC3F7;
+  box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
-.action_button:focus {
+.action-button:focus {
   outline: none;
 }
