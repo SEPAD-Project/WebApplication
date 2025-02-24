@@ -83,6 +83,8 @@ body {
     color: #E0E0E0;
     padding: 20px;
     width: 350px;
+    height: 300px;
+    overflow: scroll;
     margin-bottom: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -107,6 +109,8 @@ body {
     color: #E0E0E0;
     padding: 20px;
     width: 350px;
+    height: 300px;
+    overflow: scroll;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
