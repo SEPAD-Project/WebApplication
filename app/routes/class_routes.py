@@ -39,3 +39,13 @@ def go_to_add_class():
 @login_required
 def go_to_duplicated_class_info():
     return render_template('class/duplicated_class_info.html')
+
+@bp.route('/panel/class_info/<class_name>')
+@login_required
+def go_to_class_info(class_name):
+    school_code = current_user.school_code
+    class_code = generate_class_code(school_code, class_name)
+
+    class_ = Class.query.filter(Class.class_code == class_code).first()
+
+    return render_template('class/class_info.html', data=class_)
