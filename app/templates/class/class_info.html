@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Info - SAP</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/class/class_info.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <div id="sidebar">
+        <a href="{{ url_for('school_routes.go_to_panel_school_info') }}" class="sidebar-item">School Info</a>
+        <a href="{{ url_for('class_routes.go_to_panel_classes') }}" class="sidebar-item">Classes</a>
+        <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="sidebar-item">Teachers</a>
+        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="sidebar-item">Students</a>
+    </div>
+
+    <!-- Content Area -->
+    <div id="content-area">
+        <!-- Class Information -->
+        <div id="primary-info">
+            <h1>Class primary info</h1>
+            <p>Class Name: {{ data.class_name }}</p>
+            <p>Class Code: {{ data.class_code }}</p>
+        </div>
+
+        <!-- Teachers Section -->
+        <div id="teacher-area">
+            <h1>Teachers</h1>
+            <div id="teacher-list">
+                {% for teacher in teachers %}
+                <p>{{ teacher.teacher_name }} {{ teacher.teacher_family }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="student-area">
+            <h1>Students</h1>
+            <div id="students-list">
+                {% for student in students %}
+                <p>{{ student.student_name }} {{ student.student_family }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
