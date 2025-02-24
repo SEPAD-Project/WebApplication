@@ -52,4 +52,4 @@ def go_to_panel_teachers():
 @bp.route('/panel/add_teacher')
 @login_required
 def go_to_add_teacher():
-    return "for test"
+    return render_template("teacher/add_teacher.html")

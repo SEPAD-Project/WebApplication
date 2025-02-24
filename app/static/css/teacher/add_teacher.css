@@ -1,0 +1,103 @@
+/* General Styles */
+body {
+    align-items: center;
+    background-color: #121212;
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+}
+
+/* Form Title */
+.form-title {
+    color: #6C63FF;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+}
+
+/* Form */
+form {
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Input Field */
+input {
+    background-color: #333C42;
+    border: none;
+    border-radius: 8px;
+    color: #E0E0E0;
+    font-size: 1rem;
+    height: 45px;
+    padding: 0 15px;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+input::placeholder {
+    color: #B0B0B0;
+    font-size: 0.9rem;
+}
+
+input:hover {
+    background-color: #3B454C;
+}
+
+input:focus {
+    outline: none;
+    background-color: #3B454C;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-top: 30px;
+    align-items: center;
+}
+
+/* Action Buttons */
+.action-button {
+    background: #6C63FF;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 45px;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+}
+
+.action-button:hover {
+    background-color: #4FC3F7;
+    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background: #1E1E1E; /* Dark gray background */
+    border: 2px solid #6C63FF; /* Border with primary color */
+    color: #6C63FF; /* Text color matching the border */
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition */
+}
+
+.cancel-btn:hover {
+    color: #FFFFFF; /* White text on hover */
+    border-color: #4FC3F7; /* Border color changes to secondary color */
+}
