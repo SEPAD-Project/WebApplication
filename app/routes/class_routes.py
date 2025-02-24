@@ -12,7 +12,16 @@ bp = Blueprint('class_routes', __name__)
 @bp.route('/panel/classes', methods=['GET', 'POST'])
 @login_required
 def go_to_panel_classes():
-    classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+    query = request.args.get('q')
+    if query == "" or query is None:
+        classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+    else:
+        classes = Class.query.filter(
+            (Class.school_code == current_user.school_code) &
+            ((Class.class_name.ilike(f'%{query}%')) |
+             (Class.class_code.ilike(f'%{query}%')))
+        ).all()
+
     return render_template('class/classes.html', classes=classes)
 
 

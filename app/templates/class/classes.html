@@ -20,15 +20,27 @@
     <div id="content-area">
         <div id="header">
             <h1>Manage Classes</h1>
-            <a href="{{ url_for('class_routes.go_to_add_class') }}"><button id="add" class="action-button">Add a Class</button></a>
+            <a href="{{ url_for('class_routes.go_to_add_class') }}" id="add-class">Add Class</a>
         </div>
 
+        <!-- Search Section -->
+        <div id="search-div">
+            <form id="search-form" method="GET" action="{{ url_for('class_routes.go_to_panel_classes') }}">
+                <input type="search" id="search-query" name="q" placeholder="Search...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Class List -->
         <div id="class-list">
             {% for class in classes %}
             <div class="class-item">
                 <p>{{ class.class_name }}</p>
+                <p>{{ class . class_code }}</p>
                 <div class="class-buttons">
-                    <a href="{{ url_for('class_routes.go_to_class_info', class_name=class.class_name) }}"><button class="action-button">See</button></a>
+                    <a href="{{ url_for('class_routes.go_to_class_info', class_name=class.class_name) }}">
+                        <button class="action-button">See</button>
+                    </a>
                     <button class="action-button">Edit</button>
                     <button class="action-button">Remove</button>
                 </div>
