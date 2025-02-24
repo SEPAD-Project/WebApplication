@@ -183,7 +183,12 @@ body {
     padding: 0 10px; /* Add some padding for better spacing */
 }
 
-/* Action Button */
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
 .action-button {
     background: #6C63FF;
     border: none;

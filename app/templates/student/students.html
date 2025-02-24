@@ -37,7 +37,11 @@
             <div class="student-item">
                 <p>{{ student.student_name }} {{ student.student_family }}</p>
                 <p>{{ student.student_national_code }}</p>
-                <button class="action-button">See</button>
+                <div class="action-buttons">
+                    <button class="action-button">See</button>
+                    <button class="action-button">Edit</button>
+                    <button class="action-button">Remove</button>
+                </div>
             </div>
             {% endfor %}
         </div>
