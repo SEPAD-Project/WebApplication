@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, url_for, Blueprint
 from flask_login import current_user, login_required
 from app import db
 from app.models._class import Class
+from app.models.teacher import Teacher
 from app.utils.generate_class_code import generate_class_code
 
 
@@ -48,4 +49,6 @@ def go_to_class_info(class_name):
 
     class_ = Class.query.filter(Class.class_code == class_code).first()
 
-    return render_template('class/class_info.html', data=class_)
+    teachers = [Teacher.query.filter(Teacher.teacher_national_code == national_code).first() for national_code in class_.teachers]
+
+    return render_template('class/class_info.html', data=class_, teachers=teachers)

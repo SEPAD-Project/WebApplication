@@ -28,8 +28,8 @@
         <div id="teacher-area">
             <h1>Teachers</h1>
             <div id="teacher-list">
-                {% for teacher in data.teachers %}
-                <p>{{ teacher }}</p>
+                {% for teacher in teachers %}
+                <p>{{ teacher.teacher_name }} {{teacher.teacher_family }}</p>
                 {% endfor %}
             </div>
         </div>
