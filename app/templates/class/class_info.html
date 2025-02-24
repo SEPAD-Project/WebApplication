@@ -20,6 +20,7 @@
     <div id="content-area">
         <!-- Class Information -->
         <div id="primary-info">
+            <h1>Class primary info</h1>
             <p>Class Name: {{ data.class_name }}</p>
             <p>Class Code: {{ data.class_code }}</p>
         </div>
@@ -29,7 +30,16 @@
             <h1>Teachers</h1>
             <div id="teacher-list">
                 {% for teacher in teachers %}
-                <p>{{ teacher.teacher_name }} {{teacher.teacher_family }}</p>
+                <p>{{ teacher.teacher_name }} {{ teacher.teacher_family }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="student-area">
+            <h1>Students</h1>
+            <div id="students-list">
+                {% for student in students %}
+                <p>{{ student.student_name }} {{ student.student_family }}</p>
                 {% endfor %}
             </div>
         </div>
