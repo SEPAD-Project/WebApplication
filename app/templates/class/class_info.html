@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Info - SAP</title>
+    <title>Class Info - SAP</title>
     <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/class/class_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
@@ -18,9 +18,20 @@
 
     <!-- Content Area -->
     <div id="content-area">
+        <!-- Class Information -->
         <div id="primary-info">
             <p>Class Name: {{ data.class_name }}</p>
             <p>Class Code: {{ data.class_code }}</p>
+        </div>
+
+        <!-- Teachers Section -->
+        <div id="teacher-area">
+            <h1>Teachers</h1>
+            <div id="teacher-list">
+                {% for teacher in data.teachers %}
+                <p>{{ teacher }}</p>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>
