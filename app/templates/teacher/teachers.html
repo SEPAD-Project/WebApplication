@@ -20,11 +20,23 @@
     <div id="content-area">
         <div id="header">
             <h1>Manage Teachers</h1>
+            <a href="{{ url_for('teacher_routes.go_to_add_teacher') }}" id="add-teacher">Add Teacher</a>
         </div>
+
+        <!-- Search Section -->
+        <div id="search-div">
+            <form id="search-form" method="GET" action="{{ url_for('teacher_routes.go_to_panel_teachers') }}">
+                <input type="search" id="search-query" name="q" placeholder="Search...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <!-- Teacher List -->
         <div id="teacher-list">
             {% for teacher in teachers %}
             <div class="teacher-item">
                 <p>{{ teacher.teacher_name }} {{ teacher.teacher_family }}</p>
+                <p>{{ teacher.teacher_national_code }}</p>
                 <div class="action-buttons">
                     <button class="action-button">See</button>
                     <button class="action-button">Edit</button>

@@ -23,7 +23,6 @@ def go_to_panel_students():
         ).all()
     else:
         students = Student.query.filter(Student.school_code == current_user.school_code).all()
-        print(current_user.school_code)
     
     return render_template('student/students.html', students=students)
 
