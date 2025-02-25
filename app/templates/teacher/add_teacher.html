@@ -11,11 +11,17 @@
 <body>
     <form method="POST" action="{{ url_for('teacher_routes.go_to_add_teacher') }}">
         <h1 class="form-title">Add a Teacher</h1>
-        <input type="text" name="class_name" placeholder="Teacher National Code" required pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, spaces, and '-' (dash)">
+        <input type="text" name="teacher_national_code" placeholder="Teacher National Code" required title="Should only contain numbers">
+        <input type="text" name="teacher_password" placeholder="Teacher Password" required title="Should only contain letters and numbers">
+        <select name="selected_classes" multiple>
+            {% for class in classes %}
+            <option value="{{ class.class_code }}">{{ class.class_name }}</option>
+            {% endfor %}
+        </select>
         
         <div class="button-group">
             <button type="submit" class="action-button">Add</button>
-            <button type="button" class="action-button cancel-btn" onclick="window.location.href=quot;{{ url_for('class_routes.go_to_panel_classes') }}quot;">Cancel</button>
+            <button type="button" class="action-button cancel-btn" onclick="window.location.href=quot;{{ url_for('teacher_routes.go_to_panel_teachers') }}quot;">Cancel</button>
         </div>
     </form>    
 </body>
