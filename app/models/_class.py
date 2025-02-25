@@ -8,7 +8,7 @@ class Class(db.Model):
     class_name = db.Column(db.String(100), nullable=False)
     class_code = db.Column(db.String(100), nullable=False, unique=True)
     school_code = db.Column(db.String(100), nullable=False)
-    teachers = db.Column(db.JSON)
+    teachers = db.Column(db.String(100))
 
     def __init__(self, class_name, class_code, school_code, teachers):
         self.class_name = class_name

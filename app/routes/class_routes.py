@@ -29,7 +29,7 @@ def go_to_panel_classes():
 @login_required
 def go_to_add_class():
     school_code = current_user.school_code
-    teachers = []
+    teachers = "[]"
 
     if request.method == 'POST':
         class_name = request.form['class_name']
@@ -59,7 +59,7 @@ def go_to_class_info(class_name):
 
     class_ = Class.query.filter(Class.class_code == class_code).first()
 
-    teachers = [Teacher.query.filter(Teacher.teacher_national_code == national_code).first() for national_code in class_.teachers]
+    teachers = [Teacher.query.filter(Teacher.teacher_national_code == national_code).first() for national_code in eval(class_.teachers)]
     students = Student.query.filter(Student.class_code == class_.class_code).all()
 
     return render_template('class/class_info.html', data=class_, teachers=teachers, students=students)

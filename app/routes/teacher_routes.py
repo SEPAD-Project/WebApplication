@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, request
+from flask import render_template, Blueprint, request, redirect, url_for
 from flask_login import login_required, current_user
 from app import db
 from app.models._class import Class
@@ -49,7 +49,37 @@ def go_to_panel_teachers():
         school_teachers = sorted(school_teachers, key=lambda x: (x.teacher_name, x.teacher_family))
         return render_template('teacher/teachers.html', teachers=school_teachers)
 
-@bp.route('/panel/add_teacher')
+@bp.route('/panel/add_teacher', methods=['GET', 'POST'])
 @login_required
 def go_to_add_teacher():
-    return "for test"
+    if request.method == 'POST':
+        entry_national_code = request.form["teacher_national_code"]
+        entry_password = request.form["teacher_password"]
+        teacher = Teacher.query.filter(Teacher.teacher_national_code == entry_national_code).first()
+        if teacher is None:
+            return redirect(url_for("teacher_routes.go_to_wrong_teacher_info"))
+        if teacher.teacher_password == entry_password:
+            classes = request.form.getlist("selected_classes")
+            for class_code in classes:
+                teacher_classes = eval(teacher.teacher_classes)
+                teacher_classes.append(class_code)
+                teacher.teacher_classes = str(teacher_classes)
+
+                class_ = Class.query.filter(Class.class_code == class_code).first()
+                class_teachers = eval(class_.teachers)
+                class_teachers.append(entry_national_code)
+                class_.teachers = str(class_teachers)
+
+                db.session.commit()
+            return redirect(url_for("teacher_routes.go_to_add_teacher"))
+        else:
+            return redirect(url_for("teacher_routes.go_to_wrong_teacher_info"))
+        
+    school_classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+    print([class_.class_code for class_ in school_classes])
+    return render_template("teacher/add_teacher.html", classes = school_classes)
+
+@bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
+@login_required
+def go_to_wrong_teacher_info():
+    return render_template("teacher/wrong_teacher_info.html")

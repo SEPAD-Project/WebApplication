@@ -1,0 +1,183 @@
+/* General Styles */
+body {
+    align-items: center;
+    background-color: #121212;
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+}
+
+/* Form Title */
+.form-title {
+    color: #6C63FF;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+}
+
+/* Form */
+form {
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Input Field */
+input {
+    background-color: #333C42;
+    border: none;
+    border-radius: 8px;
+    color: #E0E0E0;
+    font-size: 1rem;
+    height: 45px;
+    padding: 0 15px;
+    width: 100%;
+    transition: background-color 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+input::placeholder {
+    color: #B0B0B0;
+    font-size: 0.9rem;
+}
+
+input:hover {
+    background-color: #3B454C;
+}
+
+input:focus {
+    outline: none;
+    background-color: #3B454C;
+}
+
+/* Modern Select Tag */
+select {
+    background-color: #333C42;
+    border: 2px solid #6C63FF;
+    border-radius: 8px;
+    color: #E0E0E0;
+    font-size: 1rem;
+    padding: 10px 15px;
+    width: 107.5%;
+    transition: all 0.3s ease-in-out;
+    margin-top: 10px;
+    appearance: none; /* Remove default arrow */
+    -webkit-appearance: none; /* Remove default arrow for Safari */
+    -moz-appearance: none; /* Remove default arrow for Firefox */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E0E0E0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E"); /* Custom arrow */
+    background-repeat: no-repeat;
+    background-position: right 15px center; /* Position the arrow */
+    background-size: 12px; /* Size of the arrow */
+    cursor: pointer;
+}
+
+/* Hover Effect */
+select:hover {
+    border-color: #4FC3F7;
+    background-color: #3B454C;
+}
+
+/* Focus Effect */
+select:focus {
+    outline: none;
+    border-color: #4FC3F7;
+    box-shadow: 0 0 8px rgba(79, 195, 247, 0.6);
+}
+
+/* Multiple Select Styling */
+select[multiple] {
+    height: 120px; /* Adjust height as needed */
+    padding: 10px;
+    background-image: none; /* Remove arrow for multiple select */
+}
+
+/* Custom Scrollbar for Multiple Select */
+select[multiple]::-webkit-scrollbar {
+    width: 8px;
+}
+
+select[multiple]::-webkit-scrollbar-track {
+    background: #333C42;
+    border-radius: 4px;
+}
+
+select[multiple]::-webkit-scrollbar-thumb {
+    background: #6C63FF;
+    border-radius: 4px;
+}
+
+select[multiple]::-webkit-scrollbar-thumb:hover {
+    background: #4FC3F7;
+}
+
+/* Option Styling */
+option {
+    background-color: #333C42;
+    color: #E0E0E0;
+    padding: 8px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Hover Effect for Options */
+option:hover {
+    background-color: #4FC3F7 !important;
+    color: #121212;
+}
+
+/* Selected Option Styling */
+option:checked {
+    background-color: #6C63FF !important;
+    color: #FFFFFF;
+}
+
+/* Button Group */
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin-top: 30px;
+    align-items: center;
+}
+
+/* Action Buttons */
+.action-button {
+    background: #6C63FF;
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 45px;
+    width: 107.5%;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+}
+
+.action-button:hover {
+    background-color: #4FC3F7;
+    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+}
+
+/* Cancel Button */
+.cancel-btn {
+    background: #1E1E1E; /* Dark gray background */
+    border: 2px solid #6C63FF; /* Border with primary color */
+    color: #6C63FF; /* Text color matching the border */
+    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition */
+}
+
+.cancel-btn:hover {
+    color: #FFFFFF; /* White text on hover */
+    border-color: #4FC3F7; /* Border color changes to secondary color */
+}
