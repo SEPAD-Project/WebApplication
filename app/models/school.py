@@ -11,13 +11,15 @@ class School(db.Model, UserMixin):
     manager_personal_code = db.Column(db.String(100), nullable=False, unique=True)
     province = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(100), nullable=False)
+    teachers = db.Column(db.String(100), nullable=False)
 
-    def __init__(self, school_name, school_code, manager_personal_code, province, city):
+    def __init__(self, school_name, school_code, manager_personal_code, province, city, teachers):
         self.school_name = school_name
         self.school_code = school_code
         self.manager_personal_code = manager_personal_code
         self.province = province
         self.city = city
+        self.teachers = teachers
 
     def get_id(self):
         return str(self.id)

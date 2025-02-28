@@ -40,7 +40,8 @@ def go_to_signup():
                             school_code=school_code,
                             manager_personal_code=manager_personal_code,
                             province=province,
-                            city=city)
+                            city=city,
+                            teachers="[]")
         
         try:
             db.session.add(new_school)

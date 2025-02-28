@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from app import db
 from app.models._class import Class
 from app.models.teacher import Teacher
+from app.models.school import School
 
 
 bp = Blueprint('teacher_routes', __name__)
@@ -11,43 +12,20 @@ bp = Blueprint('teacher_routes', __name__)
 @bp.route('/panel/teachers')
 @login_required
 def go_to_panel_teachers():
+    school = Class.query.filter(School.school_code == current_user.school_code).first()
+    teachers = []
+    for national_code in eval(school.teachers):
+        teachers.append(Teacher.query.filter(Teacher.teacher_national_code == national_code).first())
+
     query = request.args.get('q')
+    if query:
+        filtered_teachers = []
+        for teacher in teachers:
+            if (query.lower() in teacher.teacher_name.lower() or query.lower() in teacher.teacher_national_code.lower()):
+                filtered_teachers.append(teacher)
+        teachers = filtered_teachers
 
-    if query == "" or query is None:
-        school_classes = Class.query.filter(Class.school_code == current_user.school_code).all()
-        school_teachers = set()
-
-        for school_class in school_classes:
-            class_teachers = school_class.teachers
-            for teacher_national_code in class_teachers:
-                teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
-                if teacher:
-                    school_teachers.add(teacher)
-
-
-        school_teachers = sorted(school_teachers, key=lambda x: (x.teacher_name, x.teacher_family))
-        return render_template('teacher/teachers.html', teachers=school_teachers)
-    
-    else:
-        school_classes = Class.query.filter(Class.school_code == current_user.school_code).all()
-        school_teachers = set()
-
-        for school_class in school_classes:
-            class_teachers = school_class.teachers
-            for teacher_national_code in class_teachers:
-                teacher = Teacher.query.filter(
-                    (Teacher.teacher_national_code == teacher_national_code) &
-                    (
-                        (Teacher.teacher_name.ilike(f'%{query}%')) |
-                        (Teacher.teacher_family.ilike(f'%{query}%')) |
-                        (Teacher.teacher_national_code.ilike(f'%{query}%')) 
-                    )
-                ).first()
-                if teacher:
-                    school_teachers.add(teacher)
-
-        school_teachers = sorted(school_teachers, key=lambda x: (x.teacher_name, x.teacher_family))
-        return render_template('teacher/teachers.html', teachers=school_teachers)
+    return render_template('teacher/teachers.html', teachers=teachers)
 
 @bp.route('/panel/add_teacher', methods=['GET', 'POST'])
 @login_required
@@ -60,6 +38,12 @@ def go_to_add_teacher():
             return redirect(url_for("teacher_routes.go_to_wrong_teacher_info"))
         if teacher.teacher_password == entry_password:
             classes = request.form.getlist("selected_classes")
+            if classes:
+                school = School.query.filter(School.school_code == current_user.school_code)
+                teachers = eval(school.teachers)
+                teachers.append(teacher.teacher_national_code)
+                school.teachers = str(teachers)
+                db.session.commit()
             for class_code in classes:
                 teacher_classes = eval(teacher.teacher_classes)
                 teacher_classes.append(class_code)
