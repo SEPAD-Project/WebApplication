@@ -26,7 +26,7 @@ def go_to_panel_students():
     
     return render_template('student/students.html', students=students)
 
-@bp.route("/panel/add_student", methods=['GET', 'POST'])
+@bp.route("/panel/students/add_student", methods=['GET', 'POST'])
 @login_required
 def go_to_add_student():
     if request.method == 'POST':
@@ -47,7 +47,7 @@ def go_to_add_student():
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     return render_template('student/add_student.html', classes=classes)
 
-@bp.route("/panel/student_info/<student_national_code>")
+@bp.route("/panel/students/student_info/<student_national_code>")
 @login_required
 def go_to_student_info(student_national_code):
     student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()

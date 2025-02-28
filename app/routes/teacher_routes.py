@@ -27,7 +27,7 @@ def go_to_panel_teachers():
 
     return render_template('teacher/teachers.html', teachers=teachers)
 
-@bp.route('/panel/add_teacher', methods=['GET', 'POST'])
+@bp.route('/panel/teachers/add_teacher', methods=['GET', 'POST'])
 @login_required
 def go_to_add_teacher():
     if request.method == 'POST':

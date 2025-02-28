@@ -25,7 +25,7 @@ def go_to_panel_classes():
     return render_template('class/classes.html', classes=classes)
 
 
-@bp.route('/panel/add_class', methods=['GET', 'POST'])
+@bp.route('/panel/classes/add_class', methods=['GET', 'POST'])
 @login_required
 def go_to_add_class():
     school_code = current_user.school_code
@@ -46,12 +46,12 @@ def go_to_add_class():
     return render_template('class/add_class.html')
 
 
-@bp.route('/duplicated_class_info')
+@bp.route('/panel/classes/duplicated_class_info')
 @login_required
 def go_to_duplicated_class_info():
     return render_template('class/duplicated_class_info.html')
 
-@bp.route('/panel/class_info/<class_name>')
+@bp.route('/panel/classes/class_info/<class_name>')
 @login_required
 def go_to_class_info(class_name):
     school_code = current_user.school_code
