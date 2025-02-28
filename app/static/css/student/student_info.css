@@ -1,0 +1,78 @@
+/* General Styles */
+body {
+    background-color: #121212;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent scrollbars */
+    height: 100vh; /* Full viewport height */
+  }
+  
+  /* Sidebar */
+  #sidebar {
+    background: #1E1E1E;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    height: 100vh; /* Full viewport height */
+    padding: 20px 10px;
+    width: 200px; /* Fixed width for sidebar */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+    overflow-y: auto; /* Add scrollbar only if sidebar content overflows */
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
+  }
+  
+  .sidebar-item {
+    color: #E0E0E0;
+    display: block;
+    margin-bottom: 15px;
+    padding: 10px 15px;
+    text-align: left;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    border-radius: 8px;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #6C63FF;
+    color: #FFFFFF;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  
+  /* Content Area */
+  #content-area {
+    flex-grow: 1; /* Take up remaining space */
+    padding: 40px;
+    color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center vertically */
+    align-items: center; /* Center horizontally */
+    overflow-y: auto; /* Add scrollbar only if content overflows */
+    text-align: center; /* Center text */
+  }
+  
+  /* Primary Info Section */
+  #primary-info {
+    background: #1E1E1E;
+    border-radius: 8px;
+    color: #E0E0E0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 350px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  
+  /* Paragraph Styles */
+  p {
+    color: #E0E0E0;
+    font-size: 1.1rem;
+    margin: 10px 0;
+  }

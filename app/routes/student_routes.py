@@ -46,3 +46,9 @@ def go_to_add_student():
 
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     return render_template('student/add_student.html', classes=classes)
+
+@bp.route("/panel/student_info/<student_national_code>")
+@login_required
+def go_to_student_info(student_national_code):
+    student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()
+    return render_template('student/student_info.html', data=student)
