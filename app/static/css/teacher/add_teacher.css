@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 /* General Styles */
 body {
     align-items: center;
@@ -15,7 +21,7 @@ body {
     color: #6C63FF;
     font-size: 2.5rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
 }
 
@@ -42,7 +48,7 @@ input {
     padding: 0 15px;
     width: 100%;
     transition: background-color 0.3s ease-in-out;
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 input::placeholder {
@@ -67,9 +73,8 @@ select {
     color: #E0E0E0;
     font-size: 1rem;
     padding: 10px 15px;
-    width: 107.5%;
+    width: 100%;
     transition: all 0.3s ease-in-out;
-    margin-top: 10px;
     appearance: none; /* Remove default arrow */
     -webkit-appearance: none; /* Remove default arrow for Safari */
     -moz-appearance: none; /* Remove default arrow for Firefox */
@@ -143,7 +148,7 @@ option:checked {
 .button-group {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
     margin-top: 30px;
     align-items: center;
@@ -158,7 +163,7 @@ option:checked {
     font-size: 1rem;
     font-weight: bold;
     height: 45px;
-    width: 107.5%;
+    width: 100%;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
