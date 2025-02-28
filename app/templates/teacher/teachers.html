@@ -38,7 +38,7 @@
                 <p>{{ teacher.teacher_name }} {{ teacher.teacher_family }}</p>
                 <p>{{ teacher.teacher_national_code }}</p>
                 <div class="action-buttons">
-                    <button class="action-button">See</button>
+                    <a href="{{ url_for('teacher_routes.go_to_teacher_info', teacher_national_code=teacher.teacher_national_code) }}"><button class="action-button">See</button></a>
                     <button class="action-button">Edit</button>
                     <button class="action-button">Remove</button>
                 </div>

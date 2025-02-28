@@ -67,3 +67,11 @@ def go_to_add_teacher():
 @login_required
 def go_to_wrong_teacher_info():
     return render_template("teacher/wrong_teacher_info.html")
+
+@bp.route("/panel/teachers/teacher_info/<teacher_national_code>")
+@login_required
+def go_to_teacher_info(teacher_national_code):
+    school = School.query.filter((School.school_code == current_user.school_code)).first()
+    teacher = Teacher.query.filter((Teacher.teacher_national_code == teacher_national_code)).first()
+    if teacher.teacher_national_code in eval(school.teachers):
+         return render_template('teacher/teacher_info.html', data=teacher)
