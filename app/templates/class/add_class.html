@@ -11,12 +11,14 @@
 <body>
     <form method="POST" action="{{ url_for('class_routes.go_to_add_class') }}">
         <h1 class="form-title">Add a Class</h1>
-        <input type="text" name="class_name" placeholder="Class Name" required pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, spaces, and '-' (dash)">
+        <input type="text" name="class_name" id="class_name" placeholder="Class Name" required pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, spaces, and '-' (dash)">
         
         <div class="button-group">
             <button type="submit" class="action-button">Add</button>
             <button type="button" class="action-button cancel-btn" onclick="window.location.href=quot;{{ url_for('class_routes.go_to_panel_classes') }}quot;">Cancel</button>
         </div>
     </form>    
+
+    <script src="{{ url_for('static', filename='js/add_class.js') }}"></script>
 </body>
 </html>

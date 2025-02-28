@@ -11,8 +11,8 @@
 <body>
     <form method="POST" action="{{ url_for('teacher_routes.go_to_add_teacher') }}">
         <h1 class="form-title">Add a Teacher</h1>
-        <input type="text" name="teacher_national_code" placeholder="Teacher National Code" required title="Should only contain numbers">
-        <input type="text" name="teacher_password" placeholder="Teacher Password" required title="Should only contain letters and numbers">
+        <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" required title="Should only contain numbers">
+        <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" required title="Should only contain letters and numbers">
         <select name="selected_classes" multiple>
             {% for class in classes %}
             <option value="{{ class.class_code }}">{{ class.class_name }}</option>
@@ -24,5 +24,7 @@
             <button type="button" class="action-button cancel-btn" onclick="window.location.href=quot;{{ url_for('teacher_routes.go_to_panel_teachers') }}quot;">Cancel</button>
         </div>
     </form>    
+
+    <script src="{{ url_for('static', filename='js/add_teacher.js') }}"></script>
 </body>
 </html>
