@@ -39,7 +39,7 @@ def go_to_add_teacher():
         if teacher.teacher_password == entry_password:
             classes = request.form.getlist("selected_classes")
             if classes:
-                school = School.query.filter(School.school_code == current_user.school_code)
+                school = School.query.filter(School.school_code == current_user.school_code).first()
                 teachers = eval(school.teachers)
                 teachers.append(teacher.teacher_national_code)
                 school.teachers = str(teachers)
