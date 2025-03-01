@@ -63,3 +63,40 @@ def go_to_class_info(class_name):
     students = Student.query.filter(Student.class_code == class_.class_code).all()
 
     return render_template('class/class_info.html', data=class_, teachers=teachers, students=students)
+
+@bp.route('/panel/classes/edit_class/<class_name>', methods=['GET', 'POST'])
+@login_required
+def go_to_edit_class(class_name):
+    print(class_name)
+    if request.method == "POST":
+        new_name = request.form['class_name']
+        new_code = generate_class_code(current_user.school_code, new_name)
+
+        old_code = generate_class_code(current_user.school_code, class_name)
+        class_ = Class.query.filter(Class.class_code == old_code).first()
+        class_.class_code = new_code
+        class_.class_name = new_name
+
+        students = Student.query.filter(Student.class_code == old_code).all()
+        for student in students:
+            student.class_code = new_code
+
+        teachers_national_code = eval(class_.teachers)
+        for teacher_national_code in teachers_national_code:
+            teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+            teacher_classes = eval(teacher.teacher_classes)
+            index = teacher_classes.index(old_code)
+            teacher_classes[index] = new_code
+            teacher.teacher_classes = str(teacher_classes)
+
+        db.session.commit()
+
+        return redirect(url_for('class_routes.go_to_panel_classes'))
+
+    school_code = current_user.school_code
+    class_code = generate_class_code(school_code, class_name)
+    print(class_code)
+
+    class_ = Class.query.filter(Class.class_code == class_code).first()
+    return render_template('class/edit_class.html', name=class_.class_name)
+
