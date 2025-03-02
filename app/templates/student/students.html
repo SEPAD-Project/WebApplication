@@ -39,7 +39,7 @@
                 <p>{{ student.student_national_code }}</p>
                 <div class="action-buttons">
                     <a href="{{ url_for('student_routes.go_to_student_info', student_national_code=student.student_national_code) }}"><button class="action-button">See</button></a>
-                    <button class="action-button">Edit</button>
+                    <a href="{{ url_for('student_routes.go_to_edit_student', student_national_code=student.student_national_code) }}"><button class="action-button">Edit</button></a>
                     <button class="action-button">Remove</button>
                 </div>
             </div>

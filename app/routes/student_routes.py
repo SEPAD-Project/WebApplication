@@ -52,3 +52,29 @@ def go_to_add_student():
 def go_to_student_info(student_national_code):
     student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()
     return render_template('student/student_info.html', data=student)
+
+@bp.route("/panel/students/edit_student/<student_national_code>", methods=['GET', 'POST'])
+@login_required
+def go_to_edit_student(student_national_code):
+    if request.method == "POST":
+        new_name = request.form['student_name']
+        new_family = request.form['student_family']
+        new_national_code = request.form['student_national_code']
+        new_password = request.form['student_password']
+        new_class = request.form['selected_class']
+
+        student = Student.query.filter(Student.student_national_code == student_national_code).first()
+
+        student.student_name = new_name
+        student.student_family = new_family
+        student.student_national_code = new_national_code
+        student.student_password = new_password
+        student.class_code = new_class
+
+        db.session.commit()
+
+        return redirect(url_for('student_routes.go_to_panel_students'))
+
+    classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+    student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()
+    return render_template('student/edit_student.html', student=student, classes=classes)
