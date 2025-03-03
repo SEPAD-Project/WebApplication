@@ -88,14 +88,16 @@ def go_to_edit_class(class_name):
             index = teacher_classes.index(old_code)
             teacher_classes[index] = new_code
             teacher.teacher_classes = str(teacher_classes)
-
-        db.session.commit()
+        
+        try:
+            db.session.commit()
+        except:
+            return redirect(url_for('class_routes.go_to_duplicated_class_info'))
 
         return redirect(url_for('class_routes.go_to_panel_classes'))
 
     school_code = current_user.school_code
     class_code = generate_class_code(school_code, class_name)
-    print(class_code)
 
     class_ = Class.query.filter(Class.class_code == class_code).first()
     return render_template('class/edit_class.html', name=class_.class_name)
