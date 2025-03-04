@@ -40,7 +40,12 @@ def go_to_add_student():
 
         new_student = Student(student_name, student_family, student_national_code, student_password, class_code, school_code)
         db.session.add(new_student)
-        db.session.commit()
+
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return redirect(url_for('student_routes.go_to_duplicated_student_info_add'))
 
         return redirect(url_for('student_routes.go_to_panel_students'))
 
@@ -71,10 +76,24 @@ def go_to_edit_student(student_national_code):
         student.student_password = new_password
         student.class_code = new_class
 
-        db.session.commit()
+        try:
+            db.session.commit()
+        except:
+            db.session.rollback()
+            return redirect(url_for('student_routes.go_to_duplicated_student_info_edit', student_national_code=student.student_national_code))
 
         return redirect(url_for('student_routes.go_to_panel_students'))
 
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()
     return render_template('student/edit_student.html', student=student, classes=classes)
+
+@bp.route("/panel/students/duplicated_student_info_add", methods=['GET', 'POST'])
+@login_required
+def go_to_duplicated_student_info_add():
+    return render_template('student/duplicated_student_info_add.html')
+
+@bp.route("/panel/students/duplicated_student_info_edit/<student_national_code>", methods=['GET', 'POST'])
+@login_required
+def go_to_duplicated_student_info_edit(student_national_code):
+    return render_template('student/duplicated_student_info_edit.html', student_national_code=student_national_code)
