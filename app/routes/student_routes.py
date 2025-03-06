@@ -88,6 +88,16 @@ def go_to_edit_student(student_national_code):
     student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()
     return render_template('student/edit_student.html', student=student, classes=classes)
 
+
+@bp.route("/panel/students/remove_student/<student_national_code>", methods=['POST', 'GET'])
+@login_required
+def go_to_remove_student(student_national_code):
+    student = Student.query.filter((Student.student_national_code == student_national_code) & (Student.school_code == current_user.school_code)).first()
+    db.session.delete(student)
+    db.session.commit()
+    return redirect(url_for('student_routes.go_to_panel_students'))
+
+
 @bp.route("/panel/students/duplicated_student_info_add", methods=['GET', 'POST'])
 @login_required
 def go_to_duplicated_student_info_add():
