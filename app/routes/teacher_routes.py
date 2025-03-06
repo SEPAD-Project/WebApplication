@@ -17,7 +17,7 @@ def go_to_panel_teachers():
     teachers = []
     for national_code in eval(school.teachers):
         teachers.append(Teacher.query.filter(Teacher.teacher_national_code == national_code).first())
-
+        
     query = request.args.get('q')
     if query:
         filtered_teachers = []
@@ -63,6 +63,34 @@ def go_to_add_teacher():
     school_classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     print([class_.class_code for class_ in school_classes])
     return render_template("teacher/add_teacher.html", classes = school_classes)
+
+@bp.route("/panel/students/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
+@login_required
+def go_to_remove_teacher(teacher_national_code):
+    teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+    school_code = generate_class_code(current_user.school_code, '')
+    teacher_classes = eval(teacher.teacher_classes)
+    for class_ in teacher_classes:
+        if class_[:3] == school_code:
+            teacher_classes.remove(class_)
+    teacher.teacher_classes = str(teacher_classes)
+
+    classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+    for class_ in classes:
+        teachers = eval(class_.teachers)
+        try:
+            teachers.remove(teacher_national_code)
+        except:
+            continue
+        class_.teachers = str(teachers)
+
+    school = School.query.filter(School.school_code == current_user.school_code).first()
+    school_teachers = eval(school.teachers)
+    school_teachers.remove(teacher_national_code)
+    school.teachers = str(school_teachers)
+
+    db.session.commit()
+    return redirect(url_for('teacher_routes.go_to_panel_teachers'))
 
 @bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
 @login_required
