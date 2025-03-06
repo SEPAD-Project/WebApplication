@@ -4,6 +4,7 @@ from app import db
 from app.models._class import Class
 from app.models.teacher import Teacher
 from app.models.school import School
+from app.utils.generate_class_code import generate_class_code
 
 
 bp = Blueprint('teacher_routes', __name__)
@@ -12,7 +13,7 @@ bp = Blueprint('teacher_routes', __name__)
 @bp.route('/panel/teachers')
 @login_required
 def go_to_panel_teachers():
-    school = Class.query.filter(School.school_code == current_user.school_code).first()
+    school = School.query.filter(School.school_code == current_user.school_code).first()
     teachers = []
     for national_code in eval(school.teachers):
         teachers.append(Teacher.query.filter(Teacher.teacher_national_code == national_code).first())
