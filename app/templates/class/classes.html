@@ -42,7 +42,7 @@
                         <button class="action-button">See</button>
                     </a>
                     <a href="{{ url_for('class_routes.go_to_edit_class', class_name=class.class_name) }}"><button class="action-button">Edit</button></a>
-                    <button class="action-button">Remove</button>
+                    <a href="{{ url_for('class_routes.go_to_remove_class', class_name=class.class_name) }}"><button class="action-button">Remove</button></a>
                 </div>
             </div>
             {% endfor %}

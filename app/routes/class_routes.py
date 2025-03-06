@@ -102,3 +102,24 @@ def go_to_edit_class(class_name):
     class_ = Class.query.filter(Class.class_code == class_code).first()
     return render_template('class/edit_class.html', name=class_.class_name)
 
+@bp.route('/panel/classes/remove/<class_name>', methods=['GET', 'POST'])
+@login_required
+def go_to_remove_class(class_name):
+    class_code = generate_class_code(current_user.school_code, class_name)
+
+    class_ = Class.query.filter(Class.class_code == class_code).first()
+    db.session.delete(class_)
+
+    students = Student.query.filter(Student.class_code == class_code).all()
+    for student in students:
+        db.session.delete(student)
+
+    teachers_national_code = eval(class_.teachers)
+    for national_code in teachers_national_code:
+        teacher = Teacher.query.filter(Teacher.teacher_national_code == national_code).first()
+        teacher_classes = eval(teacher.teacher_classes)
+        teacher_classes.remove(class_code)
+        teacher.teacher_classes = str(teacher_classes)
+
+    db.session.commit()
+    return redirect(url_for('class_routes.go_to_panel_classes'))
