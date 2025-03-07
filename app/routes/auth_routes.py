@@ -16,13 +16,13 @@ def go_to_login():
 
         school = School.query.filter(School.school_code == given_school_code).first()
         if school is None:
-            return redirect(url_for('auth_routes.go_to_incorrect_username_password'))
+            return redirect(url_for('auth_routes.go_to_unknown_school_info'))
 
         if school.manager_personal_code == given_manager_personal_code:
             login_user(school, remember=True)
             return redirect(url_for('school_routes.go_to_panel_home'))
         else:
-            return redirect(url_for('auth_routes.go_to_incorrect_username_password'))
+            return redirect(url_for('auth_routes.go_to_unknown_school_info'))
 
     return render_template('auth/login.html')
 
@@ -54,11 +54,16 @@ def go_to_signup():
     return render_template('auth/signup.html')
 
 
-@bp.route('/notify_user')
+@bp.route('/notify_username_password')
 def go_to_notify_user():
-    return render_template('auth/notif_username_password_on_signup.html')
+    return render_template('auth/notify_username_password.html')
 
 
 @bp.route('/duplicated_school_info')
 def go_to_duplicated_school_info():
     return render_template('auth/duplicated_school_info.html')
+
+
+@bp.route('/unknown_school_info')
+def go_to_unknown_school_info():
+    return render_template('auth/unknown_school_info.html')
