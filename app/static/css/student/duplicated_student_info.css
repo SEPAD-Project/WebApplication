@@ -35,7 +35,8 @@ body {
 .notification-message {
     color: #E0E0E0;
     font-size: 1.1rem;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    text-align: center;
 }
 
 /* Notification Button */
@@ -46,10 +47,10 @@ body {
     color: #FFFFFF;
     font-size: 1rem;
     font-weight: bold;
-    height: 30px;
+    height: 30px; /* Lower height */
     width: 130px;
     padding: 10px 20px;
-    margin-top: 20px;
+    margin-top: 30px; /* Added margin from the top */
     text-decoration: none;
     display: flex;
     align-items: center;

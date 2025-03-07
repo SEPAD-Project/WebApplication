@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Incorrect Username/Password - SAP</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/auth/incorrect_username_password.css') }}">
+    <title>Unknown school info - SAP</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/auth/unknown_school_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div class="notification-area">
         <h1 class="notification-title">OOPS!</h1>
         <p class="notification-message">We can't find a school that matches this information.</p>
-        <p class="notification-message">Please try again!</p>
+        <p class="notification-message">Please double-check your entries for login or try to signup!</p>
         <a href="{{ url_for('auth_routes.go_to_login') }}" class="notification-button">Got it!</a>
     </div>
 </body>

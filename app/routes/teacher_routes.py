@@ -97,10 +97,11 @@ def go_to_remove_teacher(teacher_national_code):
 def go_to_edit_teacher(teacher_national_code):
     if request.method == 'POST':
         new_classes = request.form.getlist('selected_classes')
-        print(new_classes)
         teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+        if teacher == None:
+            return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
+        
         teacher_classes = eval(teacher.teacher_classes)
-        print(teacher_classes)
         school_code = generate_class_code(current_user.school_code, '')
 
         for class_code in teacher_classes:
@@ -128,6 +129,8 @@ def go_to_edit_teacher(teacher_national_code):
 
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+    if teacher == None:
+        return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
     return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
 
 @bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
@@ -140,5 +143,7 @@ def go_to_wrong_teacher_info():
 def go_to_teacher_info(teacher_national_code):
     school = School.query.filter((School.school_code == current_user.school_code)).first()
     teacher = Teacher.query.filter((Teacher.teacher_national_code == teacher_national_code)).first()
+    if teacher == None:
+        return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
     if teacher.teacher_national_code in eval(school.teachers):
          return render_template('teacher/teacher_info.html', data=teacher)

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wrong Teacher Info - SAP</title>
+    <title>Wrong teacher info - SAP</title>
     <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/teacher/wrong_teacher_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
@@ -12,9 +12,9 @@
     <!-- Notification Area -->
     <div class="notification-area">
         <h1 class="notification-title">OOPS!</h1>
-        <p class="notification-message">We can't find any teacher with this information.</p>
+        <p class="notification-message">We can't find a teacher that matches this information.</p>
         <p class="notification-message">Please try again!</p>
-        <a href="{{ url_for('teacher_routes.go_to_add_teacher') }}" class="notification-button">Got it!</a>
+        <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="notification-button">Got it!</a>
     </div>
 </body>
 </html>

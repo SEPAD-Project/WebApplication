@@ -45,7 +45,7 @@ def go_to_add_student():
             db.session.commit()
         except:
             db.session.rollback()
-            return redirect(url_for('student_routes.go_to_duplicated_student_info_add'))
+            return redirect(url_for('student_routes.go_to_duplicated_student_info'))
 
         return redirect(url_for('student_routes.go_to_panel_students'))
 
@@ -80,7 +80,7 @@ def go_to_edit_student(student_national_code):
             db.session.commit()
         except:
             db.session.rollback()
-            return redirect(url_for('student_routes.go_to_duplicated_student_info_edit', student_national_code=student.student_national_code))
+            return redirect(url_for('student_routes.go_to_duplicated_student_info'))
 
         return redirect(url_for('student_routes.go_to_panel_students'))
 
@@ -98,12 +98,7 @@ def go_to_remove_student(student_national_code):
     return redirect(url_for('student_routes.go_to_panel_students'))
 
 
-@bp.route("/panel/students/duplicated_student_info_add", methods=['GET', 'POST'])
+@bp.route("/panel/students/duplicated_student_info", methods=['GET', 'POST'])
 @login_required
-def go_to_duplicated_student_info_add():
-    return render_template('student/duplicated_student_info_add.html')
-
-@bp.route("/panel/students/duplicated_student_info_edit/<student_national_code>", methods=['GET', 'POST'])
-@login_required
-def go_to_duplicated_student_info_edit(student_national_code):
-    return render_template('student/duplicated_student_info_edit.html', student_national_code=student_national_code)
+def go_to_duplicated_student_info():
+    return render_template('student/duplicated_student_info.html')

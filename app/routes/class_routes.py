@@ -58,7 +58,9 @@ def go_to_class_info(class_name):
     class_code = generate_class_code(school_code, class_name)
 
     class_ = Class.query.filter(Class.class_code == class_code).first()
-
+    if class_ == None:
+        return redirect(url_for('class_routes.go_to_unknown_class_info'))
+    
     teachers = [Teacher.query.filter(Teacher.teacher_national_code == national_code).first() for national_code in eval(class_.teachers)]
     students = Student.query.filter(Student.class_code == class_.class_code).all()
 
@@ -71,9 +73,12 @@ def go_to_edit_class(class_name):
     if request.method == "POST":
         new_name = request.form['class_name']
         new_code = generate_class_code(current_user.school_code, new_name)
-
-        old_code = generate_class_code(current_user.school_code, class_name)
         class_ = Class.query.filter(Class.class_code == old_code).first()
+
+        if class_ == None:
+            return redirect(url_for('class_routes.go_to_unknown_class_info'))
+        
+        old_code = generate_class_code(current_user.school_code, class_name)
         class_.class_code = new_code
         class_.class_name = new_name
 
@@ -100,6 +105,8 @@ def go_to_edit_class(class_name):
     class_code = generate_class_code(school_code, class_name)
 
     class_ = Class.query.filter(Class.class_code == class_code).first()
+    if class_ == None:
+        return redirect(url_for('class_routes.go_to_unknown_class_info'))
     return render_template('class/edit_class.html', name=class_.class_name)
 
 @bp.route('/panel/classes/remove/<class_name>', methods=['GET', 'POST'])
@@ -123,3 +130,7 @@ def go_to_remove_class(class_name):
 
     db.session.commit()
     return redirect(url_for('class_routes.go_to_panel_classes'))
+
+@bp.route('/unknown_class_info')
+def go_to_unknown_class_info():
+    return render_template('class/unknown_class_info.html')
