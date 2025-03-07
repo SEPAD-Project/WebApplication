@@ -92,6 +92,44 @@ def go_to_remove_teacher(teacher_national_code):
     db.session.commit()
     return redirect(url_for('teacher_routes.go_to_panel_teachers'))
 
+@bp.route('/panel/edit_teacher/<teacher_national_code>', methods=['GET', 'POST'])
+@login_required
+def go_to_edit_teacher(teacher_national_code):
+    if request.method == 'POST':
+        new_classes = request.form.getlist('selected_classes')
+        print(new_classes)
+        teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+        teacher_classes = eval(teacher.teacher_classes)
+        print(teacher_classes)
+        school_code = generate_class_code(current_user.school_code, '')
+
+        for class_code in teacher_classes:
+            if class_code[0:3] == school_code:
+                class_ = Class.query.filter(Class.class_code == class_code).first()
+                class_teachers = eval(class_.teachers)
+                class_teachers.remove(teacher_national_code)
+                class_.teachers = str(class_teachers)
+
+        for class_code in new_classes:
+            class_ = Class.query.filter(Class.class_code == class_code).first()
+            class_teachers = eval(class_.teachers)
+            class_teachers.append(teacher_national_code)
+            class_.teachers = str(class_teachers)
+
+        for class_ in teacher_classes:
+            if class_[:3] == school_code:
+                teacher_classes.remove(class_)
+
+        for class_ in new_classes:
+            teacher_classes.append(class_)
+
+
+        db.session.commit()
+
+    classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+    teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+    return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
+
 @bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
 @login_required
 def go_to_wrong_teacher_info():
