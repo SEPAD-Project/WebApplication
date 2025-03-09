@@ -1,3 +1,4 @@
+/* General Reset */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,41 +17,40 @@ body {
     text-align: center;
 }
 
-
-
-/* Go Back Home Button */
-.go-back-home {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+/* Back Button */
+.back-button {
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 14px;
     font-weight: 500;
+    left: 20px;
     padding: 10px 20px;
+    position: absolute;
     text-decoration: none;
+    top: 20px;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
 }
 
-.go-back-home:hover {
+.back-button:hover {
     background-color: #4FC3F7;
     box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
-/* Signup Form */
-form {
+/* Login Form */
+.login-form {
+    align-items: center;
     background-color: #1E1E1E;
     border-radius: 8px;
-    padding: 40px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    width: 400px;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-sizing: border-box;
+    padding: 40px;
+    width: 400px;
 }
 
 .form-title {
@@ -61,17 +61,19 @@ form {
     text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
 }
 
+/* Input Fields */
 input {
     background-color: #333C42;
     border: none;
     border-radius: 8px;
+    box-sizing: border-box;
     color: #E0E0E0;
     font-size: 16px;
     height: 45px;
-    padding: 0 15px;
-    width: 100%;
-    transition: background-color 0.3s ease-in-out;
     margin-bottom: 10px;
+    padding: 0 15px;
+    transition: background-color 0.3s ease-in-out;
+    width: 100%;
 }
 
 input::placeholder {
@@ -84,9 +86,9 @@ input:hover {
 }
 
 input:focus {
-    outline: none;
     background-color: #3B454C;
     box-shadow: 0 0 0 2px rgba(108, 99, 255, 0.5);
+    outline: none;
 }
 
 /* Submit Button */
@@ -94,16 +96,16 @@ input:focus {
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     height: 45px;
     margin-top: 10px;
-    width: 100%;
+    padding: 0;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    padding: 0; /* Ensure no padding affects the width */
+    width: 100%;
 }
 
 .submit-button:hover {

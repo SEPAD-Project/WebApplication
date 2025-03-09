@@ -5,23 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add a Teacher - SAP</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/teacher/add_teacher.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher/add_teacher.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <form method="POST" action="{{ url_for('teacher_routes.go_to_add_teacher') }}">
+    <!-- Add Teacher Form -->
+    <form method="POST" action="{{ url_for('teacher_routes.go_to_add_teacher') }}" class="add-teacher-form">
         <h1 class="form-title">Add a Teacher</h1>
         <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" required title="Should only contain numbers">
         <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" required title="Should only contain letters and numbers">
-        <select name="selected_classes" multiple>
+        <select name="selected_classes" multiple class="select-field">
             {% for class in classes %}
             <option value="{{ class.class_code }}">{{ class.class_name }}</option>
             {% endfor %}
         </select>
         
         <div class="button-group">
-            <button type="submit" class="action-button">Add</button>
-            <button type="button" class="action-button cancel-btn" onclick="window.location.href=quot;{{ url_for('teacher_routes.go_to_panel_teachers') }}quot;">Cancel</button>
+            <button type="submit" class="action-button submit-btn">Add</button>
+            <a href='{{ url_for("teacher_routes.go_to_panel_teachers") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
         </div>
     </form>    
 

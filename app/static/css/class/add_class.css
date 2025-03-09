@@ -1,3 +1,4 @@
+/* General Reset */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,6 +17,19 @@ body {
     text-align: center;
 }
 
+/* Add Class Form */
+.add-class-form {
+    align-items: center;
+    background-color: #1E1E1E;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    width: 400px;
+}
+
 /* Form Title */
 .form-title {
     color: #6C63FF;
@@ -25,30 +39,18 @@ body {
     text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
 }
 
-/* Form */
-form {
-    background-color: #1E1E1E;
-    border-radius: 8px;
-    padding: 40px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-sizing: border-box; /* Ensure padding is included in the width */
-}
-
 /* Input Field */
 input {
     background-color: #333C42;
     border: none;
     border-radius: 8px;
+    box-sizing: border-box;
     color: #E0E0E0;
     font-size: 16px;
     height: 45px;
     padding: 0 15px;
-    width: 100%;
     transition: background-color 0.3s ease-in-out;
+    width: 100%;
 }
 
 input::placeholder {
@@ -61,18 +63,18 @@ input:hover {
 }
 
 input:focus {
-    outline: none;
     background-color: #3B454C;
+    outline: none;
 }
 
 /* Button Group */
 .button-group {
+    align-items: center;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 100%;
     margin-top: 30px;
-    align-items: center;
+    width: 100%;
 }
 
 /* Action Buttons */
@@ -80,15 +82,15 @@ input:focus {
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 16px;
     font-weight: bold;
     height: 45px;
-    width: 100%;
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     padding: 0;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    width: 100%;
 }
 
 .action-button:hover {
@@ -98,13 +100,15 @@ input:focus {
 
 /* Cancel Button */
 .cancel-btn {
-    background: #1E1E1E; /* Dark gray background */
-    border: 2px solid #6C63FF; /* Border with primary color */
-    color: #6C63FF; /* Text color matching the border */
-    transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition */
+    background: #1E1E1E;
+    border: 2px solid #6C63FF;
+    border-radius: 8px;
+    color: #6C63FF;
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .cancel-btn:hover {
-    color: #FFFFFF; /* White text on hover */
-    border-color: #4FC3F7; /* Border color changes to secondary color */
+    background-color: #4FC3F7;
+    border-color: #4FC3F7;
+    color: #FFFFFF;
 }

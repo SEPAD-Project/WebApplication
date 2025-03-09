@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- Sidebar -->
-    <div id="sidebar">
+    <div class="sidebar">
         <a href="{{ url_for('school_routes.go_to_panel_school_info') }}" class="sidebar-item">School Info</a>
         <a href="{{ url_for('class_routes.go_to_panel_classes') }}" class="sidebar-item">Classes</a>
         <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="sidebar-item">Teachers</a>
@@ -17,32 +17,30 @@
     </div>
 
     <!-- Content Area -->
-    <div id="content-area">
-        <div id="header">
+    <div class="content-area">
+        <div class="header">
             <h1>Manage Classes</h1>
-            <a href="{{ url_for('class_routes.go_to_add_class') }}" id="add-class">Add Class</a>
+            <a href="{{ url_for('class_routes.go_to_add_class') }}" class="add-class-button">Add Class</a>
         </div>
 
         <!-- Search Section -->
-        <div id="search-div">
-            <form id="search-form" method="GET" action="{{ url_for('class_routes.go_to_panel_classes') }}">
-                <input type="search" id="search-query" name="q" placeholder="Search...">
-                <button type="submit">Search</button>
+        <div class="search-section">
+            <form class="search-form" method="GET" action="{{ url_for('class_routes.go_to_panel_classes') }}">
+                <input type="search" class="search-input" name="q" placeholder="Search...">
+                <button type="submit" class="search-button">Search</button>
             </form>
         </div>
 
         <!-- Class List -->
-        <div id="class-list">
+        <div class="class-list">
             {% for class in classes %}
             <div class="class-item">
                 <p>{{ class.class_name }}</p>
-                <p>{{ class . class_code }}</p>
-                <div class="class-buttons">
-                    <a href="{{ url_for('class_routes.go_to_class_info', class_name=class.class_name) }}">
-                        <button class="action-button">See</button>
-                    </a>
-                    <a href="{{ url_for('class_routes.go_to_edit_class', class_name=class.class_name) }}"><button class="action-button">Edit</button></a>
-                    <a href="{{ url_for('class_routes.go_to_remove_class', class_name=class.class_name) }}"><button class="action-button">Remove</button></a>
+                <p>{{ class.class_code }}</p>
+                <div class="class-actions">
+                    <a href="{{ url_for('class_routes.go_to_class_info', class_name=class.class_name) }}" class="action-button">See</a>
+                    <a href="{{ url_for('class_routes.go_to_edit_class', class_name=class.class_name) }}" class="action-button">Edit</a>
+                    <a href="{{ url_for('class_routes.go_to_remove_class', class_name=class.class_name) }}" class="action-button">Remove</a>
                 </div>
             </div>
             {% endfor %}

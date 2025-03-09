@@ -1,186 +1,196 @@
+/* General Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 /* General Styles */
 body {
     background-color: #121212;
-    font-family: 'Inter', sans-serif;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    height: 100vh; /* Full viewport height */
     color: #E0E0E0;
-    overflow: hidden; /* Prevent scrollbars on the body */
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
 }
 
 /* Sidebar */
-#sidebar {
+.sidebar {
     background: #1E1E1E;
     border-radius: 8px;
-    font-size: 1.1rem;
-    height: 100vh; /* Full viewport height */
-    padding: 20px 10px;
-    width: 200px; /* Fixed width for sidebar */
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
-    overflow-y: auto; /* Add scrollbar only if sidebar content overflows */
-    flex-shrink: 0; /* Prevent sidebar from shrinking */
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px 10px;
+    width: 200px;
 }
 
 .sidebar-item {
+    border-radius: 8px;
     color: #E0E0E0;
+    cursor: pointer;
     display: block;
     margin-bottom: 15px;
     padding: 10px 15px;
     text-align: left;
     text-decoration: none;
     transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-    border-radius: 8px;
 }
 
 .sidebar-item:hover {
     background-color: #6C63FF;
     color: #FFFFFF;
     font-weight: 500;
-    cursor: pointer;
 }
 
 /* Content Area */
-#content-area {
-    flex-grow: 1; /* Take up remaining space */
+.content-area {
+    align-items: center;
+    color: #E0E0E0;
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-start;
+    overflow-y: auto;
     padding: 20px;
-    overflow: hidden; /* Prevent scrollbars on the content area */
+    text-align: center;
 }
 
 /* Header Section */
-#header {
+.header {
+    align-items: center;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    width: 100%;
     margin-bottom: 20px;
+    width: 100%;
 }
 
-#header h1 {
+.header h1 {
     color: #6C63FF;
     font-size: 2.5rem;
     font-weight: bold;
-    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
     margin: 0;
+    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
 }
 
 /* Add Student Button */
-#add-student {
+.add-student {
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     padding: 10px 20px;
     text-decoration: none;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
 }
 
-#add-student:hover {
+.add-student:hover {
     background-color: #4FC3F7;
     box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
 /* Search Section */
-#search-div {
-    display: flex;
+.search-section {
     align-items: center;
+    display: flex;
     justify-content: center;
-    width: 100%;
     margin-bottom: 20px;
+    width: 100%;
 }
 
-#search-form {
-    display: flex;
+.search-form {
     align-items: center;
+    display: flex;
 }
 
 #search-query {
-    width: 250px;
-    height: 40px;
-    padding: 0 15px;
-    border-radius: 8px;
-    border: 1px solid #6C63FF;
     background-color: #1E1E1E;
+    border: 1px solid #6C63FF;
+    border-radius: 8px;
     color: #E0E0E0;
     font-size: 1rem;
+    height: 40px;
+    padding: 0 15px;
     transition: border-color 0.3s ease-in-out;
+    width: 250px;
 }
 
 #search-query:focus {
-    outline: none;
     border-color: #4FC3F7;
+    outline: none;
 }
 
-#search-form button {
-    margin-left: 10px;
-    width: 80px;
-    height: 40px;
+.search-form button {
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
-    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+    width: 80px;
 }
 
-#search-form button:hover {
+.search-form button:hover {
     background-color: #4FC3F7;
     box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }
 
 /* Student List */
-#student-list {
+.student-list {
     background: #1E1E1E;
     border-radius: 8px;
-    width: 98%;
-    flex-grow: 1; /* Take up remaining space */
-    overflow-y: auto; /* Add vertical scrollbar only if content overflows */
-    overflow-x: hidden; /* Prevent horizontal scrollbar */
-    padding: 20px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 20px;
+    width: 98%;
 }
 
 .student-item {
+    align-items: center;
     background: #333C42;
     border-radius: 8px;
-    padding: 15px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     font-size: 1.1rem;
+    justify-content: space-between;
     margin-bottom: 10px;
-    width: 100%; /* Ensure it doesn't overflow */
-    box-sizing: border-box; /* Include padding and border in the element's total width */
-    position: relative; /* Required for absolute positioning */
+    padding: 15px;
+    position: relative;
+    width: 100%;
 }
 
 .student-item p {
     color: #E0E0E0;
     margin: 0;
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflow text */
-    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-/* Visually Center National Code */
 .student-item p:nth-child(2) {
-    position: absolute; /* Position the national code absolutely */
-    left: 50%; /* Move to the horizontal center */
-    transform: translateX(-50%); /* Adjust for exact centering */
-    text-align: center; /* Center the text horizontally */
-    width: auto; /* Allow the national code to take its natural width */
-    padding: 0 10px; /* Add some padding for better spacing */
+    left: 50%;
+    position: absolute;
+    text-align: center;
+    transform: translateX(-50%);
+    width: auto;
+    padding: 0 10px;
 }
 
 /* Action Buttons */
@@ -193,14 +203,13 @@ body {
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     padding: 8px 15px;
-    cursor: pointer;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    flex-shrink: 0; /* Prevent button from shrinking */
 }
 
 .action-button:hover {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SAP - Student Attention Platform</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -29,7 +29,7 @@
         <p class="content-text">
             Here, our goal is to create an optimized experience for students and improve their attention accuracy in online classrooms. By using advanced technologies, we can simulate and provide precise analysis of student behavior. With this platform, you can gain a better understanding of student attention and achieve the best results in the online learning process using our tools.
         </p>
-        <a href="{{ url_for('auth_routes.go_to_signup') }}"><button class="cta-button">Get Started</button></a>
+        <a href="{{ url_for('auth_routes.go_to_signup') }}" class="cta-button">Get Started</a>
     </section>
 </body>
 </html>

@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup - SAP</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/auth/signup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/signup.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Go Back Home Button -->
-    <a href="{{ url_for('home_route.go_to_home') }}" class="go-back-home">Go Back Home</a>
+    <!-- Back to Home Button -->
+    <a href="{{ url_for('home_route.go_to_home') }}" class="back-button">Go Back Home</a>
 
     <!-- Signup Form -->
-    <form method="POST" action="{{ url_for('auth_routes.go_to_signup') }}">
+    <form method="POST" action="{{ url_for('auth_routes.go_to_signup') }}" class="signup-form">
         <h1 class="form-title">Signup</h1>
         <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, spaces, and '-' (dash)">
         <input type="number" id="school-code" name="school_code" placeholder="School Code" required>
@@ -21,7 +21,10 @@
         <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, spaces, and '-' (dash)">
         <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, spaces, and '-' (dash)">
         <button type="submit" class="submit-button">Signup</button>
-        <p class="form-footer">Have an account? <a href="{{ url_for('auth_routes.go_to_login') }}">Click here to login!</a></p>
+        <p class="form-footer">
+            Have an account? 
+            <a href="{{ url_for('auth_routes.go_to_login') }}">Click here to login!</a>
+        </p>
     </form>
 
     <script src="{{ url_for('static', filename='js/signup.js') }}"></script>
