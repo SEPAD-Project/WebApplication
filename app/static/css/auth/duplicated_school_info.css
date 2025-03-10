@@ -10,16 +10,16 @@ body {
     text-align: center;
 }
 
-/* Notification Area */
-.notification-area {
+/* Notification Container */
+.notification-container {
+    align-items: center;
     background-color: #1E1E1E;
     border-radius: 8px;
-    padding: 40px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    width: 500px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    padding: 40px;
+    width: 500px;
 }
 
 /* Notification Title */
@@ -31,35 +31,35 @@ body {
     text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
 }
 
-/* Notification Message */
-.notification-message {
+/* Notification Text */
+.notification-text {
     color: #E0E0E0;
     font-size: 1.1rem;
     margin-bottom: 5px;
     text-align: center;
 }
 
-/* Notification Button */
-.notification-button {
+/* Notification Action Button */
+.notification-action {
+    align-items: center;
     background: #6C63FF;
     border: none;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
     color: #FFFFFF;
+    display: flex;
     font-size: 1rem;
     font-weight: bold;
-    height: 30px; /* Lower height */
-    width: 130px;
-    padding: 10px 20px;
-    margin-top: 30px; /* Added margin from the top */
-    text-decoration: none;
-    display: flex;
-    align-items: center;
+    height: 30px;
     justify-content: center;
+    margin-top: 30px;
+    padding: 10px 20px;
+    text-decoration: none;
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
+    width: 130px;
 }
 
-.notification-button:hover {
+.notification-action:hover {
     background-color: #4FC3F7;
     box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
 }

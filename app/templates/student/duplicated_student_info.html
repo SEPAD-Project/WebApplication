@@ -5,16 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duplicated Student Info - SAP</title>
-    <link rel="stylesheet" type="text/css" media="screen" href="{{ url_for('static', filename='css/student/duplicated_student_info.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student/duplicated_student_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Notification Area -->
-    <div class="notification-area">
+    <!-- Notification Container -->
+    <div class="notification-container">
         <h1 class="notification-title">OOPS!</h1>
-        <p class="notification-message">Some of these values are already registered by your school.</p>
-        <p class="notification-message">Please try other values!</p>
-        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="notification-button">Got it!</a>
+        <p class="notification-text">
+            Some of these values are already registered by your school.
+        </p>
+        <p class="notification-text">
+            Please try other values!
+        </p>
+        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="notification-action">Got it!</a>
     </div>
 </body>
 </html>
