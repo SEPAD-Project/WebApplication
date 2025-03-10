@@ -11,3 +11,11 @@ def go_to_home():
     - Renders the 'home.html' template.
     """
     return render_template('home.html')
+
+@bp.route('/coming_soon')
+def go_to_coming_soon():
+    """
+    Handles the coming soon page of the application.
+    - Renders the 'coming_soon.html' template.
+    """
+    return render_template('coming_soon.html')
