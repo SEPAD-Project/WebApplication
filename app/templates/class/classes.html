@@ -40,7 +40,7 @@
             <div class="class-item">
                 <p>{{ class.class_name }}</p>
                 <p>{{ class.class_code }}</p>
-                <div class="class-actions">
+                <div class="action-buttons">
                     <a href="{{ url_for('class_routes.go_to_class_info', class_name=class.class_name) }}" class="action-button">See</a>
                     <a href="{{ url_for('class_routes.go_to_edit_class', class_name=class.class_name) }}" class="action-button">Edit</a>
                     <a href="{{ url_for('class_routes.go_to_remove_class', class_name=class.class_name) }}" class="action-button">Remove</a>
