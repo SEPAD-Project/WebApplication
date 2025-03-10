@@ -193,6 +193,24 @@ body {
     padding: 0 10px;
 }
 
+.go-to-home-btn {
+    border-radius: 8px;
+    color: #E0E0E0;
+    cursor: pointer;
+    display: block;
+    margin-top: auto;
+    padding: 10px 15px;
+    text-align: left;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  }
+  
+  .go-to-home-btn:hover {
+    background-color: #6C63FF;
+    color: #FFFFFF;
+    font-weight: 500;
+  }
+
 /* Action Buttons */
 .action-buttons {
     display: flex;
