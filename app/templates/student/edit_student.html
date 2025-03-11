@@ -12,10 +12,10 @@
     <!-- Edit Student Form -->
     <form method="POST" action="{{ url_for('student_routes.go_to_edit_student', student_national_code=student.student_national_code) }}" class="edit-student-form">
         <h1 class="form-title">Edit Student</h1>
-        <input type="text" id="student_name" name="student_name" value="{{ student.student_name }}" required>
-        <input type="text" id="student_family" name="student_family" value="{{ student.student_family }}" required>
-        <input type="text" id="student_national_code" name="student_national_code" value="{{ student.student_national_code }}" required>
-        <input type="text" id="student_password" name="student_password" value="{{ student.student_password }}" required>
+        <input type="text" id="student_name" name="student_name" value="{{ student.student_name }}" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
+        <input type="text" id="student_family" name="student_family" value="{{ student.student_family }}" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
+        <input type="text" id="student_national_code" name="student_national_code" value="{{ student.student_national_code }}" pattern="[0-9]+" title="Should only contain numbers" required>
+        <input type="text" id="student_password" name="student_password" value="{{ student.student_password }}" pattern="[0-9]+" title="Should only contain numbers" required>
         <select name="selected_class" class="select-field">
             {% for class in classes %}
             <option value="{{ class.class_code }}">{{ class.class_name }}</option>

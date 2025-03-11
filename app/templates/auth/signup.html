@@ -15,11 +15,11 @@
     <!-- Signup Form -->
     <form method="POST" action="{{ url_for('auth_routes.go_to_signup') }}" class="signup-form">
         <h1 class="form-title">Signup</h1>
-        <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, spaces, and '-' (dash)">
-        <input type="number" id="school-code" name="school_code" placeholder="School Code" required>
-        <input type="number" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" required>
-        <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, spaces, and '-' (dash)">
-        <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, spaces, and '-' (dash)">
+        <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, space, and dash">
+        <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
+        <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" pattern="[0-9]+" title="Should only contain numbers" required>
+        <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+        <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
         <button type="submit" class="submit-button">Signup</button>
         <p class="form-footer">
             Have an account? 

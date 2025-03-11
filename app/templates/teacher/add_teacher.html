@@ -12,8 +12,8 @@
     <!-- Add Teacher Form -->
     <form method="POST" action="{{ url_for('teacher_routes.go_to_add_teacher') }}" class="add-teacher-form">
         <h1 class="form-title">Add a Teacher</h1>
-        <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" required title="Should only contain numbers">
-        <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" required title="Should only contain letters and numbers">
+        <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" pattern="[0-9]+" title="Should only contain numbers" required>
+        <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" pattern="[0-9]+" title="Should only contain numbers" required>
         <select name="selected_classes" multiple class="select-field">
             {% for class in classes %}
             <option value="{{ class.class_code }}">{{ class.class_name }}</option>
