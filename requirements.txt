@@ -2,3 +2,4 @@ flask
 flask_sqlalchemy
 mysqlclient
 flask_login
+flask_limiter

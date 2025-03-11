@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from app.config import Config
 
 
@@ -29,6 +31,8 @@ def create_app():
         return School.query.get(int(user_id))
 
     login_manager.login_view = 'auth_routes.go_to_login'
+
+    limiter = Limiter(app=app, key_func=get_remote_address, default_limits=["10/minute"])
 
     with app.app_context():
         db.create_all()
