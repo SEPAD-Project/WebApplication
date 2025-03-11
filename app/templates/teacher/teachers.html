@@ -29,7 +29,7 @@
         <!-- Search Section -->
         <div class="search-section">
             <form class="search-form" method="GET" action="{{ url_for('teacher_routes.go_to_panel_teachers') }}">
-                <input type="search" id="search-query" name="q" placeholder="Search...">
+                <input type="search" id="search-query" name="q" placeholder="Search..." pattern="[A-Za-z0-9\s]+" title="Should only contain letters, numbers and space">
                 <button type="submit">Search</button>
             </form>
         </div>
