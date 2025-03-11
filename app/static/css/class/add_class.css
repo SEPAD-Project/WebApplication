@@ -102,7 +102,6 @@ input:focus {
 .cancel-btn {
     background: #1E1E1E;
     border: 2px solid #6C63FF;
-    border-radius: 8px;
     color: #6C63FF;
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
@@ -111,4 +110,8 @@ input:focus {
     background-color: #4FC3F7;
     border-color: #4FC3F7;
     color: #FFFFFF;
+}
+
+a {
+    width: 100%;
 }

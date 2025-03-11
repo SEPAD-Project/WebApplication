@@ -187,3 +187,7 @@ option:checked {
     border-color: #4FC3F7;
     color: #FFFFFF;
 }
+
+a {
+    width: 100%;
+}
