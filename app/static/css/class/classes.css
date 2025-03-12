@@ -7,8 +7,8 @@
 
 /* General Styles */
 body {
-    background-color: #121212;
-    color: #E0E0E0;
+    background-color: #121212; /* Dark Background */
+    color: #E0E0E0; /* Light Text */
     display: flex;
     font-family: 'Inter', sans-serif;
     height: 100vh;
@@ -19,9 +19,9 @@ body {
 
 /* Sidebar */
 .sidebar {
-    background: #1E1E1E;
+    background: #1E1E1E; /* Soft Dark Grey */
     border-radius: 8px;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
     display: flex;
     flex-direction: column;
     font-size: 1.1rem;
@@ -34,7 +34,7 @@ body {
 
 .sidebar-item {
     border-radius: 8px;
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     cursor: pointer;
     display: block;
     margin-bottom: 15px;
@@ -45,14 +45,14 @@ body {
 }
 
 .sidebar-item:hover {
-    background-color: #6C63FF;
-    color: #FFFFFF;
+    background-color: #4ECDC4; /* Accent Teal */
+    color: #121212; /* Dark Background */
     font-weight: 500;
 }
 
 .go-to-home-btn {
     border-radius: 8px;
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     cursor: pointer;
     display: block;
     margin-top: auto;
@@ -63,8 +63,8 @@ body {
 }
 
 .go-to-home-btn:hover {
-    background-color: #6C63FF;
-    color: #FFFFFF;
+    background-color: #4ECDC4; /* Accent Teal */
+    color: #121212; /* Dark Background */
     font-weight: 500;
 }
 
@@ -90,20 +90,20 @@ body {
 }
 
 .header h1 {
-    color: #6C63FF;
+    color: #4ECDC4; /* Accent Teal */
     font-size: 2.5rem;
     font-weight: bold;
     margin: 0;
-    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
 }
 
 /* Add Class Button */
 .add-class-button {
-    background: #6C63FF;
+    background: #4ECDC4; /* Accent Teal */
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    color: #121212; /* Dark Background */
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
@@ -115,8 +115,8 @@ body {
 }
 
 .add-class-button:hover {
-    background-color: #4FC3F7;
-    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+    background-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
 }
 
 /* Search Section */
@@ -134,11 +134,11 @@ body {
 }
 
 .search-input {
-    background-color: #1E1E1E;
-    border: 1px solid #6C63FF;
+    background-color: #1E1E1E; /* Soft Dark Grey */
+    border: 1px solid #4ECDC4; /* Accent Teal */
     border-radius: 8px;
     box-sizing: border-box;
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     font-size: 1rem;
     height: 40px;
     outline: none;
@@ -148,15 +148,15 @@ body {
 }
 
 .search-input:focus {
-    border-color: #4FC3F7;
+    border-color: #B3C8CF; /* Pale Blue */
 }
 
 .search-button {
-    background: #6C63FF;
+    background: #4ECDC4; /* Accent Teal */
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    color: #121212; /* Dark Background */
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
@@ -167,15 +167,15 @@ body {
 }
 
 .search-button:hover {
-    background-color: #4FC3F7;
-    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+    background-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
 }
 
 /* Class List */
 .class-list {
-    background: #1E1E1E;
+    background: #1E1E1E; /* Soft Dark Grey */
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
     flex-grow: 1;
     overflow-x: hidden;
     overflow-y: auto;
@@ -185,7 +185,7 @@ body {
 
 .class-item {
     align-items: center;
-    background: #333C42;
+    background: #2C2C2C; /* Muted Blue-Grey */
     border-radius: 8px;
     display: flex;
     font-size: 1.1rem;
@@ -197,7 +197,7 @@ body {
 }
 
 .class-item p {
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -220,11 +220,11 @@ body {
 }
 
 .action-button {
-    background: #6C63FF;
+    background: #4ECDC4; /* Accent Teal */
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    color: #121212; /* Dark Background */
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
@@ -234,6 +234,6 @@ body {
 }
 
 .action-button:hover {
-    background-color: #4FC3F7;
-    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+    background-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
 }

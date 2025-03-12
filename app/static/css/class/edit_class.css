@@ -8,7 +8,7 @@
 /* General Styles */
 body {
     align-items: center;
-    background-color: #121212;
+    background-color: #121212; /* Dark Background */
     display: flex;
     font-family: 'Inter', sans-serif;
     height: 100vh;
@@ -20,9 +20,9 @@ body {
 /* Edit Class Form */
 .edit-class-form {
     align-items: center;
-    background-color: #1E1E1E;
+    background-color: #1E1E1E; /* Soft Dark Grey */
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -32,20 +32,20 @@ body {
 
 /* Form Title */
 .form-title {
-    color: #6C63FF;
+    color: #4ECDC4; /* Accent Teal */
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 40px;
-    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
 }
 
 /* Input Field */
 input {
-    background-color: #333C42;
+    background-color: #2C2C2C; /* Muted Blue-Grey */
     border: none;
     border-radius: 8px;
     box-sizing: border-box;
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     font-size: 16px;
     height: 45px;
     padding: 0 15px;
@@ -54,16 +54,16 @@ input {
 }
 
 input::placeholder {
-    color: #B0B0B0;
+    color: #B0B0B0; /* Subtle Placeholder Text */
     font-size: 0.9rem;
 }
 
 input:hover {
-    background-color: #3B454C;
+    background-color: #333333; /* Slightly Darker Grey */
 }
 
 input:focus {
-    background-color: #3B454C;
+    background-color: #333333; /* Slightly Darker Grey */
     outline: none;
 }
 
@@ -79,11 +79,11 @@ input:focus {
 
 /* Action Buttons */
 .action-button {
-    background: #6C63FF;
+    background: #4ECDC4; /* Accent Teal */
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    color: #121212; /* Dark Background */
     cursor: pointer;
     font-size: 16px;
     font-weight: bold;
@@ -94,21 +94,25 @@ input:focus {
 }
 
 .action-button:hover {
-    background-color: #4FC3F7;
-    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+    background-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
 }
 
 /* Cancel Button */
 .cancel-btn {
-    background: #1E1E1E;
-    border: 2px solid #6C63FF;
+    background: #1E1E1E; /* Soft Dark Grey */
+    border: 2px solid #4ECDC4; /* Accent Teal */
     border-radius: 8px;
-    color: #6C63FF;
+    color: #4ECDC4; /* Accent Teal */
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .cancel-btn:hover {
-    background-color: #4FC3F7;
-    border-color: #4FC3F7;
-    color: #FFFFFF;
+    background-color: #B3C8CF; /* Pale Blue */
+    border-color: #B3C8CF; /* Pale Blue */
+    color: #121212; /* Dark Background */
+}
+
+a {
+    width: 100%;
 }

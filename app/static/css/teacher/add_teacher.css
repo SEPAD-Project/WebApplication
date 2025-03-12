@@ -8,8 +8,8 @@
 /* General Styles */
 body {
     align-items: center;
-    background-color: #121212;
-    color: #E0E0E0;
+    background-color: #121212; /* Dark Background */
+    color: #E0E0E0; /* Light Text */
     display: flex;
     font-family: 'Inter', sans-serif;
     height: 100vh;
@@ -21,9 +21,9 @@ body {
 /* Add Teacher Form */
 .add-teacher-form {
     align-items: center;
-    background-color: #1E1E1E;
+    background-color: #1E1E1E; /* Soft Dark Grey */
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
     display: flex;
     flex-direction: column;
     padding: 40px;
@@ -32,19 +32,19 @@ body {
 
 /* Form Title */
 .form-title {
-    color: #6C63FF;
+    color: #4ECDC4; /* Accent Teal */
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 40px;
-    text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
 }
 
 /* Input Fields */
 input {
-    background-color: #333C42;
+    background-color: #2C2C2C; /* Muted Blue-Grey */
     border: none;
     border-radius: 8px;
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     font-size: 1rem;
     height: 45px;
     margin-bottom: 10px;
@@ -54,16 +54,16 @@ input {
 }
 
 input::placeholder {
-    color: #B0B0B0;
+    color: #B0B0B0; /* Subtle Placeholder Text */
     font-size: 0.9rem;
 }
 
 input:hover {
-    background-color: #3B454C;
+    background-color: #333333; /* Slightly Darker Grey */
 }
 
 input:focus {
-    background-color: #3B454C;
+    background-color: #333333; /* Slightly Darker Grey */
     outline: none;
 }
 
@@ -72,14 +72,14 @@ input:focus {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-color: #333C42;
+    background-color: #2C2C2C; /* Muted Blue-Grey */
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23E0E0E0' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
     background-position: right 15px center;
     background-repeat: no-repeat;
     background-size: 12px;
-    border: 2px solid #6C63FF;
+    border: 2px solid #4ECDC4; /* Accent Teal */
     border-radius: 8px;
-    color: #E0E0E0;
+    color: #E0E0E0; /* Light Text */
     cursor: pointer;
     font-size: 1rem;
     padding: 10px 15px;
@@ -88,14 +88,14 @@ input:focus {
 }
 
 .select-field:hover {
-    background-color: #3B454C;
-    border-color: #4FC3F7;
+    background-color: #333333; /* Slightly Darker Grey */
+    border-color: #B3C8CF; /* Pale Blue */
 }
 
 .select-field:focus {
-    background-color: #3B454C;
-    border-color: #4FC3F7;
-    box-shadow: 0 0 8px rgba(79, 195, 247, 0.6);
+    background-color: #333333; /* Slightly Darker Grey */
+    border-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 0 8px rgba(179, 200, 207, 0.6);
     outline: none;
 }
 
@@ -112,35 +112,35 @@ input:focus {
 }
 
 .select-field[multiple]::-webkit-scrollbar-track {
-    background: #333C42;
+    background: #2C2C2C; /* Muted Blue-Grey */
     border-radius: 4px;
 }
 
 .select-field[multiple]::-webkit-scrollbar-thumb {
-    background: #6C63FF;
+    background: #4ECDC4; /* Accent Teal */
     border-radius: 4px;
 }
 
 .select-field[multiple]::-webkit-scrollbar-thumb:hover {
-    background: #4FC3F7;
+    background: #B3C8CF; /* Pale Blue */
 }
 
 /* Option Styling */
 option {
-    background-color: #333C42;
-    color: #E0E0E0;
+    background-color: #2C2C2C; /* Muted Blue-Grey */
+    color: #E0E0E0; /* Light Text */
     padding: 8px;
     transition: background-color 0.3s ease-in-out;
 }
 
 option:hover {
-    background-color: #4FC3F7 !important;
-    color: #121212;
+    background-color: #B3C8CF !important; /* Pale Blue */
+    color: #121212; /* Dark Background */
 }
 
 option:checked {
-    background-color: #6C63FF !important;
-    color: #FFFFFF;
+    background-color: #4ECDC4 !important; /* Accent Teal */
+    color: #FFFFFF; /* White Text */
 }
 
 /* Button Group */
@@ -155,11 +155,11 @@ option:checked {
 
 /* Action Buttons */
 .action-button {
-    background: #6C63FF;
+    background: #4ECDC4; /* Accent Teal */
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(108, 99, 255, 0.3);
-    color: #FFFFFF;
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    color: #121212; /* Dark Background */
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
@@ -169,23 +169,23 @@ option:checked {
 }
 
 .action-button:hover {
-    background-color: #4FC3F7;
-    box-shadow: 0 6px 12px rgba(79, 195, 247, 0.3);
+    background-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
 }
 
 /* Cancel Button */
 .cancel-btn {
-    background: #1E1E1E;
-    border: 2px solid #6C63FF;
+    background: #1E1E1E; /* Soft Dark Grey */
+    border: 2px solid #4ECDC4; /* Accent Teal */
     border-radius: 8px;
-    color: #6C63FF;
+    color: #4ECDC4; /* Accent Teal */
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
 .cancel-btn:hover {
-    background-color: #4FC3F7;
-    border-color: #4FC3F7;
-    color: #FFFFFF;
+    background-color: #B3C8CF; /* Pale Blue */
+    border-color: #B3C8CF; /* Pale Blue */
+    color: #121212; /* Dark Background */
 }
 
 a {

@@ -7,8 +7,8 @@
 
 /* General Styles */
 body {
-  background-color: #121212;
-  color: #E0E0E0;
+  background-color: #121212; /* Dark Background */
+  color: #E0E0E0; /* Light Text */
   display: flex;
   font-family: 'Inter', sans-serif;
   height: 100vh;
@@ -19,9 +19,9 @@ body {
 
 /* Sidebar */
 .sidebar {
-  background: #1E1E1E;
+  background: #1E1E1E; /* Soft Dark Grey */
   border-radius: 8px;
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
   display: flex;
   flex-direction: column;
   font-size: 1.1rem;
@@ -34,7 +34,7 @@ body {
 
 .sidebar-item {
   border-radius: 8px;
-  color: #E0E0E0;
+  color: #E0E0E0; /* Light Text */
   cursor: pointer;
   display: block;
   margin-bottom: 15px;
@@ -45,14 +45,14 @@ body {
 }
 
 .sidebar-item:hover {
-  background-color: #6C63FF;
-  color: #FFFFFF;
+  background-color: #4ECDC4; /* Accent Teal */
+  color: #121212; /* Dark Background */
   font-weight: 500;
 }
 
 .go-to-home-btn {
   border-radius: 8px;
-  color: #E0E0E0;
+  color: #E0E0E0; /* Light Text */
   cursor: pointer;
   display: block;
   margin-top: auto;
@@ -63,15 +63,15 @@ body {
 }
 
 .go-to-home-btn:hover {
-  background-color: #6C63FF;
-  color: #FFFFFF;
+  background-color: #4ECDC4; /* Accent Teal */
+  color: #121212; /* Dark Background */
   font-weight: 500;
 }
 
 /* Content Area */
 .content-area {
   align-items: center;
-  color: #E0E0E0;
+  color: #E0E0E0; /* Light Text */
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -82,15 +82,15 @@ body {
 }
 
 .content-title {
-  color: #6C63FF;
+  color: #4ECDC4; /* Accent Teal */
   font-size: 4rem;
   font-weight: bold;
   margin-bottom: 20px;
-  text-shadow: 2px 2px 6px rgba(108, 99, 255, 0.3);
+  text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
 }
 
 .content-description {
-  color: #E0E0E0;
+  color: #E0E0E0; /* Light Text */
   font-size: 1.2rem;
   line-height: 1.6;
   max-width: 600px;
