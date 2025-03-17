@@ -115,7 +115,7 @@ def go_to_edit_class(class_name):
         try:
             # commit changes in database
             db.session.commit()
-            edit_class(school_code=school_code, old_class_name=class_name, new_class_name=new_name)
+            edit_class(school_code=current_user.school_code, old_class_name=class_name, new_class_name=new_name)
         except:
             # if the new class name was registered before(by user-self), go to error page
             return redirect(url_for('class_routes.go_to_duplicated_class_info'))
