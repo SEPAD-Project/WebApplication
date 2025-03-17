@@ -1,0 +1,3 @@
+[submodule "app/server_side"]
+	path = app/server_side
+	url = https://github.com/SAP-Program/Server-Side.git
