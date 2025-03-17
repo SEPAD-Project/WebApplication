@@ -1,6 +1,7 @@
 # Import necessary modules
 from app import db
 from app.models.school import School
+from app.server_side.directory_manager import create_school
 
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import login_user, current_user
@@ -77,6 +78,7 @@ def go_to_signup():
             # Add the new school record to the database
             db.session.add(new_school)
             db.session.commit()
+            create_school(school_code=school_code)
         except:
             # Redirect to an error page if the school code or manager personal code is already registered
             return redirect(url_for('auth_routes.go_to_duplicated_school_info'))

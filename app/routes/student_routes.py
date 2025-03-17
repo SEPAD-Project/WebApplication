@@ -2,6 +2,8 @@
 from app import db
 from app.models._class import Class
 from app.models.student import Student
+from app.utils.generate_class_code import reverse_class_code
+from app.server_side.directory_manager import create_student, edit_student, delete_student
 
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -62,6 +64,7 @@ def go_to_add_student():
             # Add the new student to the database
             db.session.add(new_student)
             db.session.commit()
+            create_student(school_code=current_user.school_code, class_name=reverse_class_code(class_code)[1], student_national_code=student_national_code)
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
@@ -104,6 +107,7 @@ def go_to_edit_student(student_national_code):
         try:
             # Commit the changes to the database
             db.session.commit()
+            edit_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], old_student_national_code=student_national_code, new_student_national_code=new_national_code)
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
@@ -133,6 +137,7 @@ def go_to_remove_student(student_national_code):
     # Delete the student record and commit changes
     db.session.delete(student)
     db.session.commit()
+    delete_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], student_national_code=student_national_code)
 
     # Redirect to the student list page after successful deletion
     return redirect(url_for('student_routes.go_to_panel_students'))
