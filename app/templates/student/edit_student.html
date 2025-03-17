@@ -17,12 +17,7 @@
         <input type="text" id="student_family" name="student_family" value="{{ student.student_family }}" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
         <input type="text" id="student_national_code" name="student_national_code" value="{{ student.student_national_code }}" pattern="[0-9]+" title="Should only contain numbers" required>
         <input type="text" id="student_password" name="student_password" value="{{ student.student_password }}" pattern="[0-9]+" title="Should only contain numbers" required>
-        <select name="selected_class" class="select-field">
-            {% for class in classes %}
-            <option value="{{ class.class_code }}">{{ class.class_name }}</option>
-            {% endfor %}
-        </select>
-
+        
         <div class="button-group">
             <button type="submit" class="action-button submit-btn">Change</button>
             <a href='{{ url_for("student_routes.go_to_panel_students") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>

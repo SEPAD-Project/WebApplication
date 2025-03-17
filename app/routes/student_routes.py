@@ -92,17 +92,16 @@ def go_to_edit_student(student_national_code):
         new_family = request.form['student_family']
         new_national_code = request.form['student_national_code']
         new_password = request.form['student_password']
-        new_class = request.form['selected_class']
 
         # Find the student in the database
-        student = Student.query.filter(Student.student_national_code == student_national_code).first()
+        student = Student.query.filter((Student.student_national_code == student_national_code) &
+                                       (Student.school_code == current_user.school_code)).first()
 
         # Update the student's information
         student.student_name = new_name
         student.student_family = new_family
         student.student_national_code = new_national_code
         student.student_password = new_password
-        student.class_code = new_class
 
         try:
             # Commit the changes to the database
