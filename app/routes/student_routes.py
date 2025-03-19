@@ -111,13 +111,13 @@ def go_to_add_from_excel():
         
         if isinstance(result, tuple):
             if result[0] == "bad_format":
-                text = f"Please review the cell { result[1] }, { result[2] } because bad data format."
+                text = f"Please review the cell { result[2] }{ result[1] } because bad data format."
             elif result[0] == "duplicated_nc":
-                text = f"Please review the cell { result[1] }, { result[2] } because duplicated value."
+                text = f"Please review the cell { result[2] }{ result[1] } because duplicated value."
             elif result[0] == 'unknown_class':
-                text = f"Please review the cell { result[1] }, { result[2] } because unknown class."
+                text = f"Please review the cell { result[2] }{ result[1] } because unknown class."
             else:
-                text = f"Please review the cell { result[1] }, { result[2] } because unknown trouble."
+                text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
 
             return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
 
