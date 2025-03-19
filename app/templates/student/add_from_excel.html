@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student - SAP</title>
+    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/student/add_from_excel.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Add Student Form -->
+    <form method="POST" action="{{ url_for('student_routes.go_to_add_from_excel') }}" class="add-student-form" enctype="multipart/form-data">
+        <h1 class="form-title">Add From Excel</h1>
+        <input type="text" placeholder="Sheet Name" name="sheet" required>
+        <input type="text" placeholder="Name Column Letter" name="name" required>
+        <input type="text" placeholder="Family Column Letter" name="family" required>
+        <input type="text" placeholder="National code Column Letter" name="national_code" required>
+        <input type="text" placeholder="Class Column Letter" name="class" required>
+        <input type="text" placeholder="Password Column Letter" name="password" required>
+        <input type="file" class="file_input" name="file_input" accept=".xlsx" required>
+
+        <div class="button-group">
+            <button type="submit" class="action-button submit-btn">Add</button>
+            <a href='{{ url_for("student_routes.go_to_panel_students") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
+        </div>
+    </form>  
+</body>
+</html>

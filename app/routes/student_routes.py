@@ -4,6 +4,7 @@ from app.models._class import Class
 from app.models.student import Student
 from app.utils.generate_class_code import reverse_class_code
 from app.server_side.directory_manager import create_student, edit_student, delete_student
+from app.utils.excel_reading import add_students
 
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
@@ -76,6 +77,55 @@ def go_to_add_student():
     # Render the form for adding a new student
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     return render_template('student/add_student.html', classes=classes)
+
+
+@bp.route("/panel/students/add_from_excel", methods=['GET', 'POST'])
+@login_required
+def go_to_add_from_excel():
+    if request.method == 'POST':
+        classes = Class.query.filter(Class.school_code==current_user.school_code).all()
+        classes_name = [class_.class_name for class_ in classes]
+
+        students = Student.query.filter(Student.school_code==current_user.school_code).all()
+        students_national_code = [student.student_national_code for student in students]
+
+        file = request.files["file_input"]
+        sheet_name = request.form["sheet"]
+        name_letter = request.form["name"]
+        family_letter = request.form["family"]
+        nc_letter = request.form["national_code"]
+        class_letter = request.form["class"]
+        pass_letter = request.form["password"]
+
+        file.save("students.xlsx")
+        result = add_students('students.xlsx', sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, classes_name, students_national_code)
+
+        if isinstance(result, tuple):
+            if result[0] == "bad_format":
+                error = "bad data format"
+            elif result[0] == "duplicated_nc":
+                error = "duplicated value"
+            elif result[0] == 'unknown_class':
+                error = "unknown class"
+            else:
+                error = "unknown trouble"
+
+            return redirect(url_for("student_routes.go_to_error_in_excel", error=error, row=result[1], column=result[2]))
+
+        for student in result:
+            new_student = Student(student_name=student['name'],
+                                  student_family=student['family'], 
+                                  student_national_code=student['national_code'], 
+                                  class_code=student['class'], 
+                                  student_password=student['password'], 
+                                  school_code=current_user.school_code)
+            
+            db.session.add(new_student)
+        db.session.commit()
+        
+        return redirect(url_for("student_routes.go_to_panel_students"))
+    else:
+        return render_template("student/add_from_excel.html")
 
 
 @bp.route("/panel/students/edit_student/<student_national_code>", methods=['GET', 'POST'])
@@ -163,3 +213,9 @@ def go_to_duplicated_student_info():
     Displays an error page for duplicated student information.
     """
     return render_template('student/duplicated_student_info.html')
+
+
+@bp.route("/panel/students/error_in_excel/<error>+<row>+<column>", methods=['GET', 'POST'])
+@login_required
+def go_to_error_in_excel(error, row, column):
+    return render_template('student/error_in_excel.html', error=error, row=row, column=column)
