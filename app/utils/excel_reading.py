@@ -5,7 +5,11 @@ import openpyxl
 
 def add_students(path_to_xlsx, sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, available_classes, registered_national_codes):
     workbook = openpyxl.load_workbook(path_to_xlsx)
-    sheet = workbook[sheet_name]
+
+    try:
+        sheet = workbook[sheet_name]
+    except KeyError:
+        return 'sheet_not_found'
     
     try:
         name_index = openpyxl.utils.column_index_from_string(name_letter)-1
@@ -14,7 +18,7 @@ def add_students(path_to_xlsx, sheet_name, name_letter, family_letter, nc_letter
         class_index = openpyxl.utils.column_index_from_string(class_letter)-1
         pass_index = openpyxl.utils.column_index_from_string(pass_letter)-1
     except ValueError:
-        return 'bad column letter'
+        return 'bad_column_letter'
     
     # ===============================================
     for cell in sheet[name_letter]:

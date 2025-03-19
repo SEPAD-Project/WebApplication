@@ -14,10 +14,10 @@
     <div class="notification-container">
         <h1 class="notification-title">OOPS!</h1>
         <p class="notification-text">
-            There is a problem, in your excel file.
+            There is a problem with your inputs and excel file.
         </p>
         <p class="notification-text">
-            Please review the cell {{ row }}, {{ column }} because {{ error }}.
+            {{ text }}
         </p>
         <a href="{{ url_for('student_routes.go_to_add_from_excel') }}" class="notification-action">Got it!</a>
     </div>

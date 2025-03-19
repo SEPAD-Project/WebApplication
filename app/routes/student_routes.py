@@ -99,18 +99,27 @@ def go_to_add_from_excel():
 
         file.save("students.xlsx")
         result = add_students('students.xlsx', sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, classes_name, students_national_code)
+        
 
+        if result == 'sheet_not_found': 
+            text = "Please review your input for sheet name."
+            return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
+        
+        if result == 'bad_column_letter': 
+            text = "Please review your input for column letters."
+            return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
+        
         if isinstance(result, tuple):
             if result[0] == "bad_format":
-                error = "bad data format"
+                text = f"Please review the cell { result[1] }, { result[2] } because bad data format."
             elif result[0] == "duplicated_nc":
-                error = "duplicated value"
+                text = f"Please review the cell { result[1] }, { result[2] } because duplicated value."
             elif result[0] == 'unknown_class':
-                error = "unknown class"
+                text = f"Please review the cell { result[1] }, { result[2] } because unknown class."
             else:
-                error = "unknown trouble"
+                text = f"Please review the cell { result[1] }, { result[2] } because unknown trouble."
 
-            return redirect(url_for("student_routes.go_to_error_in_excel", error=error, row=result[1], column=result[2]))
+            return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
 
         for student in result:
             new_student = Student(student_name=student['name'],
@@ -215,7 +224,7 @@ def go_to_duplicated_student_info():
     return render_template('student/duplicated_student_info.html')
 
 
-@bp.route("/panel/students/error_in_excel/<error>+<row>+<column>", methods=['GET', 'POST'])
+@bp.route("/panel/students/error_in_excel/<text>", methods=['GET', 'POST'])
 @login_required
-def go_to_error_in_excel(error, row, column):
-    return render_template('student/error_in_excel.html', error=error, row=row, column=column)
+def go_to_error_in_excel(text):
+    return render_template('student/error_in_excel.html', text=text)
