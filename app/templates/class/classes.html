@@ -24,7 +24,10 @@
     <div class="content-area">
         <div class="header">
             <h1>Manage Classes</h1>
-            <a href="{{ url_for('class_routes.go_to_add_class') }}" class="add-class-button">Add Class</a>
+            <div class="button-group">
+                <a class="add-excel" href="{{ url_for('class_routes.go_to_add_from_excel') }}">Add from Excel</a>
+                <a href="{{ url_for('class_routes.go_to_add_class') }}" class="add-class-button">Add Class</a>
+            </div>
         </div>
 
         <!-- Search Section -->

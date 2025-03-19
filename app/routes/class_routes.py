@@ -4,6 +4,7 @@ from app.models._class import Class
 from app.models.student import Student
 from app.models.teacher import Teacher
 from app.utils.generate_class_code import generate_class_code
+from app.utils.excel_reading import add_classes
 from app.server_side.directory_manager import create_class, edit_class, delete_class
 
 from flask import Blueprint, redirect, render_template, request, url_for
@@ -72,6 +73,50 @@ def go_to_add_class():
     else:
         return render_template('class/add_class.html')
 
+
+@bp.route('/panel/classes/add_from_excel', methods=['GET', 'POST'])
+@login_required
+def go_to_add_from_excel():
+    if request.method == 'POST':
+        classes = Class.query.filter(Class.school_code==current_user.school_code).all()
+        classes_name = [class_.class_name for class_ in classes]
+
+        file = request.files["file_input"]
+        sheet_name = request.form["sheet"]
+        name_letter = request.form["name"]
+
+        file.save("classes.xlsx")
+        result = add_classes('classes.xlsx', sheet_name, name_letter, classes_name)        
+
+        if result == 'sheet_not_found': 
+            text = "Please review your input for sheet name."
+            return redirect(url_for("class_routes.go_to_error_in_excel", text=text))
+        
+        if result == 'bad_column_letter': 
+            text = "Please review your input for column letters."
+            return redirect(url_for("class_routes.go_to_error_in_excel", text=text))
+        
+        if isinstance(result, tuple):
+            if result[0] == "bad_format":
+                text = f"Please review the cell { result[1] }, { result[2] } because bad data format."
+            elif result[0] == "duplicated_name":
+                text = f"Please review the cell { result[1] }, { result[2] } because duplicated value."
+            else:
+                text = f"Please review the cell { result[1] }, { result[2] } because unknown trouble."
+
+            return redirect(url_for("class_routes.go_to_error_in_excel", text=text))
+        
+
+        for class_ in result:
+            new_class = Class(class_name=class_['name'], class_code=class_['code'], school_code=current_user.school_code, teachers='[]')
+            db.session.add(new_class)
+        db.session.commit()
+
+        return redirect(url_for('class_routes.go_to_panel_classes'))
+
+    else:
+        return render_template("class/add_from_excel.html")
+    
 
 @bp.route('/panel/classes/edit_class/<class_name>', methods=['GET', 'POST'])
 @login_required
@@ -208,3 +253,9 @@ def go_to_unknown_class_info():
 @login_required
 def go_to_duplicated_class_info():
     return render_template('class/duplicated_class_info.html')
+
+
+@bp.route("/panel/classes/error_in_excel/<text>", methods=['GET', 'POST'])
+@login_required
+def go_to_error_in_excel(text):
+    return render_template('class/error_in_excel.html', text=text)

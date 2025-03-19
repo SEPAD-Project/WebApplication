@@ -63,3 +63,32 @@ def add_students(path_to_xlsx, sheet_name, name_letter, family_letter, nc_letter
         students.append({'name':name, 'family':family, 'national_code':nc, 'class':class_, 'password':password})
     
     return students
+
+def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
+    workbook = openpyxl.load_workbook(path_to_xlsx)
+
+    try:
+        sheet = workbook[sheet_name]
+    except KeyError:
+        return 'sheet_not_found'
+    
+    try:
+        name_index = openpyxl.utils.column_index_from_string(name_letter)-1
+    except ValueError:
+        return 'bad_column_letter'
+    
+
+    for cell in sheet[name_letter]:
+        if cell.row == 1: continue
+        if (not isinstance(cell.value, str)) and (not isinstance(cell.value, int)):
+            return 'bad_format', cell.row, cell.column_letter
+        if str(cell.value) in available_classes:
+            return 'duplicated_name', cell.row, cell.column_letter 
+        
+    classes = []
+    for row in sheet.iter_rows(values_only=True, min_row=2):
+        name = row[name_index]
+        code = generate_class_code(current_user.school_code, str(name))
+        classes.append({'name':str(name), 'code':code})
+
+    return classes
