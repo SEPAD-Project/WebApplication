@@ -2,6 +2,7 @@
 from app import db
 from app.models.school import School
 from app.server_side.directory_manager import create_school
+from app import cache
 
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import login_user, current_user
@@ -11,6 +12,7 @@ bp = Blueprint('auth_routes', __name__)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 def login():
     """
     Handles user login process.
@@ -51,6 +53,7 @@ def login():
 
 
 @bp.route('/signup', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 def signup():
     """
     Handles user registration process.
@@ -95,6 +98,7 @@ def signup():
 
 
 @bp.route('/notify_username_password')
+@cache.cached(timeout=86400)
 def notify_user():
     """
     Displays a page to notify the user of their username and password after registration.
@@ -106,6 +110,7 @@ def notify_user():
 
 
 @bp.route('/duplicated_school_info')
+@cache.cached(timeout=86400)
 def duplicated_school_info():
     """
     Displays an error page when a duplicate school code or manager personal code is detected during registration.
@@ -117,6 +122,7 @@ def duplicated_school_info():
 
 
 @bp.route('/unknown_school_info')
+@cache.cached(timeout=86400)
 def unknown_school_info():
     """
     Displays an error page when an unknown school code or incorrect password is provided during login.

@@ -1,5 +1,6 @@
 # Import necessary modules
 from app import db
+from app import cache
 from app.models._class import Class
 from app.models.student import Student
 from app.utils.generate_class_code import reverse_class_code
@@ -14,6 +15,7 @@ bp = Blueprint('student_routes', __name__)
 
 
 @bp.route('/panel/students')
+@cache.cached(timeout=86400)
 @login_required
 def panel_students():
     """
@@ -41,6 +43,7 @@ def panel_students():
 
 
 @bp.route("/panel/students/add_student", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def add_student():
     """
@@ -81,6 +84,7 @@ def add_student():
 
 
 @bp.route("/panel/students/add_from_excel", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def add_from_excel():
     if request.method == 'POST':
@@ -142,6 +146,7 @@ def add_from_excel():
 
 
 @bp.route("/panel/students/edit_student/<student_national_code>", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def edit_student(student_national_code):
     """
@@ -187,6 +192,7 @@ def edit_student(student_national_code):
 
 
 @bp.route("/panel/students/remove_student/<student_national_code>", methods=['POST', 'GET'])
+@cache.cached(timeout=86400)
 @login_required
 def remove_student(student_national_code):
     """
@@ -207,6 +213,7 @@ def remove_student(student_national_code):
 
 
 @bp.route("/panel/students/student_info/<student_national_code>")
+@cache.cached(timeout=86400)
 @login_required
 def student_info(student_national_code):
     """
@@ -221,6 +228,7 @@ def student_info(student_national_code):
 
 
 @bp.route("/panel/students/duplicated_student_info", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def duplicated_student_info():
     """
@@ -233,6 +241,7 @@ def duplicated_student_info():
 
 
 @bp.route("/panel/students/error_in_excel/<text>", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def error_in_excel(text):
     if not session.get('show_error_notif', False):

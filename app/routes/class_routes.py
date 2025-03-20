@@ -1,5 +1,6 @@
 # import modules
 from app import db
+from app import cache
 from app.models._class import Class
 from app.models.student import Student
 from app.models.teacher import Teacher
@@ -15,6 +16,7 @@ bp = Blueprint('class_routes', __name__)
 
 
 @bp.route('/panel/classes', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def panel_classes():
     """
@@ -41,6 +43,7 @@ def panel_classes():
 
 
 @bp.route('/panel/classes/add_class', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def add_class():
     """
@@ -76,6 +79,7 @@ def add_class():
 
 
 @bp.route('/panel/classes/add_from_excel', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def add_from_excel():
     if request.method == 'POST':
@@ -123,6 +127,7 @@ def add_from_excel():
     
 
 @bp.route('/panel/classes/edit_class/<class_name>', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def edit_class(class_name):
     """
@@ -192,6 +197,7 @@ def edit_class(class_name):
 
 
 @bp.route('/panel/classes/remove/<class_name>', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def remove_class(class_name):
     """
@@ -225,6 +231,7 @@ def remove_class(class_name):
 
 
 @bp.route('/panel/classes/class_info/<class_name>')
+@cache.cached(timeout=86400)
 @login_required
 def class_info(class_name):
     """
@@ -252,6 +259,7 @@ def class_info(class_name):
 
 
 @bp.route('/unknown_class_info')
+@cache.cached(timeout=86400)
 def unknown_class_info():
     if not session.get('show_error_notif', False):
         return redirect(url_for('class_routes.panel_classes'))
@@ -260,6 +268,7 @@ def unknown_class_info():
 
 
 @bp.route('/panel/classes/duplicated_class_info')
+@cache.cached(timeout=86400)
 @login_required
 def duplicated_class_info():
     if not session.get('show_error_notif', False):
@@ -269,6 +278,7 @@ def duplicated_class_info():
 
 
 @bp.route("/panel/classes/error_in_excel/<text>", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def error_in_excel(text):
     if not session.get('show_error_notif', False):

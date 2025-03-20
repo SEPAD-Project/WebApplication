@@ -1,5 +1,6 @@
 # Import necessary modules
 from app import db
+from app import cache
 from app.models._class import Class
 from app.models.school import School
 from app.models.teacher import Teacher
@@ -13,6 +14,7 @@ bp = Blueprint('teacher_routes', __name__)
 
 
 @bp.route('/panel/teachers')
+@cache.cached(timeout=86400)
 @login_required
 def panel_teachers():
     """
@@ -42,6 +44,7 @@ def panel_teachers():
 
 
 @bp.route('/panel/teachers/add_teacher', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def add_teacher():
     """
@@ -99,6 +102,7 @@ def add_teacher():
 
 
 @bp.route("/panel/students/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
+@cache.cached(timeout=86400)
 @login_required
 def remove_teacher(teacher_national_code):
     """
@@ -138,6 +142,7 @@ def remove_teacher(teacher_national_code):
 
 
 @bp.route('/panel/edit_teacher/<teacher_national_code>', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def edit_teacher(teacher_national_code):
     """
@@ -195,6 +200,7 @@ def edit_teacher(teacher_national_code):
 
 
 @bp.route("/panel/teachers/teacher_info/<teacher_national_code>")
+@cache.cached(timeout=86400)
 @login_required
 def teacher_info(teacher_national_code):
     """
@@ -219,6 +225,7 @@ def teacher_info(teacher_national_code):
 
 
 @bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
 @login_required
 def wrong_teacher_info():
     """
