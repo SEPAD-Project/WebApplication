@@ -16,7 +16,6 @@ bp = Blueprint('class_routes', __name__)
 
 
 @bp.route('/panel/classes', methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def panel_classes():
     """
@@ -127,7 +126,6 @@ def add_from_excel():
     
 
 @bp.route('/panel/classes/edit_class/<class_name>', methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def edit_class(class_name):
     """
@@ -197,7 +195,6 @@ def edit_class(class_name):
 
 
 @bp.route('/panel/classes/remove/<class_name>', methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def remove_class(class_name):
     """
@@ -231,7 +228,6 @@ def remove_class(class_name):
 
 
 @bp.route('/panel/classes/class_info/<class_name>')
-@cache.cached(timeout=86400)
 @login_required
 def class_info(class_name):
     """

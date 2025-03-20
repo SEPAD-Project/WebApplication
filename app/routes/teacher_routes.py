@@ -14,7 +14,6 @@ bp = Blueprint('teacher_routes', __name__)
 
 
 @bp.route('/panel/teachers')
-@cache.cached(timeout=86400)
 @login_required
 def panel_teachers():
     """
@@ -145,7 +144,6 @@ def remove_teacher(teacher_national_code):
 
 
 @bp.route('/panel/edit_teacher/<teacher_national_code>', methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def edit_teacher(teacher_national_code):
     """
@@ -203,7 +201,6 @@ def edit_teacher(teacher_national_code):
 
 
 @bp.route("/panel/teachers/teacher_info/<teacher_national_code>")
-@cache.cached(timeout=86400)
 @login_required
 def teacher_info(teacher_national_code):
     """

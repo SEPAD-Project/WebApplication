@@ -22,7 +22,6 @@ def panel_home():
 
 
 @bp.route('/panel/school_info')
-@cache.cached(timeout=86400)
 @login_required
 def panel_school_info():
     """

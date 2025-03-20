@@ -15,7 +15,6 @@ bp = Blueprint('student_routes', __name__)
 
 
 @bp.route('/panel/students')
-@cache.cached(timeout=86400)
 @login_required
 def panel_students():
     """
@@ -146,7 +145,6 @@ def add_from_excel():
 
 
 @bp.route("/panel/students/edit_student/<student_national_code>", methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def edit_student(student_national_code):
     """
@@ -199,7 +197,6 @@ def edit_student(student_national_code):
 
 
 @bp.route("/panel/students/remove_student/<student_national_code>", methods=['POST', 'GET'])
-@cache.cached(timeout=86400)
 @login_required
 def remove_student(student_national_code):
     """
@@ -224,7 +221,6 @@ def remove_student(student_national_code):
 
 
 @bp.route("/panel/students/student_info/<student_national_code>")
-@cache.cached(timeout=86400)
 @login_required
 def student_info(student_national_code):
     """
