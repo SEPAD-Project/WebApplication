@@ -11,7 +11,7 @@
 </head>
 <body>
     <!-- Add Teacher Form -->
-    <form method="POST" action="{{ url_for('teacher_routes.go_to_add_teacher') }}" class="add-teacher-form">
+    <form method="POST" action="{{ url_for('teacher_routes.add_teacher') }}" class="add-teacher-form">
         <h1 class="form-title">Add a Teacher</h1>
         <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" pattern="[0-9]+" title="Should only contain numbers" required>
         <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" pattern="[0-9]+" title="Should only contain numbers" required>
@@ -23,7 +23,7 @@
         
         <div class="button-group">
             <button type="submit" class="action-button submit-btn">Add</button>
-            <a href='{{ url_for("teacher_routes.go_to_panel_teachers") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
+            <a href='{{ url_for("teacher_routes.panel_teachers") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
         </div>
     </form>    
 

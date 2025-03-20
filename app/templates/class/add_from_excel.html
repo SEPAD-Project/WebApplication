@@ -11,7 +11,7 @@
 </head>
 <body>
     <!-- Add Student Form -->
-    <form method="POST" action="{{ url_for('class_routes.go_to_add_from_excel') }}" class="add-class-form" enctype="multipart/form-data">
+    <form method="POST" action="{{ url_for('class_routes.add_from_excel') }}" class="add-class-form" enctype="multipart/form-data">
         <h1 class="form-title">Add From Excel</h1>
         <input type="text" placeholder="Sheet Name" name="sheet" required>
         <input type="text" placeholder="Name Column Letter" name="name" required>
@@ -19,7 +19,7 @@
 
         <div class="button-group">
             <button type="submit" class="action-button submit-btn">Add</button>
-            <a href='{{ url_for("class_routes.go_to_panel_classes") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
+            <a href='{{ url_for("class_routes.panel_classes") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
         </div>
     </form>  
 </body>

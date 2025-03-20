@@ -31,7 +31,7 @@ def create_app():
     def load_user(user_id):
         return School.query.get(int(user_id))
 
-    login_manager.login_view = 'auth_routes.go_to_login'
+    login_manager.login_view = 'auth_routes.login'
 
     limiter = Limiter(app=app, key_func=get_remote_address, default_limits=["10/minute"])
 

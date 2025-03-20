@@ -14,7 +14,7 @@ bp = Blueprint('teacher_routes', __name__)
 
 @bp.route('/panel/teachers')
 @login_required
-def go_to_panel_teachers():
+def panel_teachers():
     """
     Displays the list of teachers in the panel.
     - Filters teachers by name or national code if a query is provided.
@@ -43,7 +43,7 @@ def go_to_panel_teachers():
 
 @bp.route('/panel/teachers/add_teacher', methods=['GET', 'POST'])
 @login_required
-def go_to_add_teacher():
+def add_teacher():
     """
     Handles adding a new teacher to the school in the panel.
     - For POST requests, processes form data and adds the teacher to the database.
@@ -59,7 +59,7 @@ def go_to_add_teacher():
 
         if teacher is None:
             # Redirect to an error page if the teacher does not exist
-            return redirect(url_for("teacher_routes.go_to_wrong_teacher_info"))
+            return redirect(url_for("teacher_routes.wrong_teacher_info"))
 
         # Verify the teacher's password
         if teacher.teacher_password == entry_password:
@@ -87,10 +87,10 @@ def go_to_add_teacher():
 
             # Commit changes to the database
             db.session.commit()
-            return redirect(url_for("teacher_routes.go_to_panel_teachers"))
+            return redirect(url_for("teacher_routes.panel_teachers"))
         else:
             # Redirect to an error page if the password is incorrect
-            return redirect(url_for("teacher_routes.go_to_wrong_teacher_info"))
+            return redirect(url_for("teacher_routes.wrong_teacher_info"))
 
     # Render the form for adding a new teacher
     school_classes = Class.query.filter(Class.school_code == current_user.school_code).all()
@@ -99,7 +99,7 @@ def go_to_add_teacher():
 
 @bp.route("/panel/students/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
 @login_required
-def go_to_remove_teacher(teacher_national_code):
+def remove_teacher(teacher_national_code):
     """
     Handles removing a teacher from the school in the panel.
     - Removes the teacher from all associated classes and the school's teacher list.
@@ -133,12 +133,12 @@ def go_to_remove_teacher(teacher_national_code):
     db.session.commit()
 
     # Redirect to the teacher list page
-    return redirect(url_for('teacher_routes.go_to_panel_teachers'))
+    return redirect(url_for('teacher_routes.panel_teachers'))
 
 
 @bp.route('/panel/edit_teacher/<teacher_national_code>', methods=['GET', 'POST'])
 @login_required
-def go_to_edit_teacher(teacher_national_code):
+def edit_teacher(teacher_national_code):
     """
     Handles editing an existing teacher in the panel.
     - For POST requests, updates the teacher's class assignments.
@@ -148,7 +148,7 @@ def go_to_edit_teacher(teacher_national_code):
         # Find the teacher in the database
         teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
         if teacher is None:
-            return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
+            return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
         # Retrieve the new class assignments from the form
         new_classes = request.form.getlist('selected_classes')
@@ -180,12 +180,12 @@ def go_to_edit_teacher(teacher_national_code):
         db.session.commit()
 
         # Redirect to the teacher list page
-        return redirect(url_for('teacher_routes.go_to_panel_teachers'))
+        return redirect(url_for('teacher_routes.panel_teachers'))
 
     # Render the form for editing the teacher
     teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
     if teacher is None:
-        return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
+        return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
@@ -193,7 +193,7 @@ def go_to_edit_teacher(teacher_national_code):
 
 @bp.route("/panel/teachers/teacher_info/<teacher_national_code>")
 @login_required
-def go_to_teacher_info(teacher_national_code):
+def teacher_info(teacher_national_code):
     """
     Displays detailed information about a specific teacher.
     """
@@ -203,19 +203,19 @@ def go_to_teacher_info(teacher_national_code):
 
     if teacher is None:
         # Redirect to an error page if the teacher does not exist
-        return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
+        return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
     if teacher.teacher_national_code in eval(school.teachers):
         # Render the teacher info page if the teacher belongs to the school
         return render_template('teacher/teacher_info.html', data=teacher)
     else:
         # Redirect to an error page if the teacher does not belong to the school
-        return redirect(url_for('teacher_routes.go_to_wrong_teacher_info'))
+        return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
 
 @bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
 @login_required
-def go_to_wrong_teacher_info():
+def wrong_teacher_info():
     """
     Displays an error page for invalid teacher information.
     """

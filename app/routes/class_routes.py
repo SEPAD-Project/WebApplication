@@ -16,7 +16,7 @@ bp = Blueprint('class_routes', __name__)
 
 @bp.route('/panel/classes', methods=['GET', 'POST'])
 @login_required
-def go_to_panel_classes():
+def panel_classes():
     """
     the main section of class part in panel.
     include a list of classes.
@@ -42,7 +42,7 @@ def go_to_panel_classes():
 
 @bp.route('/panel/classes/add_class', methods=['GET', 'POST'])
 @login_required
-def go_to_add_class():
+def add_class():
     """
     handle add class section in panel.
     """
@@ -64,10 +64,10 @@ def go_to_add_class():
             create_class(school_code=school_code, class_name=class_name)
         except:
             # if the class code is registered before(the school have a class with same name), go to error page
-            return redirect(url_for('class_routes.go_to_duplicated_class_info'))
+            return redirect(url_for('class_routes.duplicated_class_info'))
 
         # go back to classes list part after successful registration
-        return redirect(url_for('class_routes.go_to_panel_classes'))
+        return redirect(url_for('class_routes.panel_classes'))
 
     # for GET: show the html form for add class
     else:
@@ -76,7 +76,7 @@ def go_to_add_class():
 
 @bp.route('/panel/classes/add_from_excel', methods=['GET', 'POST'])
 @login_required
-def go_to_add_from_excel():
+def add_from_excel():
     if request.method == 'POST':
         classes = Class.query.filter(Class.school_code==current_user.school_code).all()
         classes_name = [class_.class_name for class_ in classes]
@@ -90,11 +90,11 @@ def go_to_add_from_excel():
 
         if result == 'sheet_not_found': 
             text = "Please review your input for sheet name."
-            return redirect(url_for("class_routes.go_to_error_in_excel", text=text))
+            return redirect(url_for("class_routes.error_in_excel", text=text))
         
         if result == 'bad_column_letter': 
             text = "Please review your input for column letters."
-            return redirect(url_for("class_routes.go_to_error_in_excel", text=text))
+            return redirect(url_for("class_routes.error_in_excel", text=text))
         
         if isinstance(result, tuple):
             if result[0] == "bad_format":
@@ -104,7 +104,7 @@ def go_to_add_from_excel():
             else:
                 text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
 
-            return redirect(url_for("class_routes.go_to_error_in_excel", text=text))
+            return redirect(url_for("class_routes.error_in_excel", text=text))
         
 
         for class_ in result:
@@ -112,7 +112,7 @@ def go_to_add_from_excel():
             db.session.add(new_class)
         db.session.commit()
 
-        return redirect(url_for('class_routes.go_to_panel_classes'))
+        return redirect(url_for('class_routes.panel_classes'))
 
     else:
         return render_template("class/add_from_excel.html")
@@ -120,7 +120,7 @@ def go_to_add_from_excel():
 
 @bp.route('/panel/classes/edit_class/<class_name>', methods=['GET', 'POST'])
 @login_required
-def go_to_edit_class(class_name):
+def edit_class(class_name):
     """
     handle edit class section in panel.
     """
@@ -136,7 +136,7 @@ def go_to_edit_class(class_name):
 
         # if class don't exists(the class name is manipulated by the user), then go to error page
         if class_ == None:
-            return redirect(url_for('class_routes.go_to_unknown_class_info'))
+            return redirect(url_for('class_routes.unknown_class_info'))
 
         # redefine class values in database
         class_.class_code = new_code
@@ -163,10 +163,10 @@ def go_to_edit_class(class_name):
             edit_class(school_code=current_user.school_code, old_class_name=class_name, new_class_name=new_name)
         except:
             # if the new class name was registered before(by user-self), go to error page
-            return redirect(url_for('class_routes.go_to_duplicated_class_info'))
+            return redirect(url_for('class_routes.duplicated_class_info'))
 
         # go back to classes list part after successful registration
-        return redirect(url_for('class_routes.go_to_panel_classes'))
+        return redirect(url_for('class_routes.panel_classes'))
 
     # for GET: show the html form for edit class with class values
     else:
@@ -179,7 +179,7 @@ def go_to_edit_class(class_name):
 
         # if class don't exists, go to error page
         if class_ == None:
-            return redirect(url_for('class_routes.go_to_unknown_class_info'))
+            return redirect(url_for('class_routes.unknown_class_info'))
 
         # show edit class page with class name
         return render_template('class/edit_class.html', name=class_.class_name)
@@ -187,7 +187,7 @@ def go_to_edit_class(class_name):
 
 @bp.route('/panel/classes/remove/<class_name>', methods=['GET', 'POST'])
 @login_required
-def go_to_remove_class(class_name):
+def remove_class(class_name):
     """
     handle remove class section in panel.
     """
@@ -215,12 +215,12 @@ def go_to_remove_class(class_name):
     # commit all changes and go back to classes list(main section of classes part)
     db.session.commit()
     delete_class(school_code=current_user.school_code, class_name=class_name)
-    return redirect(url_for('class_routes.go_to_panel_classes'))
+    return redirect(url_for('class_routes.panel_classes'))
 
 
 @bp.route('/panel/classes/class_info/<class_name>')
 @login_required
-def go_to_class_info(class_name):
+def class_info(class_name):
     """
     handle class info section in panel.
     """
@@ -232,7 +232,7 @@ def go_to_class_info(class_name):
     class_ = Class.query.filter(Class.class_code == class_code).first()
     if class_ == None:
         # return error page if there is not class with that information
-        return redirect(url_for('class_routes.go_to_unknown_class_info'))
+        return redirect(url_for('class_routes.unknown_class_info'))
 
     # extract all teachers and students of class from database for show them in info page
     teachers = [Teacher.query.filter(Teacher.teacher_national_code == national_code).first(
@@ -245,17 +245,17 @@ def go_to_class_info(class_name):
 
 
 @bp.route('/unknown_class_info')
-def go_to_unknown_class_info():
+def unknown_class_info():
     return render_template('class/unknown_class_info.html')
 
 
 @bp.route('/panel/classes/duplicated_class_info')
 @login_required
-def go_to_duplicated_class_info():
+def duplicated_class_info():
     return render_template('class/duplicated_class_info.html')
 
 
 @bp.route("/panel/classes/error_in_excel/<text>", methods=['GET', 'POST'])
 @login_required
-def go_to_error_in_excel(text):
+def error_in_excel(text):
     return render_template('class/error_in_excel.html', text=text)

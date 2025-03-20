@@ -15,7 +15,7 @@ bp = Blueprint('student_routes', __name__)
 
 @bp.route('/panel/students')
 @login_required
-def go_to_panel_students():
+def panel_students():
     """
     Displays the list of students in the panel.
     - Filters students by name, family, or national code if a query is provided.
@@ -42,7 +42,7 @@ def go_to_panel_students():
 
 @bp.route("/panel/students/add_student", methods=['GET', 'POST'])
 @login_required
-def go_to_add_student():
+def add_student():
     """
     Handles adding a new student in the panel.
     - For POST requests, processes form data and adds the new student to the database.
@@ -69,10 +69,10 @@ def go_to_add_student():
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
-            return redirect(url_for('student_routes.go_to_duplicated_student_info'))
+            return redirect(url_for('student_routes.duplicated_student_info'))
 
         # Redirect to the student list page after successful registration
-        return redirect(url_for('student_routes.go_to_panel_students'))
+        return redirect(url_for('student_routes.panel_students'))
 
     # Render the form for adding a new student
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
@@ -81,7 +81,7 @@ def go_to_add_student():
 
 @bp.route("/panel/students/add_from_excel", methods=['GET', 'POST'])
 @login_required
-def go_to_add_from_excel():
+def add_from_excel():
     if request.method == 'POST':
         classes = Class.query.filter(Class.school_code==current_user.school_code).all()
         classes_name = [class_.class_name for class_ in classes]
@@ -103,11 +103,11 @@ def go_to_add_from_excel():
 
         if result == 'sheet_not_found': 
             text = "Please review your input for sheet name."
-            return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
+            return redirect(url_for("student_routes.error_in_excel", text=text))
         
         if result == 'bad_column_letter': 
             text = "Please review your input for column letters."
-            return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
+            return redirect(url_for("student_routes.error_in_excel", text=text))
         
         if isinstance(result, tuple):
             if result[0] == "bad_format":
@@ -119,7 +119,7 @@ def go_to_add_from_excel():
             else:
                 text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
 
-            return redirect(url_for("student_routes.go_to_error_in_excel", text=text))
+            return redirect(url_for("student_routes.error_in_excel", text=text))
 
         for student in result:
             new_student = Student(student_name=student['name'],
@@ -132,14 +132,14 @@ def go_to_add_from_excel():
             db.session.add(new_student)
         db.session.commit()
         
-        return redirect(url_for("student_routes.go_to_panel_students"))
+        return redirect(url_for("student_routes.panel_students"))
     else:
         return render_template("student/add_from_excel.html")
 
 
 @bp.route("/panel/students/edit_student/<student_national_code>", methods=['GET', 'POST'])
 @login_required
-def go_to_edit_student(student_national_code):
+def edit_student(student_national_code):
     """
     Handles editing an existing student in the panel.
     - For POST requests, updates the student details in the database.
@@ -169,10 +169,10 @@ def go_to_edit_student(student_national_code):
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
-            return redirect(url_for('student_routes.go_to_duplicated_student_info'))
+            return redirect(url_for('student_routes.duplicated_student_info'))
 
         # Redirect to the student list page after successful update
-        return redirect(url_for('student_routes.go_to_panel_students'))
+        return redirect(url_for('student_routes.panel_students'))
 
     # Render the form for editing the student
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
@@ -183,7 +183,7 @@ def go_to_edit_student(student_national_code):
 
 @bp.route("/panel/students/remove_student/<student_national_code>", methods=['POST', 'GET'])
 @login_required
-def go_to_remove_student(student_national_code):
+def remove_student(student_national_code):
     """
     Handles removing a student from the panel.
     - Deletes the student record from the database.
@@ -198,12 +198,12 @@ def go_to_remove_student(student_national_code):
     delete_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], student_national_code=student_national_code)
 
     # Redirect to the student list page after successful deletion
-    return redirect(url_for('student_routes.go_to_panel_students'))
+    return redirect(url_for('student_routes.panel_students'))
 
 
 @bp.route("/panel/students/student_info/<student_national_code>")
 @login_required
-def go_to_student_info(student_national_code):
+def student_info(student_national_code):
     """
     Displays detailed information about a specific student.
     """
@@ -217,7 +217,7 @@ def go_to_student_info(student_national_code):
 
 @bp.route("/panel/students/duplicated_student_info", methods=['GET', 'POST'])
 @login_required
-def go_to_duplicated_student_info():
+def duplicated_student_info():
     """
     Displays an error page for duplicated student information.
     """
@@ -226,5 +226,5 @@ def go_to_duplicated_student_info():
 
 @bp.route("/panel/students/error_in_excel/<text>", methods=['GET', 'POST'])
 @login_required
-def go_to_error_in_excel(text):
+def error_in_excel(text):
     return render_template('student/error_in_excel.html', text=text)

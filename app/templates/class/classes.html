@@ -11,13 +11,13 @@
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="{{ url_for('school_routes.go_to_panel_school_info') }}" class="sidebar-item">School Info</a>
-        <a href="{{ url_for('class_routes.go_to_panel_classes') }}" class="sidebar-item">Classes</a>
-        <a href="{{ url_for('teacher_routes.go_to_panel_teachers') }}" class="sidebar-item">Teachers</a>
-        <a href="{{ url_for('student_routes.go_to_panel_students') }}" class="sidebar-item">Students</a>
-        <a href="{{ url_for('home_route.go_to_coming_soon') }}" class="sidebar-item">Analytics</a>
+        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">School Info</a>
+        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">Classes</a>
+        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">Teachers</a>
+        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">Students</a>
+        <a href="{{ url_for('home_route.coming_soon') }}" class="sidebar-item">Analytics</a>
         
-        <a href="{{ url_for('home_route.go_to_home') }}" class="go-to-home-btn">go to home</a>
+        <a href="{{ url_for('home_route.home') }}" class="go-to-home-btn">go to home</a>
     </div>
 
     <!-- Content Area -->
@@ -25,14 +25,14 @@
         <div class="header">
             <h1>Manage Classes</h1>
             <div class="button-group">
-                <a class="add-excel" href="{{ url_for('class_routes.go_to_add_from_excel') }}">Add from Excel</a>
-                <a href="{{ url_for('class_routes.go_to_add_class') }}" class="add-class-button">Add Class</a>
+                <a class="add-excel" href="{{ url_for('class_routes.add_from_excel') }}">Add from Excel</a>
+                <a href="{{ url_for('class_routes.add_class') }}" class="add-class-button">Add Class</a>
             </div>
         </div>
 
         <!-- Search Section -->
         <div class="search-section">
-            <form class="search-form" method="GET" action="{{ url_for('class_routes.go_to_panel_classes') }}">
+            <form class="search-form" method="GET" action="{{ url_for('class_routes.panel_classes') }}">
                 <input type="search" class="search-input" name="q" placeholder="Search..." pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, space, and dash">
                 <button type="submit" class="search-button">Search</button>
             </form>
@@ -45,9 +45,9 @@
                 <p>{{ class.class_name }}</p>
                 <p>{{ class.class_code }}</p>
                 <div class="action-buttons">
-                    <a href="{{ url_for('class_routes.go_to_class_info', class_name=class.class_name) }}" class="action-button">See</a>
-                    <a href="{{ url_for('class_routes.go_to_edit_class', class_name=class.class_name) }}" class="action-button">Edit</a>
-                    <a href="{{ url_for('class_routes.go_to_remove_class', class_name=class.class_name) }}" class="action-button">Remove</a>
+                    <a href="{{ url_for('class_routes.class_info', class_name=class.class_name) }}" class="action-button">See</a>
+                    <a href="{{ url_for('class_routes.edit_class', class_name=class.class_name) }}" class="action-button">Edit</a>
+                    <a href="{{ url_for('class_routes.remove_class', class_name=class.class_name) }}" class="action-button">Remove</a>
                 </div>
             </div>
             {% endfor %}

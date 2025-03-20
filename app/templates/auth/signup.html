@@ -11,10 +11,10 @@
 </head>
 <body>
     <!-- Back to Home Button -->
-    <a href="{{ url_for('home_route.go_to_home') }}" class="back-button">Go Back Home</a>
+    <a href="{{ url_for('home_route.home') }}" class="back-button">Go Back Home</a>
 
     <!-- Signup Form -->
-    <form method="POST" action="{{ url_for('auth_routes.go_to_signup') }}" class="signup-form">
+    <form method="POST" action="{{ url_for('auth_routes.signup') }}" class="signup-form">
         <h1 class="form-title">Signup</h1>
         <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, space, and dash">
         <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
@@ -24,7 +24,7 @@
         <button type="submit" class="submit-button">Signup</button>
         <p class="form-footer">
             Have an account? 
-            <a href="{{ url_for('auth_routes.go_to_login') }}">Click here to login!</a>
+            <a href="{{ url_for('auth_routes.login') }}">Click here to login!</a>
         </p>
     </form>
 

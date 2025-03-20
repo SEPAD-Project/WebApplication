@@ -12,7 +12,7 @@ bp = Blueprint('school_routes', __name__)
 
 @bp.route('/panel/home')
 @login_required
-def go_to_panel_home():
+def panel_home():
     """
     Displays the home page of the school panel.
     """
@@ -21,7 +21,7 @@ def go_to_panel_home():
 
 @bp.route('/panel/school_info')
 @login_required
-def go_to_panel_school_info():
+def panel_school_info():
     """
     Handles the school information section in the panel.
     - Retrieves and displays details about the school, including teacher, class, and student counts.

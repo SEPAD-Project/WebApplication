@@ -11,7 +11,7 @@
 </head>
 <body>
     <!-- Edit Teacher Form -->
-    <form method="POST" action="{{ url_for('teacher_routes.go_to_edit_teacher', teacher_national_code=teacher.teacher_national_code) }}" class="edit-teacher-form">
+    <form method="POST" action="{{ url_for('teacher_routes.edit_teacher', teacher_national_code=teacher.teacher_national_code) }}" class="edit-teacher-form">
         <h1 class="form-title">Edit {{ teacher.teacher_name }} {{ teacher.teacher_family }}</h1>
         <select name="selected_classes" multiple class="select-field">
             {% for class in classes %}
@@ -21,7 +21,7 @@
         
         <div class="button-group">
             <button type="submit" class="action-button submit-btn">Change</button>
-            <a href='{{ url_for("teacher_routes.go_to_panel_teachers") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
+            <a href='{{ url_for("teacher_routes.panel_teachers") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
         </div>
     </form>    
 

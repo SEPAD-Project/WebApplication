@@ -5,7 +5,7 @@ bp = Blueprint('home_route', __name__)
 
 
 @bp.route('/')
-def go_to_home():
+def home():
     """
     Handles the home page of the application.
     - Renders the 'home.html' template.
@@ -13,7 +13,7 @@ def go_to_home():
     return render_template('home.html')
 
 @bp.route('/coming_soon')
-def go_to_coming_soon():
+def coming_soon():
     """
     Handles the coming soon page of the application.
     - Renders the 'coming_soon.html' template.
