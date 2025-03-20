@@ -111,6 +111,9 @@ def remove_teacher(teacher_national_code):
     """
     # Remove the teacher's classes
     teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+    if teacher is None:
+        session["show_error_notif"] = True
+        return redirect(url_for('teacher_routes.wrong_teacher_info'))
     school_code = generate_class_code(current_user.school_code, '')
     teacher_classes = eval(teacher.teacher_classes)
     for class_code in teacher_classes:

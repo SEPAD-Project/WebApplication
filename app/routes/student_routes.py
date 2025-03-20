@@ -164,6 +164,10 @@ def edit_student(student_national_code):
         # Find the student in the database
         student = Student.query.filter((Student.student_national_code == student_national_code) &
                                        (Student.school_code == current_user.school_code)).first()
+        
+        if student is None:
+            session["show_error_notif"] = True
+            return redirect(url_for("student_routes.unknown_student_info"))
 
         # Update the student's information
         student.student_name = new_name
@@ -188,6 +192,9 @@ def edit_student(student_national_code):
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
     student = Student.query.filter((Student.student_national_code == student_national_code) &
                                    (Student.school_code == current_user.school_code)).first()
+    if student is None:
+        session["show_error_notif"] = True
+        return redirect(url_for("student_routes.unknown_student_info"))
     return render_template('student/edit_student.html', student=student, classes=classes)
 
 
@@ -202,11 +209,15 @@ def remove_student(student_national_code):
     # Find the student in the database
     student = Student.query.filter((Student.student_national_code == student_national_code) &
                                    (Student.school_code == current_user.school_code)).first()
+    
+    if student is None:
+        session["show_error_notif"] = True
+        return redirect(url_for("student_routes.unknown_student_info"))
 
     # Delete the student record and commit changes
     db.session.delete(student)
     db.session.commit()
-    delete_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], student_national_code=student_national_code)
+    delete_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], student_code=student_national_code)
 
     # Redirect to the student list page after successful deletion
     return redirect(url_for('student_routes.panel_students'))
@@ -222,10 +233,23 @@ def student_info(student_national_code):
     # Find the student in the database
     student = Student.query.filter((Student.student_national_code == student_national_code) &
                                    (Student.school_code == current_user.school_code)).first()
-
+    
+    if student is None:
+        session["show_error_notif"] = True
+        return redirect(url_for("student_routes.unknown_student_info"))
+    
     # Render the student info page with the retrieved data
     return render_template('student/student_info.html', data=student)
 
+
+@bp.route("/panel/students/unknown_student_info", methods=['GET', 'POST'])
+@cache.cached(timeout=86400)
+@login_required
+def unknown_student_info():
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('student_routes.panel_students'))
+    session.pop('show_error_notif', None)
+    return render_template('student/unknown_student_info.html')
 
 @bp.route("/panel/students/duplicated_student_info", methods=['GET', 'POST'])
 @cache.cached(timeout=86400)
