@@ -6,7 +6,7 @@ from app.utils.generate_class_code import reverse_class_code
 from app.server_side.directory_manager import create_student, edit_student, delete_student
 from app.utils.excel_reading import add_students
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
 # Initialize the Blueprint for student-related routes
@@ -69,6 +69,7 @@ def add_student():
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
+            session["show_error_notif"] = True
             return redirect(url_for('student_routes.duplicated_student_info'))
 
         # Redirect to the student list page after successful registration
@@ -103,10 +104,12 @@ def add_from_excel():
 
         if result == 'sheet_not_found': 
             text = "Please review your input for sheet name."
+            session["show_error_notif"] = True
             return redirect(url_for("student_routes.error_in_excel", text=text))
         
         if result == 'bad_column_letter': 
             text = "Please review your input for column letters."
+            session["show_error_notif"] = True
             return redirect(url_for("student_routes.error_in_excel", text=text))
         
         if isinstance(result, tuple):
@@ -118,7 +121,8 @@ def add_from_excel():
                 text = f"Please review the cell { result[2] }{ result[1] } because unknown class."
             else:
                 text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
-
+            
+            session["show_error_notif"] = True
             return redirect(url_for("student_routes.error_in_excel", text=text))
 
         for student in result:
@@ -169,6 +173,7 @@ def edit_student(student_national_code):
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
+            session["show_error_notif"] = True
             return redirect(url_for('student_routes.duplicated_student_info'))
 
         # Redirect to the student list page after successful update
@@ -221,10 +226,16 @@ def duplicated_student_info():
     """
     Displays an error page for duplicated student information.
     """
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('student_routes.add_student'))
+    session.pop('show_error_notif', None)
     return render_template('student/duplicated_student_info.html')
 
 
 @bp.route("/panel/students/error_in_excel/<text>", methods=['GET', 'POST'])
 @login_required
 def error_in_excel(text):
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('student_routes.add_from_excel'))
+    session.pop('show_error_notif', None)
     return render_template('student/error_in_excel.html', text=text)

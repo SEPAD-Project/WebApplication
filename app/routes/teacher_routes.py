@@ -5,7 +5,7 @@ from app.models.school import School
 from app.models.teacher import Teacher
 from app.utils.generate_class_code import generate_class_code
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
 # Initialize the Blueprint for teacher-related routes
@@ -59,6 +59,7 @@ def add_teacher():
 
         if teacher is None:
             # Redirect to an error page if the teacher does not exist
+            session["show_error_notif"] = True
             return redirect(url_for("teacher_routes.wrong_teacher_info"))
 
         # Verify the teacher's password
@@ -148,6 +149,7 @@ def edit_teacher(teacher_national_code):
         # Find the teacher in the database
         teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
         if teacher is None:
+            session["show_error_notif"] = True
             return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
         # Retrieve the new class assignments from the form
@@ -185,6 +187,7 @@ def edit_teacher(teacher_national_code):
     # Render the form for editing the teacher
     teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
     if teacher is None:
+        session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
     classes = Class.query.filter(Class.school_code == current_user.school_code).all()
@@ -203,6 +206,7 @@ def teacher_info(teacher_national_code):
 
     if teacher is None:
         # Redirect to an error page if the teacher does not exist
+        session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
     if teacher.teacher_national_code in eval(school.teachers):
@@ -210,6 +214,7 @@ def teacher_info(teacher_national_code):
         return render_template('teacher/teacher_info.html', data=teacher)
     else:
         # Redirect to an error page if the teacher does not belong to the school
+        session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
 
@@ -219,4 +224,7 @@ def wrong_teacher_info():
     """
     Displays an error page for invalid teacher information.
     """
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('teacher_routes.add_teacher'))
+    session.pop('show_error_notif', None)
     return render_template("teacher/wrong_teacher_info.html")

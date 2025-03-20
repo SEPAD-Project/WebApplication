@@ -3,7 +3,7 @@ from app import db
 from app.models.school import School
 from app.server_side.directory_manager import create_school
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import login_user, current_user
 
 # Initialize the Blueprint for authentication routes
@@ -33,6 +33,7 @@ def login():
 
         # Redirect to an error page if the school is not found in the database
         if school is None:
+            session["show_error_notif"] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
         # Validate the manager's personal code (password)
@@ -42,6 +43,7 @@ def login():
             return redirect(url_for('school_routes.panel_home'))
         else:
             # Redirect to an error page if the password is incorrect
+            session["show_error_notif"] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
     # Handle GET request: Render the login form
@@ -81,9 +83,11 @@ def signup():
             create_school(school_code=school_code)
         except:
             # Redirect to an error page if the school code or manager personal code is already registered
+            session["show_error_notif"] = True
             return redirect(url_for('auth_routes.duplicated_school_info'))
 
         # Notify the user of their username and password
+        session["show_error_notif"] = True
         return redirect(url_for('auth_routes.notify_user'))
 
     # Handle GET request: Render the signup form
@@ -95,6 +99,9 @@ def notify_user():
     """
     Displays a page to notify the user of their username and password after registration.
     """
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('auth_routes.login'))
+    session.pop('show_error_notif', None)
     return render_template('auth/notify_username_password.html')
 
 
@@ -103,6 +110,9 @@ def duplicated_school_info():
     """
     Displays an error page when a duplicate school code or manager personal code is detected during registration.
     """
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('auth_routes.signup'))
+    session.pop('show_error_notif', None)
     return render_template('auth/duplicated_school_info.html')
 
 
@@ -111,4 +121,7 @@ def unknown_school_info():
     """
     Displays an error page when an unknown school code or incorrect password is provided during login.
     """
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('auth_routes.signup'))
+    session.pop('show_error_notif', None)
     return render_template('auth/unknown_school_info.html')

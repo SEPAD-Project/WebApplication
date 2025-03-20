@@ -7,7 +7,7 @@ from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
 from app.server_side.directory_manager import create_class, edit_class, delete_class
 
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
 # Initialize Blueprint
@@ -64,6 +64,7 @@ def add_class():
             create_class(school_code=school_code, class_name=class_name)
         except:
             # if the class code is registered before(the school have a class with same name), go to error page
+            session["show_error_notif"] = True
             return redirect(url_for('class_routes.duplicated_class_info'))
 
         # go back to classes list part after successful registration
@@ -90,10 +91,12 @@ def add_from_excel():
 
         if result == 'sheet_not_found': 
             text = "Please review your input for sheet name."
+            session["show_error_notif"] = True
             return redirect(url_for("class_routes.error_in_excel", text=text))
         
         if result == 'bad_column_letter': 
             text = "Please review your input for column letters."
+            session["show_error_notif"] = True
             return redirect(url_for("class_routes.error_in_excel", text=text))
         
         if isinstance(result, tuple):
@@ -104,6 +107,7 @@ def add_from_excel():
             else:
                 text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
 
+            session["show_error_notif"] = True
             return redirect(url_for("class_routes.error_in_excel", text=text))
         
 
@@ -163,6 +167,7 @@ def edit_class(class_name):
             edit_class(school_code=current_user.school_code, old_class_name=class_name, new_class_name=new_name)
         except:
             # if the new class name was registered before(by user-self), go to error page
+            session["show_error_notif"] = True
             return redirect(url_for('class_routes.duplicated_class_info'))
 
         # go back to classes list part after successful registration
@@ -179,6 +184,7 @@ def edit_class(class_name):
 
         # if class don't exists, go to error page
         if class_ == None:
+            session["show_error_notif"] = True
             return redirect(url_for('class_routes.unknown_class_info'))
 
         # show edit class page with class name
@@ -232,6 +238,7 @@ def class_info(class_name):
     class_ = Class.query.filter(Class.class_code == class_code).first()
     if class_ == None:
         # return error page if there is not class with that information
+        session["show_error_notif"] = True
         return redirect(url_for('class_routes.unknown_class_info'))
 
     # extract all teachers and students of class from database for show them in info page
@@ -246,16 +253,25 @@ def class_info(class_name):
 
 @bp.route('/unknown_class_info')
 def unknown_class_info():
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('class_routes.panel_classes'))
+    session.pop('show_error_notif', None)
     return render_template('class/unknown_class_info.html')
 
 
 @bp.route('/panel/classes/duplicated_class_info')
 @login_required
 def duplicated_class_info():
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('class_routes.add_class'))
+    session.pop('show_error_notif', None)
     return render_template('class/duplicated_class_info.html')
 
 
 @bp.route("/panel/classes/error_in_excel/<text>", methods=['GET', 'POST'])
 @login_required
 def error_in_excel(text):
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('class_routes.add_from_excel'))
+    session.pop('show_error_notif', None)
     return render_template('class/error_in_excel.html', text=text)
