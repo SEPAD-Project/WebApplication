@@ -4,4 +4,5 @@ mysqlclient
 flask_login
 flask_limiter
 flask_caching
+flask_compress
 openpyxl

@@ -5,7 +5,7 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_caching import Cache
 from app.config import Config
-from app.server_side.ftp_server import start_ftp_server
+from flask_compress import Compress
 
 
 db = SQLAlchemy()
@@ -22,6 +22,8 @@ def create_app():
     login_manager.init_app(app)
 
     cache.init_app(app)
+
+    Compress(app)
 
     from app.routes import home_root ,auth_routes, school_routes, class_routes, student_routes, teacher_routes
     app.register_blueprint(home_root.bp)
