@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_limiter import Limiter
@@ -25,6 +25,10 @@ def create_app():
     app.register_blueprint(class_routes.bp)
     app.register_blueprint(student_routes.bp)
     app.register_blueprint(teacher_routes.bp)
+
+    @app.route('/<path:unknown_path>')
+    def unknown_path(unknown_path):
+        return render_template('404.html')
 
     from app.models.school import School
     @login_manager.user_loader
