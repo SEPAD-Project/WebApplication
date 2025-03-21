@@ -99,7 +99,7 @@ def add_teacher():
     return render_template("teacher/add_teacher.html", classes=school_classes)
 
 
-@bp.route("/panel/students/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
+@bp.route("/panel/teachers/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
 @login_required
 def remove_teacher(teacher_national_code):
     """
@@ -141,7 +141,7 @@ def remove_teacher(teacher_national_code):
     return redirect(url_for('teacher_routes.panel_teachers'))
 
 
-@bp.route('/panel/edit_teacher/<teacher_national_code>', methods=['GET', 'POST'])
+@bp.route('/panel/teachers/edit_teacher/<teacher_national_code>', methods=['GET', 'POST'])
 @login_required
 def edit_teacher(teacher_national_code):
     """
@@ -222,7 +222,7 @@ def teacher_info(teacher_national_code):
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
 
-@bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
+@bp.route('/panel/teachers/wrong_teacher_info', methods=['GET', 'POST'])
 @login_required
 def wrong_teacher_info():
     """

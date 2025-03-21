@@ -252,8 +252,8 @@ def class_info(class_name):
     return render_template('class/class_info.html', data=class_, teachers=teachers, students=students)
 
 
-@bp.route('/unknown_class_info')
-
+@bp.route('/panel/classes/unknown_class_info')
+@login_required
 def unknown_class_info():
     if not session.get('show_error_notif', False):
         return redirect(url_for('class_routes.panel_classes'))
@@ -262,7 +262,6 @@ def unknown_class_info():
 
 
 @bp.route('/panel/classes/duplicated_class_info')
-
 @login_required
 def duplicated_class_info():
     if not session.get('show_error_notif', False):
@@ -272,7 +271,6 @@ def duplicated_class_info():
 
 
 @bp.route("/panel/classes/error_in_excel/<text>", methods=['GET', 'POST'])
-
 @login_required
 def error_in_excel(text):
     if not session.get('show_error_notif', False):
