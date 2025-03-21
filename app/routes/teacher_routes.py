@@ -106,11 +106,18 @@ def remove_teacher(teacher_national_code):
     Handles removing a teacher from the school in the panel.
     - Removes the teacher from all associated classes and the school's teacher list.
     """
-    # Remove the teacher's classes
     teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
     if teacher is None:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
+    
+    school = School.query.filter(School.school_code==current_user.school_code).first()
+    teachers = eval(school.teachers)
+    if not teacher.teacher_national_code in teachers:
+        session["show_error_notif"] = True
+        return redirect(url_for('teacher_routes.wrong_teacher_info'))
+    
+    # Remove the teacher's classes
     school_code = generate_class_code(current_user.school_code, '')
     teacher_classes = eval(teacher.teacher_classes)
     for class_code in teacher_classes:
@@ -129,7 +136,6 @@ def remove_teacher(teacher_national_code):
         class_.teachers = str(teachers)
 
     # Remove the teacher from the school's teacher list
-    school = School.query.filter(School.school_code == current_user.school_code).first()
     school_teachers = eval(school.teachers)
     school_teachers.remove(teacher_national_code)
     school.teachers = str(school_teachers)
@@ -153,6 +159,12 @@ def edit_teacher(teacher_national_code):
         # Find the teacher in the database
         teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
         if teacher is None:
+            session["show_error_notif"] = True
+            return redirect(url_for('teacher_routes.wrong_teacher_info'))
+        
+        school = School.query.filter(School.school_code==current_user.school_code).first()
+        teachers = eval(school.teachers)
+        if not teacher_national_code in teachers:
             session["show_error_notif"] = True
             return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
@@ -187,15 +199,21 @@ def edit_teacher(teacher_national_code):
 
         # Redirect to the teacher list page
         return redirect(url_for('teacher_routes.panel_teachers'))
+    
+    else:
+        teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
+        if teacher is None:
+            session["show_error_notif"] = True
+            return redirect(url_for('teacher_routes.wrong_teacher_info'))
+        
+        school = School.query.filter(School.school_code==current_user.school_code).first()
+        teachers = eval(school.teachers)
+        if not teacher_national_code in teachers:
+            session["show_error_notif"] = True
+            return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
-    # Render the form for editing the teacher
-    teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
-    if teacher is None:
-        session["show_error_notif"] = True
-        return redirect(url_for('teacher_routes.wrong_teacher_info'))
-
-    classes = Class.query.filter(Class.school_code == current_user.school_code).all()
-    return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
+        classes = Class.query.filter(Class.school_code == current_user.school_code).all()
+        return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
 
 
 @bp.route("/panel/teachers/teacher_info/<teacher_national_code>")
