@@ -1,6 +1,6 @@
 # Import necessary modules
 from app import db
-from app import cache
+
 from app.models._class import Class
 from app.models.student import Student
 from app.utils.generate_class_code import reverse_class_code
@@ -42,7 +42,6 @@ def panel_students():
 
 
 @bp.route("/panel/students/add_student", methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def add_student():
     """
@@ -83,7 +82,6 @@ def add_student():
 
 
 @bp.route("/panel/students/add_from_excel", methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def add_from_excel():
     if request.method == 'POST':
@@ -239,7 +237,6 @@ def student_info(student_national_code):
 
 
 @bp.route("/panel/students/unknown_student_info", methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def unknown_student_info():
     if not session.get('show_error_notif', False):
@@ -248,7 +245,6 @@ def unknown_student_info():
     return render_template('student/unknown_student_info.html')
 
 @bp.route("/panel/students/duplicated_student_info", methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def duplicated_student_info():
     """
@@ -261,7 +257,6 @@ def duplicated_student_info():
 
 
 @bp.route("/panel/students/error_in_excel/<text>", methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def error_in_excel(text):
     if not session.get('show_error_notif', False):

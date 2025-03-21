@@ -1,6 +1,6 @@
 # Import necessary modules
 from app import db
-from app import cache
+
 from app.models._class import Class
 from app.models.school import School
 from app.models.teacher import Teacher
@@ -43,7 +43,6 @@ def panel_teachers():
 
 
 @bp.route('/panel/teachers/add_teacher', methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def add_teacher():
     """
@@ -101,7 +100,6 @@ def add_teacher():
 
 
 @bp.route("/panel/students/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
-@cache.cached(timeout=86400)
 @login_required
 def remove_teacher(teacher_national_code):
     """
@@ -225,7 +223,6 @@ def teacher_info(teacher_national_code):
 
 
 @bp.route('/panel/wrong_teacher_info', methods=['GET', 'POST'])
-@cache.cached(timeout=86400)
 @login_required
 def wrong_teacher_info():
     """

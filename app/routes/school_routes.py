@@ -2,7 +2,7 @@
 from app.models._class import Class
 from app.models.school import School
 from app.models.student import Student
-from app import cache
+
 
 from flask import Blueprint, render_template
 from flask_login import current_user, login_required
@@ -12,7 +12,7 @@ bp = Blueprint('school_routes', __name__)
 
 
 @bp.route('/panel/home')
-@cache.cached(timeout=86400)
+
 @login_required
 def panel_home():
     """

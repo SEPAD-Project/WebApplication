@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from flask_caching import Cache
 from app.config import Config
 from flask_compress import Compress
 
@@ -12,16 +11,12 @@ db = SQLAlchemy()
 
 login_manager = LoginManager()
 
-cache = Cache(config={'CACHE_TYPE': 'simple'})
-
 def create_app():
     app = Flask(__name__, template_folder='templates', static_folder='static')
     app.config.from_object(Config)
 
     db.init_app(app)
     login_manager.init_app(app)
-
-    cache.init_app(app)
 
     Compress(app)
 
