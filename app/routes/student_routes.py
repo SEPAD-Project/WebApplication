@@ -7,7 +7,7 @@ from app.utils.generate_class_code import reverse_class_code
 from app.server_side.directory_manager import create_student, edit_student, delete_student
 from app.utils.excel_reading import add_students
 
-from flask import Blueprint, redirect, render_template, request, url_for, session
+from flask import Blueprint, g, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
 # Initialize the Blueprint for student-related routes
@@ -113,31 +113,39 @@ def add_from_excel():
             session["show_error_notif"] = True
             return redirect(url_for("student_routes.error_in_excel", text=text))
         
-        if isinstance(result, tuple):
-            if result[0] == "bad_format":
-                text = f"Please review the cell { result[2] }{ result[1] } because bad data format."
-            elif result[0] == "duplicated_nc":
-                text = f"Please review the cell { result[2] }{ result[1] } because duplicated value."
-            elif result[0] == 'unknown_class':
-                text = f"Please review the cell { result[2] }{ result[1] } because unknown class."
-            else:
-                text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
+
+        if isinstance(result[0], list):
+            global texts
+            texts = []
+            print(result)
+            for problem in result:
+                if problem[0] == "bad_format":
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because bad data format.")
+                elif problem[0] == "duplicated_nc":
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because duplicated value.")
+                elif problem[0] == 'unknown_class':
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because unknown class.")
+                else:
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because unknown trouble.")
+
+            print(texts)
             
             session["show_error_notif"] = True
-            return redirect(url_for("student_routes.error_in_excel", text=text))
-
-        for student in result:
-            new_student = Student(student_name=student['name'],
-                                  student_family=student['family'], 
-                                  student_national_code=student['national_code'], 
-                                  class_code=student['class'], 
-                                  student_password=student['password'], 
-                                  school_code=current_user.school_code)
-            
-            db.session.add(new_student)
-        db.session.commit()
+            return redirect(url_for("student_routes.error_in_excel"))
         
-        return redirect(url_for("student_routes.panel_students"))
+        else:
+            for student in result:
+                new_student = Student(student_name=student['name'],
+                                    student_family=student['family'], 
+                                    student_national_code=student['national_code'], 
+                                    class_code=student['class'], 
+                                    student_password=student['password'], 
+                                    school_code=current_user.school_code)
+                
+                db.session.add(new_student)
+            db.session.commit()
+            
+            return redirect(url_for("student_routes.panel_students"))
     else:
         return render_template("student/add_from_excel.html")
 
@@ -256,10 +264,10 @@ def duplicated_student_info():
     return render_template('student/duplicated_student_info.html')
 
 
-@bp.route("/panel/students/error_in_excel/<text>", methods=['GET', 'POST'])
+@bp.route("/panel/students/error_in_excel/", methods=['GET', 'POST'])
 @login_required
-def error_in_excel(text):
+def error_in_excel():
     if not session.get('show_error_notif', False):
         return redirect(url_for('student_routes.add_from_excel'))
     session.pop('show_error_notif', None)
-    return render_template('student/error_in_excel.html', text=text)
+    return render_template('student/error_in_excel.html', texts=texts)

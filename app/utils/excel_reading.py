@@ -21,36 +21,42 @@ def add_students(path_to_xlsx, sheet_name, name_letter, family_letter, nc_letter
         return 'bad_column_letter'
     
     # ===============================================
+
+    problems = []
+
     for cell in sheet[name_letter]:
         if cell.row == 1: continue
         if not isinstance(cell.value, str):
-            return 'bad_format', cell.row, cell.column_letter
+            problems.append(['bad_format', cell.row, cell.column_letter])
     
     for cell in sheet[family_letter]:
         if cell.row == 1: continue
         if not isinstance(cell.value, str):
-            return 'bad_format', cell.row, cell.column_letter
+            problems.append(['bad_format', cell.row, cell.column_letter])
     
     nc_list = []
     for cell in sheet[nc_letter]:
         if cell.row == 1: continue
         if not isinstance(cell.value, int):
-            return 'bad_format', cell.row, cell.column_letter
+            problems.append(['bad_format', cell.row, cell.column_letter])
         if str(cell.value) in registered_national_codes or str(cell.value) in nc_list:
-            return 'duplicated_nc', cell.row, cell.column_letter 
+            problems.append(['duplicated_nc', cell.row, cell.column_letter ])
         nc_list.append(str(cell.value))
         
     for cell in sheet[class_letter]:
         if cell.row == 1: continue
         if (not isinstance(cell.value, str)) and (not isinstance(cell.value, int)):
-            return 'bad_format', cell.row, cell.column_letter
+            problems.append(['bad_format', cell.row, cell.column_letter])
         if not (str(cell.value) in available_classes):
-            return 'unknown_class', cell.row, cell.column_letter 
+            problems.append(['unknown_class', cell.row, cell.column_letter ])
         
     for cell in sheet[pass_letter]:
         if cell.row == 1: continue
         if not isinstance(cell.value, int):
-            return 'bad_format', cell.row, cell.column_letter
+            problems.append(['bad_format', cell.row, cell.column_letter])
+
+    if problems != []:
+        return problems
     # ===============================================
 
     students = []
@@ -83,7 +89,7 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
     for cell in sheet[name_letter]:
         if cell.row == 1: continue
         if (not isinstance(cell.value, str)) and (not isinstance(cell.value, int)):
-            return 'bad_format', cell.row, cell.column_letter
+            problems.append(['bad_format', cell.row, cell.column_letter])
         if str(cell.value) in available_classes or str(cell.value) in names_list:
             return 'duplicated_name', cell.row, cell.column_letter 
         names_list.append(str(cell.value))
