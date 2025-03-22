@@ -16,9 +16,13 @@
         <p class="notification-text">
             There is a problem with your inputs and excel file.
         </p>
-        <p class="notification-text">
-            {{ text }}
-        </p>
+        <div class="problems_area">
+            {% for text in texts %}
+            <p class="notification-text">
+                {{ text }}
+            </p>
+            {% endfor %}
+        </div>
         <a href="{{ url_for('class_routes.add_from_excel') }}" class="notification-action">Got it!</a>
     </div>
 </body>

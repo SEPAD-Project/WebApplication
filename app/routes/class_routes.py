@@ -100,16 +100,19 @@ def add_from_excel():
             session["show_error_notif"] = True
             return redirect(url_for("class_routes.error_in_excel", text=text))
         
-        if isinstance(result, tuple):
-            if result[0] == "bad_format":
-                text = f"Please review the cell { result[2] }{ result[1] } because bad data format."
-            elif result[0] == "duplicated_name":
-                text = f"Please review the cell { result[2] }{ result[1] } because duplicated value."
-            else:
-                text = f"Please review the cell { result[2] }{ result[1] } because unknown trouble."
+        if isinstance(result[0], list):
+            global texts
+            texts = []
+            for problem in result:
+                if problem[0] == "bad_format":
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because bad data format.")
+                elif problem[0] == "duplicated_name":
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because duplicated value.")
+                else:
+                    texts.append(f"Please review the cell { problem[2] }{ problem[1] } because unknown trouble.")
 
             session["show_error_notif"] = True
-            return redirect(url_for("class_routes.error_in_excel", text=text))
+            return redirect(url_for("class_routes.error_in_excel"))
         
 
         for class_ in result:
@@ -270,10 +273,10 @@ def duplicated_class_info():
     return render_template('class/duplicated_class_info.html')
 
 
-@bp.route("/panel/classes/error_in_excel/<text>", methods=['GET', 'POST'])
+@bp.route("/panel/classes/error_in_excel", methods=['GET', 'POST'])
 @login_required
-def error_in_excel(text):
+def error_in_excel():
     if not session.get('show_error_notif', False):
         return redirect(url_for('class_routes.add_from_excel'))
     session.pop('show_error_notif', None)
-    return render_template('class/error_in_excel.html', text=text)
+    return render_template('class/error_in_excel.html', texts=texts)

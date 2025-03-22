@@ -85,14 +85,18 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
     except ValueError:
         return 'bad_column_letter'
     
+    problems = []
     names_list = []
     for cell in sheet[name_letter]:
         if cell.row == 1: continue
         if (not isinstance(cell.value, str)) and (not isinstance(cell.value, int)):
             problems.append(['bad_format', cell.row, cell.column_letter])
         if str(cell.value) in available_classes or str(cell.value) in names_list:
-            return 'duplicated_name', cell.row, cell.column_letter 
+            problems.append(['duplicated_name', cell.row, cell.column_letter])
         names_list.append(str(cell.value))
+
+    if problems != []:
+        return problems
         
     classes = []
     for row in sheet.iter_rows(values_only=True, min_row=2):
