@@ -86,8 +86,12 @@ def add_from_excel():
         file = request.files["file_input"]
         sheet_name = request.form["sheet"]
         name_letter = request.form["name"]
-
-        file.save("classes.xlsx")
+        
+        try:
+            file.save("classes.xlsx")
+        except PermissionError:
+            session["show_error_notif"] = True
+            return redirect(url_for("class_routes.file_permission_error"))
         result = add_classes('classes.xlsx', sheet_name, name_letter, classes_name)        
 
         if result == 'sheet_not_found': 
@@ -280,3 +284,12 @@ def error_in_excel():
         return redirect(url_for('class_routes.add_from_excel'))
     session.pop('show_error_notif', None)
     return render_template('class/error_in_excel.html', texts=texts)
+
+
+@bp.route('/panel/classes/file_permission_error')
+@login_required
+def file_permission_error():
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('class_routes.add_from_excel'))
+    session.pop('show_error_notif', None)
+    return render_template('class/file_permission_error.html')

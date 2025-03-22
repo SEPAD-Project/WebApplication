@@ -98,8 +98,13 @@ def add_from_excel():
         nc_letter = request.form["national_code"]
         class_letter = request.form["class"]
         pass_letter = request.form["password"]
-
-        file.save("students.xlsx")
+        
+        try:
+            file.save("students.xlsx")
+        except PermissionError:
+            session["show_error_notif"] = True
+            return redirect(url_for("student_routes.file_permission_error"))
+        
         result = add_students('students.xlsx', sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, classes_name, students_national_code)
         
 
@@ -271,3 +276,12 @@ def error_in_excel():
         return redirect(url_for('student_routes.add_from_excel'))
     session.pop('show_error_notif', None)
     return render_template('student/error_in_excel.html', texts=texts)
+
+
+@bp.route('/panel/students/file_permission_error')
+@login_required
+def file_permission_error():
+    if not session.get('show_error_notif', False):
+        return redirect(url_for('student.add_from_excel'))
+    session.pop('show_error_notif', None)
+    return render_template('student/file_permission_error.html')

@@ -1,0 +1,66 @@
+/* General Styles */
+body {
+    align-items: center;
+    background-color: #121212; /* Dark Background */
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+}
+
+/* Notification Container */
+.notification-container {
+    align-items: center;
+    background-color: #1E1E1E; /* Soft Dark Grey */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    width: 500px;
+}
+
+/* Notification Title */
+.notification-title {
+    color: #4ECDC4; /* Accent Teal */
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+}
+
+/* Notification Text */
+.notification-text {
+    color: #E0E0E0; /* Light Text */
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+/* Notification Action Button */
+.notification-action {
+    align-items: center;
+    background: #4ECDC4; /* Accent Teal */
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    color: #121212; /* Dark Background */
+    cursor: pointer;
+    display: flex;
+    font-size: 1rem;
+    font-weight: bold;
+    height: 30px;
+    justify-content: center;
+    margin-top: 30px;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    width: 130px;
+}
+
+.notification-action:hover {
+    background-color: #B3C8CF; /* Pale Blue */
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
+}
