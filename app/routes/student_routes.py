@@ -4,7 +4,7 @@ from app import db
 from app.models._class import Class
 from app.models.student import Student
 from app.utils.generate_class_code import reverse_class_code
-from app.server_side.directory_manager import create_student, edit_student, delete_student
+from app.server_side.directory_manager import dm_create_student, dm_edit_student, dm_delete_student
 from app.utils.excel_reading import add_students
 
 from flask import Blueprint, g, redirect, render_template, request, url_for, session
@@ -66,7 +66,7 @@ def add_student():
             # Add the new student to the database
             db.session.add(new_student)
             db.session.commit()
-            create_student(school_code=current_user.school_code, class_name=reverse_class_code(class_code)[1], student_national_code=student_national_code)
+            dm_create_student(school_code=current_user.school_code, class_name=reverse_class_code(class_code)[1], student_national_code=student_national_code)
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
@@ -122,7 +122,6 @@ def add_from_excel():
         if isinstance(result[0], list):
             global texts
             texts = []
-            print(result)
             for problem in result:
                 if problem[0] == "bad_format":
                     texts.append(f"Please review the cell { problem[2] }{ problem[1] } because bad data format.")
@@ -187,7 +186,7 @@ def edit_student(student_national_code):
         try:
             # Commit the changes to the database
             db.session.commit()
-            edit_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], old_student_national_code=student_national_code, new_student_national_code=new_national_code)
+            dm_edit_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], old_student_national_code=student_national_code, new_student_national_code=new_national_code)
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
@@ -225,7 +224,7 @@ def remove_student(student_national_code):
     # Delete the student record and commit changes
     db.session.delete(student)
     db.session.commit()
-    delete_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], student_code=student_national_code)
+    dm_delete_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], student_code=student_national_code)
 
     # Redirect to the student list page after successful deletion
     return redirect(url_for('student_routes.panel_students'))

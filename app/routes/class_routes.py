@@ -6,7 +6,7 @@ from app.models.student import Student
 from app.models.teacher import Teacher
 from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
-from app.server_side.directory_manager import create_class, edit_class, delete_class
+from app.server_side.directory_manager import dm_create_class, dm_edit_class, dm_delete_class
 
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
@@ -62,7 +62,7 @@ def add_class():
             # add the new class to database
             db.session.add(new_class)
             db.session.commit()
-            create_class(school_code=school_code, class_name=class_name)
+            dm_create_class(school_code=school_code, class_name=class_name)
         except:
             # if the class code is registered before(the school have a class with same name), go to error page
             session["show_error_notif"] = True
@@ -172,7 +172,7 @@ def edit_class(class_name):
         try:
             # commit changes in database
             db.session.commit()
-            edit_class(school_code=current_user.school_code, old_class_name=class_name, new_class_name=new_name)
+            dm_edit_class(school_code=current_user.school_code, old_class_name=class_name, new_class_name=new_name)
         except:
             # if the new class name was registered before(by user-self), go to error page
             session["show_error_notif"] = True
@@ -228,7 +228,7 @@ def remove_class(class_name):
 
     # commit all changes and go back to classes list(main section of classes part)
     db.session.commit()
-    delete_class(school_code=current_user.school_code, class_name=class_name)
+    dm_delete_class(school_code=current_user.school_code, class_name=class_name)
     return redirect(url_for('class_routes.panel_classes'))
 
 
