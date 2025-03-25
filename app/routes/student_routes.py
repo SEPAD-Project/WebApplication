@@ -66,7 +66,7 @@ def add_student():
             # Add the new student to the database
             db.session.add(new_student)
             db.session.commit()
-            dm_create_student(school_code=current_user.school_code, class_name=reverse_class_code(class_code)[1], student_national_code=student_national_code)
+            dm_create_student(school_code=current_user.school_code, class_name=reverse_class_code(class_code)[1], student_code=student_national_code)
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
@@ -186,7 +186,7 @@ def edit_student(student_national_code):
         try:
             # Commit the changes to the database
             db.session.commit()
-            dm_edit_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], old_student_national_code=student_national_code, new_student_national_code=new_national_code)
+            dm_edit_student(school_code=current_user.school_code, class_name=reverse_class_code(student.class_code)[1], old_student_code=student_national_code, new_student_code=new_national_code)
         except:
             # Rollback changes and redirect to an error page if unique constraints are violated
             db.session.rollback()
