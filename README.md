@@ -1,5 +1,5 @@
 ## WEB
-This repository is a part of the SAP project and was developed by [Parsa Safaie](https://github.com/parsasafaie) to handle image processing tasks within the larger SAP system.
+This repository is a part of the SAP project and was developed by [Parsa Safaie](https://github.com/parsasafaie) to serve schools within the larger SAP system.
 
 Click [here](https://github.com/SAP-Program) to visit the SAP organization.
 
