@@ -5,22 +5,41 @@ Click [here](https://github.com/SAP-Program) to visit the SAP organization.
 
 ## Repository Cloning
 To clone this repository, open your terminal in the desired directory and run:
-```
+```bash
 git clone https://github.com/SAP-Program/WEB.git
 ```
-
-## Download Submodules
-Sometimes, when you clone the project, submodule files are not downloaded automatically. To fix this, simply run:
+Then, navigate to the repository directory:
+```bash
+cd Web
 ```
+
+## Downloading Submodules
+Sometimes, when you clone the project, submodule files are not downloaded automatically. To fix this, simply run:
+```bash
 git submodule init
 git submodule update
 ```
 
 ## Installing Dependencies
-To install the required dependencies, open a terminal and run:
-```
-pip install -r requirements.txt
-``` 
+1. Create a virtual environment:
+   ```bash
+   python -m venv .venv
+   ```
+2. Activate the virtual environment:
+   
+   * On Windows:
+     ```bash
+     .venv\Scripts\activate.bat
+     ```
+
+   * On macOS/Linux:
+     ```bash
+     source .venv/bin/activate
+     ```
+3. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ``` 
 
 ## Fix an inconsistency
 Due to the structure of the WEB repository, there is a minor inconsistency between the main repository and its submodule. To fix this, navigate to: 
@@ -28,11 +47,11 @@ Due to the structure of the WEB repository, there is a minor inconsistency betwe
 app/server_side/directory_manager.py
 ```
 Then, on **line 4**, replace: 
-```
+```py
 from log_handler import log_message
 ```
 with:
-```
+```py
 from app.server_side.log_handler import log_message
 ```
 
@@ -40,7 +59,7 @@ Now you're ready! 🚀
 
 ## Running the Project
 To run the project, simply execute run.py:
-```
+```bash
 python run.py
 ```
 You can then access the output at:
