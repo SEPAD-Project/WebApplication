@@ -1,104 +1,118 @@
 # Import necessary modules
-from app import db
-from app.models.school import School
-from app.server_side.directory_manager import dm_create_school
+from app import db  # SQLAlchemy database instance
+from app.models.school import School  # School model for database interaction
+from app.server_side.directory_manager import dm_create_school  # Function to manage school directories
 
+from flask import Blueprint, redirect, render_template, request, url_for, session  # Flask web utilities
+from flask_login import login_user, current_user  # User session management
 
-from flask import Blueprint, redirect, render_template, request, url_for, session
-from flask_login import login_user, current_user
-
-# Initialize the Blueprint for authentication routes
+# Initialize the Blueprint for authentication-related routes
 bp = Blueprint('auth_routes', __name__)
 
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
     """
-    Handles user login process.
-    - If the user is already authenticated, redirects to the panel home.
-    - For POST requests, validates the provided credentials and logs the user in if valid.
-    - For GET requests, renders the login form.
+    Handles the login process for a school manager.
+
+    GET:
+        - If the user is already authenticated, redirect them to the dashboard.
+        - Otherwise, show the login form.
+
+    POST:
+        - Extracts the provided school code and manager personal code from the form.
+        - Authenticates against the database.
+        - If valid, logs in the user and redirects to the panel home.
+        - Otherwise, redirects to an error notification page.
     """
-    # Redirect to the panel home if the user is already logged in
+    # If the user is already logged in, redirect to the panel
     if current_user.is_authenticated:
         return redirect(url_for('school_routes.panel_home'))
 
-    # Handle POST request: Process login form data
     if request.method == 'POST':
-        # Retrieve form data
+        # Retrieve login form data
         given_school_code = request.form['username']
         given_manager_personal_code = request.form['password']
 
-        # Query the database to find the school by school code
+        # Attempt to find the school using the provided code
         school = School.query.filter(School.school_code == given_school_code).first()
 
-        # Redirect to an error page if the school is not found in the database
         if school is None:
+            # School not found
             session["show_error_notif"] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
-        # Validate the manager's personal code (password)
+        # Check if the password matches
         if school.manager_personal_code == given_manager_personal_code:
-            # Log the user in using Flask-Login and remember the session
             login_user(school, remember=True)
             return redirect(url_for('school_routes.panel_home'))
         else:
-            # Redirect to an error page if the password is incorrect
+            # Incorrect password
             session["show_error_notif"] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
-    # Handle GET request: Render the login form
+    # Show login page for GET request
     return render_template('auth/login.html')
 
 
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     """
-    Handles user registration process.
-    - For POST requests, collects form data, creates a new school record, and adds it to the database.
-    - For GET requests, renders the signup form.
+    Handles the registration process for new schools.
+
+    GET:
+        - Renders the signup form.
+
+    POST:
+        - Collects data from the form and creates a new School record.
+        - Tries to commit it to the database.
+        - If successful, also creates a corresponding directory for the school.
+        - If there's a conflict (e.g., duplicate school code), redirects to an error page.
     """
-    # Handle POST request: Process signup form data
     if request.method == 'POST':
-        # Retrieve form data
+        # Collect registration data from the form
         school_name = request.form['school_name']
         school_code = request.form['school_code']
         manager_personal_code = request.form['manager_personal_code']
         province = request.form['province']
         city = request.form['city']
 
-        # Create a new School object with the collected data
+        # Create a new School object
         new_school = School(
             school_name=school_name,
             school_code=school_code,
             manager_personal_code=manager_personal_code,
             province=province,
             city=city,
-            teachers="[]"
+            teachers="[]"  # Initialize empty list of teachers
         )
 
         try:
-            # Add the new school record to the database
+            # Attempt to add to the database
             db.session.add(new_school)
             db.session.commit()
+
+            # Create a directory for this school
             dm_create_school(school_code=school_code)
         except:
-            # Redirect to an error page if the school code or manager personal code is already registered
+            # Likely a duplicate entry or DB error
             session["show_error_notif"] = True
             return redirect(url_for('auth_routes.duplicated_school_info'))
 
-        # Notify the user of their username and password
+        # Inform the user of successful registration
         session["show_error_notif"] = True
         return redirect(url_for('auth_routes.notify_user'))
 
-    # Handle GET request: Render the signup form
+    # Render signup form
     return render_template('auth/signup.html')
 
 
 @bp.route('/notify_username_password')
 def notify_user():
     """
-    Displays a page to notify the user of their username and password after registration.
+    Displays a page that informs the user of their assigned username and password after registration.
+
+    If accessed without context (e.g., direct visit), it redirects to the login page.
     """
     if not session.get('show_error_notif', False):
         return redirect(url_for('auth_routes.login'))
@@ -109,7 +123,9 @@ def notify_user():
 @bp.route('/duplicated_school_info')
 def duplicated_school_info():
     """
-    Displays an error page when a duplicate school code or manager personal code is detected during registration.
+    Shows an error page when a school code or personal code already exists during signup.
+
+    Prevents direct access without context.
     """
     if not session.get('show_error_notif', False):
         return redirect(url_for('auth_routes.signup'))
@@ -120,7 +136,11 @@ def duplicated_school_info():
 @bp.route('/unknown_school_info')
 def unknown_school_info():
     """
-    Displays an error page when an unknown school code or incorrect password is provided during login.
+    Displays an error message when:
+    - The provided school code does not exist, or
+    - The manager personal code (password) is incorrect.
+
+    Prevents direct access without context.
     """
     if not session.get('show_error_notif', False):
         return redirect(url_for('auth_routes.signup'))

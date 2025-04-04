@@ -12,24 +12,25 @@ from flask_login import current_user, login_required
 # Initialize the Blueprint for teacher-related routes
 bp = Blueprint('teacher_routes', __name__)
 
-
 @bp.route('/panel/teachers')
 @login_required
 def panel_teachers():
     """
     Displays the list of teachers in the panel.
-    - Filters teachers by name or national code if a query is provided.
-    - Shows all teachers if no query is provided.
+    Filters teachers by name or national code if a query is provided.
+    Shows all teachers if no query is provided.
     """
     # Retrieve the school object and its associated teachers
     school = School.query.filter(School.school_code == current_user.school_code).first()
     teachers = []
+
+    # Loop through the teacher national codes from the school's teacher list
     for national_code in eval(school.teachers):
         teacher = Teacher.query.filter(Teacher.teacher_national_code == national_code).first()
         if teacher:
             teachers.append(teacher)
 
-    # Filter teachers by name or national code based on the query
+    # Filter teachers by name or national code based on the query (if provided)
     query = request.args.get('q')
     if query:
         filtered_teachers = [
@@ -47,15 +48,15 @@ def panel_teachers():
 def add_teacher():
     """
     Handles adding a new teacher to the school in the panel.
-    - For POST requests, processes form data and adds the teacher to the database.
-    - For GET requests, renders the form for adding a new teacher.
+    For POST requests, processes form data and adds the teacher to the database.
+    For GET requests, renders the form for adding a new teacher.
     """
     if request.method == 'POST':
         # Retrieve form data
         entry_national_code = request.form["teacher_national_code"]
         entry_password = request.form["teacher_password"]
 
-        # Find the teacher in the database
+        # Find the teacher in the database using the provided national code
         teacher = Teacher.query.filter(Teacher.teacher_national_code == entry_national_code).first()
 
         if teacher is None:
@@ -75,6 +76,7 @@ def add_teacher():
                 teachers.append(teacher.teacher_national_code)
                 school.teachers = str(teachers)
 
+            # Loop through selected classes and add the teacher to each class
             for class_code in classes:
                 # Add the class code to the teacher's class list
                 teacher_classes = eval(teacher.teacher_classes)
@@ -104,15 +106,19 @@ def add_teacher():
 def remove_teacher(teacher_national_code):
     """
     Handles removing a teacher from the school in the panel.
-    - Removes the teacher from all associated classes and the school's teacher list.
+    Removes the teacher from all associated classes and the school's teacher list.
     """
+    # Find the teacher in the database using the provided national code
     teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
     if teacher is None:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
     
-    school = School.query.filter(School.school_code==current_user.school_code).first()
+    # Retrieve the school object
+    school = School.query.filter(School.school_code == current_user.school_code).first()
     teachers = eval(school.teachers)
+
+    # Check if the teacher is in the school's list
     if not teacher.teacher_national_code in teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
@@ -152,18 +158,21 @@ def remove_teacher(teacher_national_code):
 def edit_teacher(teacher_national_code):
     """
     Handles editing an existing teacher in the panel.
-    - For POST requests, updates the teacher's class assignments.
-    - For GET requests, renders the form for editing the teacher.
+    For POST requests, updates the teacher's class assignments.
+    For GET requests, renders the form for editing the teacher.
     """
     if request.method == 'POST':
-        # Find the teacher in the database
+        # Find the teacher in the database using the provided national code
         teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
         if teacher is None:
             session["show_error_notif"] = True
             return redirect(url_for('teacher_routes.wrong_teacher_info'))
         
-        school = School.query.filter(School.school_code==current_user.school_code).first()
+        # Retrieve the school object
+        school = School.query.filter(School.school_code == current_user.school_code).first()
         teachers = eval(school.teachers)
+
+        # Ensure the teacher is in the school's list
         if not teacher_national_code in teachers:
             session["show_error_notif"] = True
             return redirect(url_for('teacher_routes.wrong_teacher_info'))
@@ -201,17 +210,22 @@ def edit_teacher(teacher_national_code):
         return redirect(url_for('teacher_routes.panel_teachers'))
     
     else:
+        # Retrieve the teacher object for editing
         teacher = Teacher.query.filter(Teacher.teacher_national_code == teacher_national_code).first()
         if teacher is None:
             session["show_error_notif"] = True
             return redirect(url_for('teacher_routes.wrong_teacher_info'))
         
-        school = School.query.filter(School.school_code==current_user.school_code).first()
+        # Retrieve the school and teacher list
+        school = School.query.filter(School.school_code == current_user.school_code).first()
         teachers = eval(school.teachers)
+
+        # Ensure the teacher is in the school's list
         if not teacher_national_code in teachers:
             session["show_error_notif"] = True
             return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
+        # Retrieve all classes associated with the school
         classes = Class.query.filter(Class.school_code == current_user.school_code).all()
         return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
 
@@ -246,7 +260,9 @@ def wrong_teacher_info():
     """
     Displays an error page for invalid teacher information.
     """
+    # Check if an error notification is to be shown
     if not session.get('show_error_notif', False):
         return redirect(url_for('teacher_routes.add_teacher'))
+    
     session.pop('show_error_notif', None)
     return render_template("teacher/wrong_teacher_info.html")
