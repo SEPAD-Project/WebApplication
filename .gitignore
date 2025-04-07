@@ -5,3 +5,5 @@ app/utils/__pycache__
 book.xlsx
 students.xlsx
 classes.xlsx
+compare_students.html
+compare_classes.html
