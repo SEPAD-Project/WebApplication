@@ -118,6 +118,21 @@ def compare_students(students: dict):
  #==================================================
 
 
+def compare_teachers(teachers: dict):
+    fig = px.bar(
+        x=list(teachers.keys()),
+        y=list(teachers.values()),
+        text=list(teachers.values()),
+        title="Compare Teachers"
+    )
+
+    fig = bar_style(fig, title="Compare Teachers", x_title="Teacher Name", y_title="Score")
+
+    fig.write_html("compare_teachers.html")
+
+ #==================================================
+
+
 def student_accuracy_week(student_name:str, accuracy: dict):
     fig = px.line(
         x=list(accuracy.keys()),
@@ -147,3 +162,9 @@ if __name__=="__main__":
         'Monday': 85.5, 'Tuesday': 87.2, 'Wednesday': 88.1, 'Thursday': 90.4,
         'Friday': 92.3, 'Saturday': 91.5, 'Sunday': 89.0
     })
+
+    compare_teachers({'Mr. Lee': 92.5, 'Ms. Kim': 87.3, 'Mr. Ray': 78.4,
+    'Mrs. Fox': 84.1, 'Mr. Jay': 90.2, 'Ms. Zoe': 76.9,
+    'Mr. Tom': 88.0, 'Ms. Eve': 85.7, 'Mr. Dan': 91.3, 'Ms. Ana': 83.6
+    })
+
