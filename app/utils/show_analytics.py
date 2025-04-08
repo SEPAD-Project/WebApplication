@@ -1,7 +1,7 @@
 import plotly.express as px
 import os 
 
-os.mkdir('analytics_results')
+os.mkdir('app/utils/analytics_results')
 
 def bar_style(fig ,title, x_title, y_title):
     fig.update_traces(
@@ -99,7 +99,7 @@ def compare_classes(classes: dict):
 
     fig = bar_style(fig, title="Compare Classes", x_title="Class Code", y_title="Score")
 
-    fig.write_html("analytics_results/compare_classes.html")
+    fig.write_html("app/utils/analytics_results/compare_classes.html")
 
 
  #==================================================
@@ -115,7 +115,7 @@ def compare_students(students: dict):
 
     fig = bar_style(fig, title="Compare Students", x_title="Student Name", y_title="Score")
 
-    fig.write_html("analytics_results/compare_students.html")
+    fig.write_html("app/utils/analytics_results/compare_students.html")
 
 
  #==================================================
@@ -131,7 +131,7 @@ def compare_teachers(teachers: dict):
 
     fig = bar_style(fig, title="Compare Teachers", x_title="Teacher Name", y_title="Score")
 
-    fig.write_html("analytics_results/compare_teachers.html")
+    fig.write_html("app/utils/analytics_results/compare_teachers.html")
 
  #==================================================
 
@@ -147,7 +147,7 @@ def student_accuracy_week(student_name:str, accuracy: dict):
 
     fig = line_style(fig, title=f"'{student_name}' Accuracy Over the Week", x_title="Day", y_title="Accuracy (%)")
 
-    fig.write_html("analytics_results/student_accuracy_week.html")
+    fig.write_html("app/utils/analytics_results/student_accuracy_week.html")
 
 
  #==================================================
@@ -163,7 +163,7 @@ def student_accuracy_by_lesson(student_name:str, lessons: dict):
 
     fig = bar_style(fig, f"'{student_name}' Accuracy In Each Lesson", x_title="Lesson", y_title="Score")
 
-    fig.write_html("analytics_results/student_accuracy_lesson.html")
+    fig.write_html("app/utils/analytics_results/student_accuracy_lesson.html")
 
 
 if __name__=="__main__":
