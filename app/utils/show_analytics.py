@@ -147,6 +147,22 @@ def student_accuracy_week(student_name:str, accuracy: dict):
     fig.write_html("student_accuracy_week.html")
 
 
+ #==================================================
+
+
+def student_accuracy_by_lesson(student_name:str, lessons: dict):
+    fig = px.bar(
+        x=list(lessons.keys()),
+        y=list(lessons.values()),
+        text=list(lessons.values()),
+        title=f"'{student_name}' Accuracy In Each Lesson"
+    )
+
+    fig = bar_style(fig, f"'{student_name}' Accuracy In Each Lesson", x_title="Lesson", y_title="Score")
+
+    fig.write_html("student_accuracy_lesson.html")
+
+
 if __name__=="__main__":
     compare_classes({'1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3, '1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3})
 
@@ -167,4 +183,11 @@ if __name__=="__main__":
     'Mrs. Fox': 84.1, 'Mr. Jay': 90.2, 'Ms. Zoe': 76.9,
     'Mr. Tom': 88.0, 'Ms. Eve': 85.7, 'Mr. Dan': 91.3, 'Ms. Ana': 83.6
     })
+
+    student_accuracy_by_lesson("Parsa Safaie", {
+    "Math": 88.5, "Physics": 92.3, "Chemistry": 85.7,
+    "Biology": 79.6, "English": 90.1, "Computer": 95.4,
+    "History": 72.8, "Geography": 76.3, "Literature": 81.2, "Geometry": 84.0
+    })
+
 
