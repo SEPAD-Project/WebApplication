@@ -175,6 +175,8 @@ def add_from_excel():
                 school_code=current_user.school_code
             )
             db.session.add(new_student)
+            dm_create_student(current_user.school_code, reverse_class_code(student['class'])[1], student['national_code'])
+
         db.session.commit()
 
         return redirect(url_for("student_routes.panel_students"))

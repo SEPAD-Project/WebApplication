@@ -132,6 +132,7 @@ def add_from_excel():
         for class_ in result:
             new_class = Class(class_name=class_['name'], class_code=class_['code'], school_code=current_user.school_code, teachers='[]')
             db.session.add(new_class)
+            dm_create_class(current_user.school_code, class_['name'])
 
         db.session.commit()
         return redirect(url_for('class_routes.panel_classes'))
