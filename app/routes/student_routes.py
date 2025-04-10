@@ -69,6 +69,8 @@ def add_student():
         student_password = request.form['student_password']
         class_code = request.form['selected_class']
         school_code = current_user.school_code
+        student_image = request.files['file_input']
+        student_image.save(f"c:\sap-project\server\schools\{school_code}\{class_code}\{student_national_code}.jpg")
 
         # Construct new Student object
         new_student = Student(student_name, student_family,
