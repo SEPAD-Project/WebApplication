@@ -20,6 +20,10 @@ from app.utils.excel_reading import add_students
 from flask import Blueprint, g, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required  # For session-based login checking
 
+import zipfile
+import os
+from shutil import move
+
 # Create a new Blueprint for all student-related routes
 bp = Blueprint('student_routes', __name__)
 
@@ -121,6 +125,7 @@ def add_from_excel():
 
         # Read file and mapping from user input
         file = request.files["file_input"]
+        zip_file = request.files["zip_input"]
         sheet_name = request.form["sheet"]
         name_letter = request.form["name"]
         family_letter = request.form["family"]
@@ -165,6 +170,32 @@ def add_from_excel():
                     texts.append(f"{col_msg} due to an unknown issue.")
             session["show_error_notif"] = True
             return redirect(url_for("student_routes.error_in_excel"))
+        
+
+        zip_path = f'c:\sap-project\server\schools\{current_user.school_code}\student_ref_images.zip'
+        zip_file.save(zip_path)
+
+        ectracted_files = zip_path[:-4]
+
+        with zipfile.ZipFile(zip_path, 'r') as zip:  
+            zip.extractall(ectracted_files)
+
+        for class_ in os.listdir(ectracted_files):
+            class_path = f"{ectracted_files}\{class_}"
+            if not os.path.isdir(class_path):
+                continue
+
+            if not (class_ in class_names) :
+                continue
+
+            images = os.listdir(class_path)
+            for image in images:
+                image_path = f"{class_path}\{image}"
+                print(image_path)
+                if os.path.isdir(image_path):
+                    continue
+
+                move(image_path, f"c:\sap-project\server\schools\{current_user.school_code}\{class_}")
 
         # Add validated students to the database
         for student in result:
