@@ -155,11 +155,13 @@ def add_from_excel():
         # Handle different result outcomes
         if result == 'sheet_not_found':
             session["show_error_notif"] = True
-            return redirect(url_for("student_routes.error_in_excel", text="Please review your input for sheet name."))
+            texts = ["Please review your input for sheet name."]
+            return redirect(url_for("student_routes.error_in_excel"))
         
         if result == 'bad_column_letter':
             session["show_error_notif"] = True
-            return redirect(url_for("student_routes.error_in_excel", text="Please review your input for column letters."))
+            texts = "Please review your input for column letters."
+            return redirect(url_for("student_routes.error_in_excel"))
 
         if isinstance(result[0], list):
             texts = []

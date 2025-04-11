@@ -87,6 +87,8 @@ def add_from_excel():
     Add multiple classes from an Excel file.
     """
     if request.method == 'POST':
+        global texts
+
         # Get existing class names to prevent duplicates
         classes = Class.query.filter(Class.school_code == current_user.school_code).all()
         classes_name = [class_.class_name for class_ in classes]
@@ -111,15 +113,16 @@ def add_from_excel():
         # Handle known issues returned from Excel parser
         if result == 'sheet_not_found': 
             session["show_error_notif"] = True
-            return redirect(url_for("class_routes.error_in_excel", text="Please review your input for sheet name."))
+            texts = ["Please review your input for sheet name."]
+            return redirect(url_for("class_routes.error_in_excel"))
 
         if result == 'bad_column_letter': 
             session["show_error_notif"] = True
-            return redirect(url_for("class_routes.error_in_excel", text="Please review your input for column letters."))
+            texts= ["Please review your input for column letters."]
+            return redirect(url_for("class_routes.error_in_excel"))
 
         # Handle data-specific errors in the Excel file
         if isinstance(result[0], list):
-            global texts
             texts = []
             for problem in result:
                 cell = f"{problem[2]}{problem[1]}"
