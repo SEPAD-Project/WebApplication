@@ -1,7 +1,7 @@
 # Import necessary modules
 from app import db  # SQLAlchemy database instance
 from app.models.school import School  # School model for database interaction
-from app.server_side.directory_manager import dm_create_school  # Function to manage school directories
+from app.server_side.Website.directory_manager import dm_create_school  # Function to manage school directories
 
 from flask import Blueprint, redirect, render_template, request, url_for, session  # Flask web utilities
 from flask_login import login_user, current_user  # User session management

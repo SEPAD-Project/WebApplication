@@ -41,20 +41,6 @@ git submodule update
    pip install -r requirements.txt
    ``` 
 
-## Fix an inconsistency
-Due to the structure of the WEB repository, there is a minor inconsistency between the main repository and its submodule. To fix this, navigate to: 
-```
-app/server_side/directory_manager.py
-```
-Then, on **line 4**, replace: 
-```py
-from log_handler import log_message
-```
-with:
-```py
-from app.server_side.log_handler import log_message
-```
-
 Now you're ready! 🚀
 
 ## Running the Project

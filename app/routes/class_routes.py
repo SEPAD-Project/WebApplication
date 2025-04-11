@@ -6,7 +6,7 @@ from app.models.student import Student
 from app.models.teacher import Teacher
 from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
-from app.server_side.directory_manager import dm_create_class, dm_edit_class, dm_delete_class
+from app.server_side.Website.directory_manager import dm_create_class, dm_edit_class, dm_delete_class
 
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required

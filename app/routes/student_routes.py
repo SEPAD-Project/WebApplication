@@ -7,7 +7,7 @@ from app.models.student import Student  # Importing the Student model
 from app.utils.generate_class_code import reverse_class_code  # Utility to reverse-engineer class code (get class name from code)
 
 # Student directory management utilities for file system operations
-from app.server_side.directory_manager import (
+from app.server_side.Website.directory_manager import (
     dm_create_student,
     dm_edit_student,
     dm_delete_student
