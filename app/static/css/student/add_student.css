@@ -67,6 +67,14 @@ input:focus {
     outline: none;
 }
 
+.file_input {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 /* Select Field */
 .select-field {
     appearance: none;

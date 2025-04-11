@@ -11,12 +11,13 @@
 </head>
 <body>
     <!-- Add Student Form -->
-    <form method="POST" action="{{ url_for('student_routes.add_student') }}" class="add-student-form">
+    <form method="POST" action="{{ url_for('student_routes.add_student') }}" class="add-student-form" enctype="multipart/form-data">
         <h1 class="form-title">Add Student</h1>
         <input type="text" id="student_name" name="student_name" placeholder="Student Name" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
         <input type="text" id="student_family" name="student_family" placeholder="Student Family" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
         <input type="text" id="student_national_code" name="student_national_code" placeholder="Student National Code" pattern="[0-9]+" title="Should only contain numbers" required>
         <input type="text" id="student_password" name="student_password" placeholder="Student Password" pattern="[0-9]+" title="Should only contain numbers" required>
+        <input type="file" class="file_input" name="file_input" accept=".jpg,.jpeg,.png" required>
         <select name="selected_class" class="select-field">
             {% for class in classes %}
             <option value="{{ class.class_code }}">{{ class.class_name }}</option>

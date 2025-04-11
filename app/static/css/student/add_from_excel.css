@@ -75,6 +75,9 @@ input[type="text"]:focus {
     cursor: pointer;
 }
 
+label {
+    margin-top: 20px;
+}
 
 /* Button Group */
 .button-group {
