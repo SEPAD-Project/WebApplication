@@ -21,6 +21,7 @@ from flask import Blueprint, g, redirect, render_template, request, url_for, ses
 from flask_login import current_user, login_required  # For session-based login checking
 
 import zipfile
+import os
 import shutil
 
 # Create a new Blueprint for all student-related routes
@@ -133,19 +134,23 @@ def add_from_excel():
         nc_letter = request.form["national_code"]
         class_letter = request.form["class"]
         pass_letter = request.form["password"]
+        
+        excel_path = f"c:\sap-project\server\schools\{current_user.school_code}\students.xlsx"
 
         try:
-            file.save("students.xlsx")
+            file.save(excel_path)
         except PermissionError:
             session["show_error_notif"] = True
             return redirect(url_for("student_routes.file_permission_error"))
 
         result = add_students(
-            'students.xlsx', sheet_name,
+            excel_path, sheet_name,
             name_letter, family_letter, nc_letter,
             class_letter, pass_letter,
             class_names, existing_ncs
         )
+
+        os.remove(excel_path)
 
         # Handle different result outcomes
         if result == 'sheet_not_found':

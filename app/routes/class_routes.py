@@ -11,6 +11,8 @@ from app.server_side.Website.directory_manager import dm_create_class, dm_edit_c
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
+import os
+
 # Initialize Blueprint for class-related routes
 bp = Blueprint('class_routes', __name__)
 
@@ -93,15 +95,18 @@ def add_from_excel():
         file = request.files["file_input"]
         sheet_name = request.form["sheet"]
         name_letter = request.form["name"]
-
+        
+        excel_path = f"c:\sap-project\server\schools\{current_user.school_code}\classes.xlsx"
         try:
-            file.save("classes.xlsx")  # Save file locally for processing
+            file.save(excel_path)
         except PermissionError:
             session["show_error_notif"] = True
             return redirect(url_for("class_routes.file_permission_error"))
-
+        
         # Process Excel file and validate format
-        result = add_classes('classes.xlsx', sheet_name, name_letter, classes_name)
+        result = add_classes(excel_path, sheet_name, name_letter, classes_name)
+
+        os.remove(excel_path)
 
         # Handle known issues returned from Excel parser
         if result == 'sheet_not_found': 
