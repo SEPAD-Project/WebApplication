@@ -1,4 +1,4 @@
-from app.utils.analytics.Generator.compare_student import compare_students 
+from app.utils.analytics.Generator.compare_students import compare_students 
 from flask_login import current_user
 from app.models._class import Class
 
