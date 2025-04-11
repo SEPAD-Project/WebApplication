@@ -209,6 +209,7 @@ def add_from_excel():
 
         db.session.commit()
         shutil.rmtree(extracted_files_path)
+        os.remove(zip_path)
         return redirect(url_for("student_routes.panel_students"))
 
     return render_template("student/add_from_excel.html")
