@@ -11,4 +11,4 @@ if __name__ == '__main__':
     - `debug=True` enables Flask's debug mode, which provides detailed error pages 
       and automatically reloads the app when code changes.
     """
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port="2568")
