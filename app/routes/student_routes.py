@@ -21,8 +21,7 @@ from flask import Blueprint, g, redirect, render_template, request, url_for, ses
 from flask_login import current_user, login_required  # For session-based login checking
 
 import zipfile
-import os
-from shutil import move
+import shutil
 
 # Create a new Blueprint for all student-related routes
 bp = Blueprint('student_routes', __name__)
@@ -116,6 +115,8 @@ def add_from_excel():
         - Redirects to error pages if problems occur (e.g., invalid format, duplicates).
     """
     if request.method == 'POST':
+        global texts
+
         # Prepare references for validation
         classes = Class.query.filter(Class.school_code == current_user.school_code).all()
         class_names = [c.class_name for c in classes]
@@ -156,7 +157,6 @@ def add_from_excel():
             return redirect(url_for("student_routes.error_in_excel", text="Please review your input for column letters."))
 
         if isinstance(result[0], list):
-            global texts
             texts = []
             for problem in result:
                 col_msg = f"Please review the cell {problem[2]}{problem[1]}"
@@ -175,27 +175,11 @@ def add_from_excel():
         zip_path = f'c:\sap-project\server\schools\{current_user.school_code}\student_ref_images.zip'
         zip_file.save(zip_path)
 
-        ectracted_files = zip_path[:-4]
+        extracted_files_path = zip_path[:-4]
 
         with zipfile.ZipFile(zip_path, 'r') as zip:  
-            zip.extractall(ectracted_files)
+            zip.extractall(extracted_files_path)
 
-        for class_ in os.listdir(ectracted_files):
-            class_path = f"{ectracted_files}\{class_}"
-            if not os.path.isdir(class_path):
-                continue
-
-            if not (class_ in class_names) :
-                continue
-
-            images = os.listdir(class_path)
-            for image in images:
-                image_path = f"{class_path}\{image}"
-                print(image_path)
-                if os.path.isdir(image_path):
-                    continue
-
-                move(image_path, f"c:\sap-project\server\schools\{current_user.school_code}\{class_}")
 
         # Add validated students to the database
         for student in result:
@@ -208,10 +192,18 @@ def add_from_excel():
                 school_code=current_user.school_code
             )
             db.session.add(new_student)
+
+            try:
+                shutil.move(f"{extracted_files_path}\{reverse_class_code(student['class'])[1]}\{student['national_code']}.jpg", f"c:\sap-project\server\schools\{current_user.school_code}\{reverse_class_code(student['class'])[1]}")
+            except:
+                texts = [f"can't find image for student with national code '{student['national_code']}' in your zip file."]
+                session["show_error_notif"] = True
+                return redirect(url_for("student_routes.error_in_excel"))
+
             dm_create_student(current_user.school_code, reverse_class_code(student['class'])[1], student['national_code'])
 
         db.session.commit()
-
+        shutil.rmtree(extracted_files_path)
         return redirect(url_for("student_routes.panel_students"))
 
     return render_template("student/add_from_excel.html")
