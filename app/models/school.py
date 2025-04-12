@@ -25,8 +25,9 @@ class School(db.Model, UserMixin):
     province = db.Column(db.String(100), nullable=False)  # Province where the school is located
     city = db.Column(db.String(100), nullable=False)  # City where the school is located
     teachers = db.Column(db.String(100), nullable=False)  # List of teachers associated with the school (as a string)
+    email = db.Column(db.String(100), nullable=False)
 
-    def __init__(self, school_name, school_code, manager_personal_code, province, city, teachers):
+    def __init__(self, school_name, school_code, manager_personal_code, province, city, teachers, email):
         """
         Constructor to initialize the School object with required attributes.
         
@@ -44,6 +45,7 @@ class School(db.Model, UserMixin):
         self.province = province  # Set the province of the school
         self.city = city  # Set the city of the school
         self.teachers = teachers  # Set the list of teachers for the school (as a string)
+        self.email = email
 
     def get_id(self):
         """
