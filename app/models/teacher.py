@@ -21,8 +21,9 @@ class Teacher(db.Model):
     teacher_national_code = db.Column(db.String(100), nullable=False, unique=True)  # Unique national code of the teacher
     teacher_password = db.Column(db.String(100), nullable=False)  # Password for the teacher
     teacher_classes = db.Column(db.String(100), nullable=False)  # Classes associated with the teacher, stored as a string of class codes
+    lesson = db.Column(db.String(100), nullable=False)
 
-    def __init__(self, teacher_name, teacher_family, teacher_national_code, teacher_password, teacher_classes):
+    def __init__(self, teacher_name, teacher_family, teacher_national_code, teacher_password, teacher_classes, lesson):
         """
         Constructor to initialize the Teacher object with required attributes.
         
@@ -32,9 +33,11 @@ class Teacher(db.Model):
             teacher_national_code (str): The unique national code of the teacher.
             teacher_password (str): The password for the teacher.
             teacher_classes (str): The classes the teacher is associated with (a string representing class codes).
+            lesson (str): lesson of teacher.
         """
         self.teacher_name = teacher_name  # Set the first name of the teacher
         self.teacher_family = teacher_family  # Set the last name of the teacher
         self.teacher_national_code = teacher_national_code  # Set the national code of the teacher
         self.teacher_password = teacher_password  # Set the password of the teacher
         self.teacher_classes = teacher_classes  # Set the classes associated with the teacher
+        self.lesson = lesson
