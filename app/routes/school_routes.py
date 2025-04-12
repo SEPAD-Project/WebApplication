@@ -58,3 +58,8 @@ def panel_school_info():
         cc=classes_count,      # Class count
         sc=students_count      # Student count
     )
+
+@bp.route('/panel/analytics')
+@login_required
+def analytics_menu():
+    return render_template("school/analytics.html")
