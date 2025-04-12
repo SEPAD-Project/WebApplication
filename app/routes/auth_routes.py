@@ -76,6 +76,7 @@ def signup():
         manager_personal_code = request.form['manager_personal_code']
         province = request.form['province']
         city = request.form['city']
+        email = request.form['email']
 
         # Create a new School object
         new_school = School(
@@ -84,7 +85,8 @@ def signup():
             manager_personal_code=manager_personal_code,
             province=province,
             city=city,
-            teachers="[]"  # Initialize empty list of teachers
+            teachers="[]",  # Initialize empty list of teachers
+            email=email
         )
 
         try:
