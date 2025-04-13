@@ -36,13 +36,14 @@ def create_app():
     Compress(app)
 
     # Register all the blueprints for different parts of the application
-    from app.routes import home_root, auth_routes, school_routes, class_routes, student_routes, teacher_routes
+    from app.routes import home_root, auth_routes, school_routes, class_routes, student_routes, teacher_routes, analytics_routes
     app.register_blueprint(home_root.bp)
     app.register_blueprint(auth_routes.bp)
     app.register_blueprint(school_routes.bp)
     app.register_blueprint(class_routes.bp)
     app.register_blueprint(student_routes.bp)
     app.register_blueprint(teacher_routes.bp)
+    app.register_blueprint(analytics_routes.bp)
 
     # Catch-all route for unknown paths (404 error page)
     @app.route('/<path:unknown_path>')
