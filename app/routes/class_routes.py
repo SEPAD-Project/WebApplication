@@ -190,6 +190,9 @@ def edit_class(class_name):
         try:
             db.session.commit()
             dm_edit_class(school_code=current_user.school_code, old_class_name=class_name, new_class_name=new_name)
+
+            file = request.files['file-input']
+            file.save(f'C:\sap-project\server\schools\{school_code}\{new_name}\schedule.xlsx')
         except:
             session["show_error_notif"] = True
             return redirect(url_for('class_routes.duplicated_class_info'))
