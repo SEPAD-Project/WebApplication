@@ -39,6 +39,13 @@ body {
     text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
 }
 
+.input-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 /* Input Field */
 input {
     background-color: #2C2C2C; /* Muted Blue-Grey */
@@ -65,6 +72,10 @@ input:hover {
 input:focus {
     background-color: #333333; /* Slightly Darker Grey */
     outline: none;
+}
+
+.file-input {
+    text-align: center !important;
 }
 
 /* Button Group */

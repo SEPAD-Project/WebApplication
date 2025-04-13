@@ -11,10 +11,14 @@
 </head>
 <body>
     <!-- Edit Class Form -->
-    <form method="POST" action="{{ url_for('class_routes.edit_class', class_name=name) }}" class="edit-class-form">
+    <form method="POST" action="{{ url_for('class_routes.edit_class', class_name=name) }}" class="edit-class-form" enctype="multipart/form-data">
         <h1 class="form-title">Edit {{ name }}</h1>
-        <input type="text" name="class_name" id="class_name" placeholder="Class Name" value="{{ name }}" pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, space, and dash">
-        
+        <div class="input-group">
+            <input type="text" name="class_name" id="class_name" placeholder="Class Name" value="{{ name }}" pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, space, and dash">
+            <input type="file" class="file-input" name="file-input" id="file-input" accept=".xlsx">
+        </div>
+
+
         <div class="button-group">
             <button type="submit" class="action-button submit-btn">Change</button>
             <a href='{{ url_for("class_routes.panel_classes") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>

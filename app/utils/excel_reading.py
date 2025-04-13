@@ -1,6 +1,7 @@
 from app.utils.generate_class_code import generate_class_code
 from flask_login import current_user
 import openpyxl
+from datetime import time
 
 def add_students(path_to_xlsx, sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, available_classes, registered_national_codes):
     """
@@ -151,3 +152,24 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
         classes.append({'name': str(name), 'code': code})
 
     return classes
+
+def schedule_extraction(path_to_xlsx, sheet_name, check_day, str_time):
+
+    workbook = openpyxl.load_workbook(path_to_xlsx)
+    check_time = time.fromisoformat(str_time)
+
+    try:
+        sheet = workbook[sheet_name]
+    except KeyError:
+        return 'sheet_not_found'
+    
+    for row_idx, row in enumerate(sheet.iter_rows(values_only=True, min_row=2)):
+        if row[0].lower() == check_day.lower():
+            for column in sheet.iter_cols(values_only=True, min_col=2):
+                content = str(column[0]).split('-')
+                start_time = time.fromisoformat(content[0])
+                end_time = time.fromisoformat(content[1])
+
+                if start_time <= check_time <= end_time:
+                    return column[row_idx+1]
+                
