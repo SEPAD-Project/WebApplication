@@ -153,23 +153,20 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
 
     return classes
 
-def schedule_extraction(path_to_xlsx, sheet_name, check_day, str_time):
+def schedule_extraction(path_to_xlsx, sheet_name):
 
     workbook = openpyxl.load_workbook(path_to_xlsx)
-    check_time = time.fromisoformat(str_time)
+
+    schedule = {}
 
     try:
         sheet = workbook[sheet_name]
     except KeyError:
         return 'sheet_not_found'
     
-    for row_idx, row in enumerate(sheet.iter_rows(values_only=True, min_row=2)):
-        if row[0].lower() == check_day.lower():
+    for row_index, row in enumerate(sheet.iter_rows(values_only=True, min_row=2)):
+            schedule[str(row[0])] = {}
             for column in sheet.iter_cols(values_only=True, min_col=2):
-                content = str(column[0]).split('-')
-                start_time = time.fromisoformat(content[0])
-                end_time = time.fromisoformat(content[1])
+                schedule[str(row[0])][str(column[0])] = column[row_index+1]
 
-                if start_time <= check_time <= end_time:
-                    return column[row_idx+1]
-                
+    return schedule
