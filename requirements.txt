@@ -5,3 +5,5 @@ flask_login
 flask_limiter
 flask_compress
 openpyxl
+kaledio
+plotly
