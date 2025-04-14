@@ -1,7 +1,10 @@
-from flask import Blueprint, render_template
-from flask_login import login_required
+from flask import Blueprint, render_template, request
+from flask_login import login_required, current_user
 from app.utils.analytics.Generator.analytics_Generator import *
 from app.utils.analytics.GUI.analytics_GUI import *
+from app.utils.generate_class_code import reverse_class_code
+from app.models.school import School
+from app.server_side.Website.send_email import send_styled_email
 
 
 bp = Blueprint('analytics_routes', __name__)
@@ -11,11 +14,17 @@ bp = Blueprint('analytics_routes', __name__)
 def analytics_menu():
     return render_template("analytics/analytics_menu.html")
 
-@bp.route('/panel/analytics/compare_students')
+@bp.route('/panel/analytics/compare_students', methods=['GET', 'POST'])
 @login_required
 def compare_students():
-    GUI_compare_students(Generator_compare_students('1051'))
-    return render_template("analytics/analytics_menu.html")
+    if request.method == "POST":
+        class_code = request.form['selected_class']
+        class_name = reverse_class_code(class_code)[1]
+        GUI_compare_students(Generator_compare_students(class_name))
+        return render_template("analytics/analytics_menu.html")
+    
+    classes = Class.query.filter(Class.school_code==current_user.school_code).all()
+    return render_template('analytics/class_name_for_compare_students.html', classes=classes)
 
 @bp.route('/panel/analytics/compare_classes')
 @login_required
@@ -29,14 +38,24 @@ def compare_teachers():
     GUI_compare_teachers(Generator_compare_teachers())
     return render_template("analytics/analytics_menu.html")
 
-@bp.route('/panel/analytics/student_accuracy_week')
+@bp.route('/panel/analytics/student_accuracy_week', methods=['GET', 'POST'])
 @login_required
 def student_accuracy_week():
-    GUI_student_accuracy_week('Parsa Safaie', Generator_student_over_week('1051', '123'))
-    return render_template("analytics/analytics_menu.html")
+    if request.method == "POST":
+        student_nc = request.form['student_national_code']
+        student = Student.query.filter(Student.student_national_code==student_nc).first()
+        GUI_student_accuracy_week(student.student_name+' '+student.student_family, Generator_student_over_week(reverse_class_code(student.class_code)[1], student_nc))
+        return render_template("analytics/analytics_menu.html")
+    
+    return render_template("analytics/student_nc_for_accuracy_week.html")
 
-@bp.route('/panel/analytics/student_accuracy_by_lesson')
+@bp.route('/panel/analytics/student_accuracy_by_lesson', methods=['GET', 'POST'])
 @login_required
 def student_accuracy_by_lesson():
-    GUI_student_accuracy_by_lesson('Parsa Safaie', Generator_student_lessons('1051', '123'))
-    return render_template("analytics/analytics_menu.html")
+    if request.method == "POST":
+        student_nc = request.form['student_national_code']
+        student = Student.query.filter(Student.student_national_code==student_nc).first()
+        GUI_student_accuracy_by_lesson(student.student_name+' '+student.student_family, Generator_student_lessons(reverse_class_code(student.class_code)[1], student_nc))
+        return render_template("analytics/analytics_menu.html")
+    
+    return render_template("analytics/student_nc_for_accuracy_lesson.html")
