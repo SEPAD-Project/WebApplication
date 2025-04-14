@@ -6,4 +6,5 @@ bp = Blueprint('analytics_routes', __name__)
 @bp.route('/panel/analytics')
 @login_required
 def analytics_menu():
-    return render_template("school/analytics.html")
+    return render_template("analytics/analytics_menu.html")
+
