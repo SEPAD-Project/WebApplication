@@ -22,11 +22,11 @@
     
     <div class="content-area">
         <div class="button-group">
-            <a class="analytics-button">Compare Students</a>
-            <a class="analytics-button">Compare Classes</a>
-            <a class="analytics-button">Compare Teachers</a>
-            <a class="analytics-button">Student Accuracy Over Week</a>
-            <a class="analytics-button"">Student Accuracy In Each Lesson</a>
+            <a href="{{ url_for('analytics_routes.compare_students') }}" class="analytics-button">Compare Students</a>
+            <a href="{{ url_for('analytics_routes.compare_classes') }}" class="analytics-button">Compare Classes</a>
+            <a href="{{ url_for('analytics_routes.compare_teachers') }}" class="analytics-button">Compare Teachers</a>
+            <a href="{{ url_for('analytics_routes.student_accuracy_week') }}" class="analytics-button">Student Accuracy Over Week</a>
+            <a href="{{ url_for('analytics_routes.student_accuracy_by_lesson') }}" class="analytics-button"">Student Accuracy In Each Lesson</a>
         </div>
     </div>
 

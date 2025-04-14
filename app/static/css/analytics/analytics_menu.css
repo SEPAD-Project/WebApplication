@@ -100,6 +100,7 @@
     border: none;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
+    text-decoration: none;
     color: #121212;
     cursor: pointer;
     font-size: 16px;
