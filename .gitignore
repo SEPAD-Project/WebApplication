@@ -2,6 +2,8 @@ app/__pycache__
 app/routes/__pycache__
 app/models/__pycache__
 app/utils/__pycache__
+app/utils/analytics/GUI/__pycache__
+app/utils/analytics/Generator/__pycache__
 book.xlsx
 students.xlsx
 classes.xlsx
