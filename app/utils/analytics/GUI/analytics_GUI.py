@@ -92,7 +92,7 @@ def line_style(fig ,title, x_title, y_title):
  #==================================================
 
 
-def compare_classes(classes: dict):
+def GUI_compare_classes(classes: dict):
     fig = px.bar(
         x=list(classes.keys()),
         y=list(classes.values()),
@@ -108,7 +108,7 @@ def compare_classes(classes: dict):
  #==================================================
 
 
-def compare_students(students: dict):
+def GUI_compare_students(students: dict):
     fig = px.bar(
         x=list(students.keys()),
         y=list(students.values()),
@@ -124,7 +124,7 @@ def compare_students(students: dict):
  #==================================================
 
 
-def compare_teachers(teachers: dict):
+def GUI_compare_teachers(teachers: dict):
     fig = px.bar(
         x=list(teachers.keys()),
         y=list(teachers.values()),
@@ -139,7 +139,7 @@ def compare_teachers(teachers: dict):
  #==================================================
 
 
-def student_accuracy_week(student_name:str, accuracy: dict):
+def GUI_student_accuracy_week(student_name:str, accuracy: dict):
     fig = px.line(
         x=list(accuracy.keys()),
         y=list(accuracy.values()),
@@ -156,7 +156,7 @@ def student_accuracy_week(student_name:str, accuracy: dict):
  #==================================================
 
 
-def student_accuracy_by_lesson(student_name:str, lessons: dict):
+def GUI_student_accuracy_by_lesson(student_name:str, lessons: dict):
     fig = px.bar(
         x=list(lessons.keys()),
         y=list(lessons.values()),
@@ -170,27 +170,27 @@ def student_accuracy_by_lesson(student_name:str, lessons: dict):
 
 
 if __name__=="__main__":
-    compare_classes({'1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3, '1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3})
+    GUI_compare_classes({'1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3, '1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3})
 
-    compare_students({
+    GUI_compare_students({
     'Alex': 82.5, 'John': 75.2, 'Emma': 91.8, 'Max': 68.4, 'Liam': 85.0, 
     'Sophia': 88.6, 'Ryan': 79.3, 'Mia': 92.1, 'Noah': 67.5, 'James': 73.8, 
     'Ava': 84.2, 'Oliver': 77.9, 'Ella': 90.4, 'Jack': 69.1, 'Amelia': 81.3, 
     'Lucas': 89.7, 'Charlotte': 93.5, 'Ethan': 74.6, 'Zoe': 70.8, 'Ben': 78.3
     })
 
-    student_accuracy_week("Parsa Safaie",
+    GUI_student_accuracy_week("Parsa Safaie",
         {
         'Monday': 85.5, 'Tuesday': 87.2, 'Wednesday': 88.1, 'Thursday': 90.4,
         'Friday': 92.3, 'Saturday': 91.5, 'Sunday': 89.0
     })
 
-    compare_teachers({'Mr. Lee': 92.5, 'Ms. Kim': 87.3, 'Mr. Ray': 78.4,
+    GUI_compare_teachers({'Mr. Lee': 92.5, 'Ms. Kim': 87.3, 'Mr. Ray': 78.4,
     'Mrs. Fox': 84.1, 'Mr. Jay': 90.2, 'Ms. Zoe': 76.9,
     'Mr. Tom': 88.0, 'Ms. Eve': 85.7, 'Mr. Dan': 91.3, 'Ms. Ana': 83.6
     })
 
-    student_accuracy_by_lesson("Parsa Safaie", {
+    GUI_student_accuracy_by_lesson("Parsa Safaie", {
     "Math": 88.5, "Physics": 92.3, "Chemistry": 85.7,
     "Biology": 79.6, "English": 90.1, "Computer": 95.4,
     "History": 72.8, "Geography": 76.3, "Literature": 81.2, "Geometry": 84.0
