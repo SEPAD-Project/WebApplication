@@ -21,6 +21,7 @@ def compare_students():
         class_code = request.form['selected_class']
         class_name = reverse_class_code(class_code)[1]
         GUI_compare_students(Generator_compare_students(class_name))
+        send_styled_email(School.query.filter(School.school_code==current_user.school_code).first().email, 'Compare Students', "c:\sap-project\server\compare_students.pdf")
         return render_template("analytics/analytics_menu.html")
     
     classes = Class.query.filter(Class.school_code==current_user.school_code).all()
@@ -30,12 +31,14 @@ def compare_students():
 @login_required
 def compare_classes():
     GUI_compare_classes(Generator_compare_classes())
+    send_styled_email(School.query.filter(School.school_code==current_user.school_code).first().email, 'Compare Classes', "c:\sap-project\server\compare_classes.pdf")
     return render_template("analytics/analytics_menu.html")
 
 @bp.route('/panel/analytics/compare_teachers')
 @login_required
 def compare_teachers():
     GUI_compare_teachers(Generator_compare_teachers())
+    send_styled_email(School.query.filter(School.school_code==current_user.school_code).first().email, 'Compare Teachers', "c:\sap-project\server\compare_teachers.pdf")
     return render_template("analytics/analytics_menu.html")
 
 @bp.route('/panel/analytics/student_accuracy_week', methods=['GET', 'POST'])
@@ -45,6 +48,7 @@ def student_accuracy_week():
         student_nc = request.form['student_national_code']
         student = Student.query.filter(Student.student_national_code==student_nc).first()
         GUI_student_accuracy_week(student.student_name+' '+student.student_family, Generator_student_over_week(reverse_class_code(student.class_code)[1], student_nc))
+        send_styled_email(School.query.filter(School.school_code==current_user.school_code).first().email, 'Student Accuracy Over the Week', "c:\sap-project\server\student_accuracy_week.pdf")
         return render_template("analytics/analytics_menu.html")
     
     return render_template("analytics/student_nc_for_accuracy_week.html")
@@ -56,6 +60,7 @@ def student_accuracy_by_lesson():
         student_nc = request.form['student_national_code']
         student = Student.query.filter(Student.student_national_code==student_nc).first()
         GUI_student_accuracy_by_lesson(student.student_name+' '+student.student_family, Generator_student_lessons(reverse_class_code(student.class_code)[1], student_nc))
+        send_styled_email(School.query.filter(School.school_code==current_user.school_code).first().email, 'Student Accuracy By lesson', "c:\sap-project\server\student_accuracy_by_lesson.pdf")
         return render_template("analytics/analytics_menu.html")
     
     return render_template("analytics/student_nc_for_accuracy_lesson.html")
