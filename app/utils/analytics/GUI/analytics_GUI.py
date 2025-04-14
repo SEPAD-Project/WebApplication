@@ -1,8 +1,4 @@
 import plotly.express as px
-import os 
-from flask_login import current_user
-
-os.mkdir('app/utils/analytics_results')
 
 def bar_style(fig ,title, x_title, y_title):
     fig.update_traces(
@@ -12,6 +8,9 @@ def bar_style(fig ,title, x_title, y_title):
     )
 
     fig.update_layout(
+        width=1300,
+        height=600,
+        autosize=False,
         bargap=0.5,
 
         title=dict(
@@ -53,7 +52,10 @@ def line_style(fig ,title, x_title, y_title):
     fig.update_traces(line=dict(color='#4ECDC4'))
 
     fig.update_layout(
-
+        width=1300,
+        height=600,
+        autosize=False,
+        
         title=dict(
             text=title,
             font=dict(size=22, color='white', family='sans-serif'),
@@ -100,7 +102,7 @@ def compare_classes(classes: dict):
 
     fig = bar_style(fig, title="Compare Classes", x_title="Class Code", y_title="Score")
 
-    fig.write_image(f"c:\sap-project\server\{current_user.school_code}\compare_classes.pdf", format="pdf")
+    fig.write_image("c:\sap-project\server\compare_classes.pdf", format="pdf", scale=2)
 
 
  #==================================================
@@ -116,7 +118,7 @@ def compare_students(students: dict):
 
     fig = bar_style(fig, title="Compare Students", x_title="Student Name", y_title="Score")
 
-    fig.write_image(f"c:\sap-project\server\{current_user.school_code}\compare_students.pdf", format="pdf")
+    fig.write_image("c:\sap-project\server\compare_students.pdf", format="pdf")
 
 
  #==================================================
@@ -132,7 +134,7 @@ def compare_teachers(teachers: dict):
 
     fig = bar_style(fig, title="Compare Teachers", x_title="Teacher Name", y_title="Score")
 
-    fig.write_image(f"c:\sap-project\server\{current_user.school_code}\compare_teachers.pdf", format="pdf")
+    fig.write_image("c:\sap-project\server\compare_teachers.pdf", format="pdf")
 
  #==================================================
 
@@ -148,7 +150,7 @@ def student_accuracy_week(student_name:str, accuracy: dict):
 
     fig = line_style(fig, title=f"'{student_name}' Accuracy Over the Week", x_title="Day", y_title="Accuracy (%)")
 
-    fig.write_image(f"c:\sap-project\server\{current_user.school_code}\student_accuracy_week.pdf", format="pdf")
+    fig.write_image("c:\sap-project\server\student_accuracy_week.pdf", format="pdf")
 
 
  #==================================================
@@ -164,7 +166,7 @@ def student_accuracy_by_lesson(student_name:str, lessons: dict):
 
     fig = bar_style(fig, f"'{student_name}' Accuracy In Each Lesson", x_title="Lesson", y_title="Score")
 
-    fig.write_image(f"c:\sap-project\server\{current_user.school_code}\student_accuracy_by_lesson.pdf", format="pdf")
+    fig.write_image("c:\sap-project\server\student_accuracy_by_lesson.pdf", format="pdf")
 
 
 if __name__=="__main__":
