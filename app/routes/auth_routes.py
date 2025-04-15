@@ -1,9 +1,11 @@
 # Import necessary modules
 from app import db  # SQLAlchemy database instance
 from app.models.school import School  # School model for database interaction
-from app.server_side.Website.directory_manager import dm_create_school  # Function to manage school directories
+# Function to manage school directories
+from app.server_side.Website.directory_manager import dm_create_school
 
-from flask import Blueprint, redirect, render_template, request, url_for, session  # Flask web utilities
+# Flask web utilities
+from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import login_user, current_user  # User session management
 
 # Initialize the Blueprint for authentication-related routes
@@ -25,33 +27,33 @@ def login():
         - If valid, logs in the user and redirects to the panel home.
         - Otherwise, redirects to an error notification page.
     """
-    # If the user is already logged in, redirect to the panel
+    # Redirect authenticated users to the dashboard
     if current_user.is_authenticated:
         return redirect(url_for('school_routes.panel_home'))
 
     if request.method == 'POST':
-        # Retrieve login form data
+        # Retrieve login credentials from the form
         given_school_code = request.form['username']
         given_manager_personal_code = request.form['password']
 
-        # Attempt to find the school using the provided code
-        school = School.query.filter(School.school_code == given_school_code).first()
+        # Query the database for the school
+        school = School.query.filter_by(school_code=given_school_code).first()
 
-        if school is None:
-            # School not found
+        if not school:
+            # School code not found
             session["show_error_notif"] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
-        # Check if the password matches
+        # Validate the manager's personal code
         if school.manager_personal_code == given_manager_personal_code:
             login_user(school, remember=True)
             return redirect(url_for('school_routes.panel_home'))
         else:
-            # Incorrect password
+            # Invalid personal code
             session["show_error_notif"] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
-    # Show login page for GET request
+    # Render the login page for GET requests
     return render_template('auth/login.html')
 
 
@@ -65,7 +67,7 @@ def signup():
 
     POST:
         - Collects data from the form and creates a new School record.
-        - Tries to commit it to the database.
+        - Attempts to commit it to the database.
         - If successful, also creates a corresponding directory for the school.
         - If there's a conflict (e.g., duplicate school code), redirects to an error page.
     """
@@ -90,22 +92,22 @@ def signup():
         )
 
         try:
-            # Attempt to add to the database
+            # Add the new school to the database
             db.session.add(new_school)
             db.session.commit()
 
-            # Create a directory for this school
+            # Create a directory for the school
             dm_create_school(school_code=school_code)
-        except:
-            # Likely a duplicate entry or DB error
+
+            # Notify the user of successful registration
+            session["show_error_notif"] = True
+            return redirect(url_for('auth_routes.notify_user'))
+        except Exception as e:
+            # Handle database errors (e.g., duplicate entries)
             session["show_error_notif"] = True
             return redirect(url_for('auth_routes.duplicated_school_info'))
 
-        # Inform the user of successful registration
-        session["show_error_notif"] = True
-        return redirect(url_for('auth_routes.notify_user'))
-
-    # Render signup form
+    # Render the signup form for GET requests
     return render_template('auth/signup.html')
 
 
@@ -114,11 +116,10 @@ def notify_user():
     """
     Displays a page that informs the user of their assigned username and password after registration.
 
-    If accessed without context (e.g., direct visit), it redirects to the login page.
+    Prevents direct access without context by checking the session flag.
     """
-    if not session.get('show_error_notif', False):
+    if not session.pop('show_error_notif', False):
         return redirect(url_for('auth_routes.login'))
-    session.pop('show_error_notif', None)
     return render_template('auth/notify_username_password.html')
 
 
@@ -127,11 +128,10 @@ def duplicated_school_info():
     """
     Shows an error page when a school code or personal code already exists during signup.
 
-    Prevents direct access without context.
+    Prevents direct access without context by checking the session flag.
     """
-    if not session.get('show_error_notif', False):
+    if not session.pop('show_error_notif', False):
         return redirect(url_for('auth_routes.signup'))
-    session.pop('show_error_notif', None)
     return render_template('auth/duplicated_school_info.html')
 
 
@@ -142,9 +142,8 @@ def unknown_school_info():
     - The provided school code does not exist, or
     - The manager personal code (password) is incorrect.
 
-    Prevents direct access without context.
+    Prevents direct access without context by checking the session flag.
     """
-    if not session.get('show_error_notif', False):
+    if not session.pop('show_error_notif', False):
         return redirect(url_for('auth_routes.signup'))
-    session.pop('show_error_notif', None)
     return render_template('auth/unknown_school_info.html')
