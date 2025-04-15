@@ -1,27 +1,28 @@
-/* General Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* General Styles */
 body {
-  background-color: #121212; /* Dark Background */
-  color: #E0E0E0; /* Light Text */
+  background-color: #121212;
+  color: #E0E0E0;
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
+  height: 100vh;
   margin: 0;
   padding: 0;
   text-align: center;
 }
 
-/* Navigation Bar */
+/* Navbar Styling */
 .navbar {
   align-items: center;
-  background: #1E1E1E; /* Soft Dark Grey */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
+  background: linear-gradient(135deg, #1E1E1E, #2C2C2C);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   display: flex;
+  flex-direction: row;
+  gap: 30px;
   justify-content: center;
   padding: 1rem 0;
   position: sticky;
@@ -30,74 +31,130 @@ body {
 }
 
 .nav-link {
-  border-radius: 5px;
-  color: #E0E0E0; /* Light Text */
+  color: #E0E0E0;
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 500;
   margin: 0 1.5rem;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   text-decoration: none;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  border-radius: 8px;
+  position: relative;
 }
 
 .nav-link:hover {
-  background-color: #4ECDC4; /* Accent Teal */
-  color: #121212; /* Dark Background */
+  background: linear-gradient(135deg, #4A90E2, #6FBFFF);
+  color: #121212;
 }
 
-/* Hero Section */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #4A90E2;
+  transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
 .hero {
-  background: linear-gradient(135deg, #1E1E1E, #2C2C2C); /* Soft Dark Grey to Muted Blue-Grey */
-  padding: 6rem 1rem;
+  background: linear-gradient(135deg, #1E1E1E, #2C2C2C);
+  padding: 8rem 1rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .hero-title {
-  color: #4ECDC4; /* Accent Teal */
-  font-size: 4.5rem;
+  color: #4A90E2;
+  font-size: 5rem;
   font-weight: bold;
   margin: 0;
-  text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+  text-shadow: 2px 2px 8px rgba(74, 144, 226, 0.5);
+  animation: fadeIn 2s ease-in-out;
 }
 
 .hero-subtitle {
-  color: #E0E0E0; /* Light Text */
-  font-size: 1.5rem;
+  color: #E0E0E0;
+  font-size: 1.75rem;
   margin-top: 1rem;
+  animation: slideUp 1.5s ease-in-out;
 }
 
-/* Content Section */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 .content {
-  margin: 2rem auto;
+  margin: 4rem auto;
   max-width: 800px;
   padding: 1rem;
 }
 
 .content-text {
-  color: #E0E0E0; /* Light Text */
-  font-size: 1.1rem;
+  color: #E0E0E0;
+  font-size: 1.2rem;
   line-height: 1.8;
   text-align: justify;
+  margin-bottom: 2rem;
 }
 
-/* Call-to-Action Button */
 .cta-button {
-  background: #4ECDC4; /* Accent Teal */
+  background: linear-gradient(135deg, #4A90E2, #6FBFFF);
   border: none;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
-  color: #121212; /* Dark Background */
+  border-radius: 10px;
+  box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+  color: #121212;
   cursor: pointer;
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: bold;
   margin-top: 1.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
   text-decoration: none;
-  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.2);
+  transition: left 0.5s ease-in-out;
+}
+
+.cta-button:hover::before {
+  left: 100%;
 }
 
 .cta-button:hover {
-  background-color: #B3C8CF; /* Pale Blue */
-  box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
+  box-shadow: 0 8px 16px rgba(74, 144, 226, 0.4);
+  transform: translateY(-2px);
 }
