@@ -83,26 +83,6 @@ body::after {
   font-weight: 500;
 }
 
-.go-to-home-btn {
-  align-items: center;
-  border-radius: 8px;
-  color: #E0E0E0;
-  cursor: pointer;
-  display: flex;
-  gap: 10px;
-  margin-top: auto;
-  padding: 10px 15px;
-  text-align: left;
-  text-decoration: none;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.go-to-home-btn:hover {
-  background-color: #B3C8CF;
-  color: #121212;
-  font-weight: 500;
-}
-
 .content-area {
   align-items: center;
   color: #E0E0E0;

@@ -1,14 +1,12 @@
-/* General Reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* General Styles */
 body {
-  background-color: #121212; /* Dark Background */
-  color: #E0E0E0; /* Light Text */
+  background-color: #121212;
+  color: #E0E0E0;
   display: flex;
   font-family: 'Inter', sans-serif;
   height: 100vh;
@@ -32,7 +30,7 @@ body::before {
   left: 20%;
   width: 500px;
   height: 500px;
-  background: rgba(74, 144, 226, 0.5); /* Vibrant blue */
+  background: rgba(74, 144, 226, 0.5);
 }
 
 body::after {
@@ -40,14 +38,14 @@ body::after {
   right: 20%;
   width: 500px;
   height: 500px;
-  background: rgba(179, 200, 207, 0.3); /* Pale blue */
+  background: rgba(179, 200, 207, 0.3);
 }
 
 /* Sidebar */
 .sidebar {
-  background: #1E1E1E; /* Soft Dark Grey */
+  background: #1E1E1E;
   border-radius: 8px;
-  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
+  box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;
@@ -62,7 +60,7 @@ body::after {
 .sidebar-item {
   align-items: center;
   border-radius: 8px;
-  color: #E0E0E0; /* Light Text */
+  color: #E0E0E0;
   cursor: pointer;
   display: flex;
   gap: 10px;
@@ -75,39 +73,20 @@ body::after {
 }
 
 .sidebar-item:hover {
-  background-color: #4A90E2; /* Vibrant blue */
-  color: #121212; /* Dark Background */
+  background-color: #4A90E2;
+  color: #121212;
   font-weight: 500;
 }
 
 .sidebar-item.active {
-  background-color: #4A90E2; /* Vibrant blue */
-  color: #121212; /* Dark Background */
+  background-color: #4A90E2;
+  color: #121212;
   font-weight: 500;
 }
 
-.go-to-home-btn {
-  border-radius: 8px;
-  color: #E0E0E0; /* Light Text */
-  cursor: pointer;
-  display: block;
-  margin-top: auto;
-  padding: 10px 15px;
-  text-align: left;
-  text-decoration: none;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.go-to-home-btn:hover {
-  background-color: #4ECDC4; /* Accent Teal */
-  color: #121212; /* Dark Background */
-  font-weight: 500;
-}
-
-/* Content Area */
 .content-area {
   align-items: center;
-  color: #E0E0E0; /* Light Text */
+  color: #E0E0E0;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
