@@ -10,12 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Notification Area -->
-    <div class="notification-area">
+    <div id="particles-js"></div>
+
+    <div class="notification-container">
         <h1 class="notification-title">OOPS!</h1>
-        <p class="notification-message">We can't find a teacher that matches this information.</p>
-        <p class="notification-message">Please try again!</p>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="notification-button">Got it!</a>
+        <p class="notification-text">We can't find a teacher that matches this information.</p>
+        <p class="notification-text">Please try again!</p>
+        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="notification-action">Got it!</a>
     </div>
+
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
 </body>
 </html>
