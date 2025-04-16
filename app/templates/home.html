@@ -6,38 +6,34 @@
     <title>SAP - Student Attention Platform</title>
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div id="top" aria-hidden="true"></div>
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <a href="{{ url_for('home_route.home') }}" class="nav-link">
-            <i class="fa-solid fa-house"></i> Home
-        </a>
-        <a href="{{ url_for('auth_routes.login') }}" class="nav-link">
-            <i class="fa-solid fa-user-lock"></i> School Management Panel
-        </a>
-        <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link">
-            <i class="fa-solid fa-download"></i> Downloads
-        </a>
-        <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link">
-            <i class="fa-solid fa-book-open"></i> Guide
-        </a>
-        <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link">
-            <i class="fa-solid fa-info-circle"></i> About Us
-        </a>
+        <div class="nav-links">
+            <a href="#top" class="nav-link"><i class="fas fa-home"></i> Home</a>            <a href="{{ url_for('auth_routes.login') }}" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Panel</a>
+            <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link"><i class="fas fa-download"></i> Downloads</a>
+            <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link"><i class="fas fa-book"></i> Guide</a>
+            <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <h1 class="hero-title">HELLO</h1>
-        <p class="hero-subtitle">Welcome to the Student Attention Platform</p>
+        <div class="hero-content">
+            <h1 class="hero-title">Enhance Learning Engagement</h1>
+            <p class="hero-subtitle">Advanced analytics for student attention in virtual classrooms</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
 
-    <section class="content">
-        <p class="content-text">
-            Here, our goal is to create an optimized experience for students and improve their attention accuracy in online classrooms. By using advanced technologies, we can simulate and provide precise analysis of student behavior. With this platform, you can gain a better understanding of student attention and achieve the best results in the online learning process using our tools.
-        </p>
-        <a href="{{ url_for('auth_routes.signup') }}" class="cta-button">Get Started</a>
-    </section>
+
+
+
 </body>
 </html>
