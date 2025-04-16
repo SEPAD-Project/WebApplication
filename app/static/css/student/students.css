@@ -4,11 +4,10 @@
     margin: 0;
     padding: 0;
 }
-
-/* General Styles */
+  
 body {
-    background-color: #121212; /* Dark Background */
-    color: #E0E0E0; /* Light Text */
+    background-color: #121212;
+    color: #E0E0E0;
     display: flex;
     font-family: 'Inter', sans-serif;
     height: 100vh;
@@ -16,72 +15,87 @@ body {
     overflow: hidden;
     padding: 0;
 }
-
-/* Sidebar */
+  
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    z-index: -1;
+}
+  
+body::before {
+    top: -10%;
+    left: 20%;
+    width: 500px;
+    height: 500px;
+    background: rgba(74, 144, 226, 0.5);
+}
+  
+body::after {
+    bottom: -10%;
+    right: 20%;
+    width: 500px;
+    height: 500px;
+    background: rgba(179, 200, 207, 0.3);
+}
+  
 .sidebar {
-    background: #1E1E1E; /* Soft Dark Grey */
+    background: #1E1E1E;
     border-radius: 8px;
-    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     flex-shrink: 0;
     height: 100vh;
     overflow-y: auto;
     padding: 20px 10px;
-    width: 200px;
-}
-
-.sidebar-item {
-    border-radius: 8px;
-    color: #E0E0E0; /* Light Text */
-    cursor: pointer;
-    display: block;
-    margin-bottom: 15px;
-    padding: 10px 15px;
-    text-align: left;
-    text-decoration: none;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.sidebar-item:hover {
-    background-color: #4ECDC4; /* Accent Teal */
-    color: #121212; /* Dark Background */
-    font-weight: 500;
-}
-
-.go-to-home-btn {
-    border-radius: 8px;
-    color: #E0E0E0; /* Light Text */
-    cursor: pointer;
-    display: block;
-    margin-top: auto;
-    padding: 10px 15px;
-    text-align: left;
-    text-decoration: none;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
-.go-to-home-btn:hover {
-    background-color: #4ECDC4; /* Accent Teal */
-    color: #121212; /* Dark Background */
-    font-weight: 500;
-}
-
-/* Content Area */
-.content-area {
+    width: 220px;
     align-items: center;
-    color: #E0E0E0; /* Light Text */
+}
+  
+.sidebar-item {
+    align-items: center;
+    border-radius: 8px;
+    color: #E0E0E0;
+    cursor: pointer;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+    width: 150px;
+}
+  
+.sidebar-item:hover {
+    background-color: #4A90E2;
+    color: #121212;
+    font-weight: 500;
+}
+  
+.sidebar-item.active {
+    background-color: #4A90E2;
+    color: #121212;
+    font-weight: 500;
+}
+  
+.content-area {
+    align-items: flex-start;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
     justify-content: flex-start;
     overflow-y: auto;
     padding: 20px;
-    text-align: center;
+    text-align: left;
+    width: calc(100% - 220px);
 }
-
-/* Header Section */
+  
 .header {
     align-items: center;
     display: flex;
@@ -89,121 +103,100 @@ body {
     margin-bottom: 20px;
     width: 100%;
 }
-
+  
 .header h1 {
-    color: #4ECDC4; /* Accent Teal */
+    color: #4A90E2;
     font-size: 2.5rem;
     font-weight: bold;
     margin: 0;
-    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
+    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3);
 }
-
+  
 .button-group {
-    gap: 10px;
     display: flex;
-    flex-direction: row;
-    
-
+    gap: 10px;
 }
-
-/* Add Student Button */
-.add-student {
-    background: #4ECDC4; /* Accent Teal */
-    border: none;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
-    color: #121212; /* Dark Background */
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    padding: 10px 20px;
-    text-decoration: none;
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    width: 140px;
-}
-
-.add-student:hover {
-    background-color: #B3C8CF; /* Pale Blue */
-    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
-}
-
+  
+.add-student-button,
 .add-excel {
-    background: #4ECDC4; /* Accent Teal */
+    background: linear-gradient(135deg, #4A90E2, #6FBFFF);
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
-    color: #121212; /* Dark Background */
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
+    color: #121212;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     padding: 10px 20px;
+    text-align: center;
     text-decoration: none;
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    width: 160px;
+    transition: all 0.3s ease-in-out;
 }
-
+  
+.add-student-button:hover,
 .add-excel:hover {
-    background-color: #B3C8CF; /* Pale Blue */
-    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
+    background: linear-gradient(135deg, #6FBFFF, #B3C8CF);
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3);
 }
-
-/* Search Section */
+  
 .search-section {
     align-items: center;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 20px;
     width: 100%;
 }
-
+  
 .search-form {
     align-items: center;
     display: flex;
 }
-
-#search-query {
-    background-color: #1E1E1E; /* Soft Dark Grey */
-    border: 1px solid #4ECDC4; /* Accent Teal */
+  
+.search-input {
+    background-color: #1E1E1E;
+    border: 1px solid #4A90E2;
     border-radius: 8px;
-    color: #E0E0E0; /* Light Text */
+    box-sizing: border-box;
+    color: #E0E0E0;
     font-size: 1rem;
     height: 40px;
-    padding: 0 15px;
-    transition: border-color 0.3s ease-in-out;
-    width: 250px;
-}
-
-#search-query:focus {
-    border-color: #B3C8CF; /* Pale Blue */
     outline: none;
+    padding: 0 15px;
+    transition: all 0.3s ease-in-out;
+    width: 300px;
 }
-
-.search-form button {
-    background: #4ECDC4; /* Accent Teal */
+  
+.search-input:focus {
+    border-color: #B3C8CF;
+}
+  
+.search-button {
+    background: linear-gradient(135deg, #4A90E2, #6FBFFF);
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
-    color: #121212; /* Dark Background */
+    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
+    color: #121212;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     height: 40px;
     margin-left: 10px;
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    width: 80px;
+    padding: 0 15px;
+    transition: all 0.3s ease-in-out;
 }
-
-.search-form button:hover {
-    background-color: #B3C8CF; /* Pale Blue */
-    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
+  
+.search-button:hover {
+    background: linear-gradient(135deg, #6FBFFF, #B3C8CF);
+    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3);
 }
-
-/* Student List */
+  
 .student-list {
-    background: #1E1E1E; /* Soft Dark Grey */
+    background: #1E1E1E;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Subtle Shadow */
-    flex-grow: 1;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     overflow-x: hidden;
     overflow-y: auto;
     padding: 20px;
@@ -212,25 +205,29 @@ body {
 
 .student-item {
     align-items: center;
-    background: #2C2C2C; /* Muted Blue-Grey */
+    background: #2C2C2C;
     border-radius: 8px;
     display: flex;
-    font-size: 1.1rem;
     justify-content: space-between;
-    margin-bottom: 10px;
     padding: 15px;
     position: relative;
+    transition: all 0.3s ease-in-out;
     width: 100%;
 }
 
+.student-item:hover {
+    background: #333333;
+}
+  
 .student-item p {
-    color: #E0E0E0; /* Light Text */
+    color: #E0E0E0;
+    font-size: 1rem;
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-
+  
 .student-item p:nth-child(2) {
     left: 50%;
     position: absolute;
@@ -239,27 +236,70 @@ body {
     width: auto;
     padding: 0 10px;
 }
-
-/* Action Buttons */
+  
 .action-buttons {
     display: flex;
     gap: 10px;
 }
 
-.action-button {
-    background: #4ECDC4; /* Accent Teal */
+.action-button{
+    width: 100px;
+    text-align: center;
+}
+
+.action-button.see {
+    background: linear-gradient(135deg, #4CAF50, #81C784);
     border: none;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3); /* Subtle Shadow */
-    color: #121212; /* Dark Background */
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+    color: #121212;
     cursor: pointer;
     font-size: 1rem;
     font-weight: bold;
     padding: 8px 15px;
-    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
 }
-
-.action-button:hover {
-    background-color: #B3C8CF; /* Pale Blue */
-    box-shadow: 0 6px 12px rgba(179, 200, 207, 0.3); /* Subtle Shadow */
+  
+.action-button.see:hover {
+    background: linear-gradient(135deg, #81C784, #A5D6A7);
+    box-shadow: 0 6px 12px rgba(139, 195, 74, 0.3);
+}
+  
+.action-button.edit {
+    background: linear-gradient(135deg, #4A90E2, #6FBFFF);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+    color: #121212;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 15px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+  
+.action-button.edit:hover {
+    background: linear-gradient(135deg, #6FBFFF, #B3C8CF);
+    box-shadow: 0 6px 12px rgba(100, 181, 246, 0.3);
+}
+  
+.action-button.remove {
+    background: linear-gradient(135deg, #F44336, #E57373);
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+    color: #121212;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 8px 15px;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+  
+.action-button.remove:hover {
+    background: linear-gradient(135deg, #E57373, #FF8A65);
+    box-shadow: 0 6px 12px rgba(229, 115, 115, 0.3);
 }

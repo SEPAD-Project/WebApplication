@@ -7,24 +7,31 @@
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/student/student_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">School Info</a>
-        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">Classes</a>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">Teachers</a>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">Students</a>
-    </div>
-
-    <!-- Content Area -->
     <div class="content-area">
         <div class="primary-info">
-            <p>Student Name: {{ data.student_name }}</p>
-            <p>Student Family: {{ data.student_family }}</p>
-            <p>Student National Code: {{ data.student_national_code }}</p>
-            <p>Student Password: {{ data.student_password }}</p>
+            <p class="data-item">
+                <i class="fa-solid fa-user"></i>
+                Student Name: {{ data.student_name }}
+            </p>
+            <p class="data-item">
+                <i class="fa-solid fa-user-tie"></i>
+                Student Family: {{ data.student_family }}
+            </p>
+            <p class="data-item">
+                <i class="fa-solid fa-id-card"></i>
+                Student National Code: {{ data.student_national_code }}
+            </p>
+            <p class="data-item">
+                <i class="fa-solid fa-lock"></i>
+                Student Password: {{ data.student_password }}
+            </p>
         </div>
     </div>
+
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
 </body>
 </html>

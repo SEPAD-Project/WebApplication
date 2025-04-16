@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duplicated Student Info - SAP</title>
+    <title>Duplicated School Info - SAP</title>
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/student/duplicated_student_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Notification Container -->
+    <div id="particles-js"></div>
+    
     <div class="notification-container">
         <h1 class="notification-title">OOPS!</h1>
-        <p class="notification-text">
-            Some of these values are already registered by your school.
-        </p>
-        <p class="notification-text">
-            Please try other values!
-        </p>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="notification-action">Got it!</a>
+        <p class="notification-text">Some of these values are already registered.</p>
+        <p class="notification-text">Please double-check your entries!</p>
+        <a href="{{ url_for('student_routes.add_student') }}" class="notification-action">Got it!</a>
     </div>
+
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
 </body>
 </html>
