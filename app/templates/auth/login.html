@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="particles-js"></div>
     <!-- Go Back Home Button -->
     <a href="{{ url_for('home_route.home') }}" class="back-button">Go Back Home</a>
 
@@ -24,7 +25,8 @@
             <a href="{{ url_for('auth_routes.signup') }}">Click here to sign up!</a>
         </p>
     </form>
-
+    
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>
