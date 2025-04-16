@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unknown Class Info - SAP</title>
+    <title>Unknown Student Info - SAP</title>
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/student/unknown_student_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Notification Container -->
+    <div id="particles-js"></div>
+
     <div class="notification-container">
         <h1 class="notification-title">OOPS!</h1>
         <p class="notification-text">
-            We can't find a student that matches this information.
+            We can't find any student that matches this information.
         </p>
         <p class="notification-text">
             Please try again!
         </p>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="notification-action">Got it!</a>
+        <a href="{{ url_for('class_routes.panel_classes') }}" class="notification-action">Got it!</a>
     </div>
+
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
 </body>
 </html>

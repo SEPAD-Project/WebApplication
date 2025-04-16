@@ -8,16 +8,23 @@
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/student/add_student.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Add Student Form -->
+    <div id="particles-js"></div>
+    
     <form method="POST" action="{{ url_for('student_routes.add_student') }}" class="add-student-form" enctype="multipart/form-data">
         <h1 class="form-title">Add Student</h1>
         <input type="text" id="student_name" name="student_name" placeholder="Student Name" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
         <input type="text" id="student_family" name="student_family" placeholder="Student Family" pattern="[A-Za-z\s]+" title="Should only contain letters and space" required>
         <input type="text" id="student_national_code" name="student_national_code" placeholder="Student National Code" pattern="[0-9]+" title="Should only contain numbers" required>
         <input type="text" id="student_password" name="student_password" placeholder="Student Password" pattern="[0-9]+" title="Should only contain numbers" required>
-        <input type="file" class="file_input" name="file_input" accept=".jpg,.jpeg,.png" required>
+
+        <div class="file-input-wrapper" name="zip-input">
+            <span class="file-input-label"><i class="fa-solid fa-upload file-input-icon"></i>Choose JPG File</span>
+            <input type="file" class="file-input-hidden" name="file_input" accept=".jpg" required>
+        </div>
+
         <select name="selected_class" class="select-field">
             {% for class in classes %}
             <option value="{{ class.class_code }}">{{ class.class_name }}</option>
@@ -25,11 +32,12 @@
         </select>
 
         <div class="button-group">
-            <button type="submit" class="action-button submit-btn">Add</button>
-            <a href='{{ url_for("student_routes.panel_students") }}'><button type="button" class="action-button cancel-btn">Cancel</button></a>
+            <button type="submit" class="action-button">Add</button>
+            <a href='{{ url_for("student_routes.panel_students") }}'><button type="button" class="cancel-button">Cancel</button></a>
         </div>
     </form>  
 
-    <script src="{{ url_for('static', filename='js/add_student.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
 </body>
 </html>

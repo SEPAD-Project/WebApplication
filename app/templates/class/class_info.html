@@ -7,41 +7,40 @@
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/class/class_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">School Info</a>
-        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">Classes</a>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">Teachers</a>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">Students</a>
-    </div>
-
-    <!-- Content Area -->
     <div class="content-area">
-        <!-- Class Information -->
-        <div class="class-info">
-            <h1>Class Primary Info</h1>
+        <div class="section-card class-info">
+            <div class="section-title">
+                <i class="fa-solid fa-chalkboard"></i> Class Primary Info
+            </div>
             <p>Class Name: {{ data.class_name }}</p>
             <p>Class Code: {{ data.class_code }}</p>
         </div>
 
-        <!-- Teachers Section -->
-        <div class="teachers-section">
-            <h1>Teachers</h1>
-            <div class="teacher-list">
+        <div class="section-card teachers-section">
+            <div class="section-title">
+                <i class="fa-solid fa-user-tie"></i> Teachers
+            </div>
+            <div class="list-container">
                 {% for teacher in teachers %}
-                <p>{{ teacher.teacher_name }} {{ teacher.teacher_family }}</p>
+                <div class="list-item">
+                    <i class="fa-solid fa-user"></i> {{ teacher.teacher_name }} {{ teacher.teacher_family }}
+                </div>
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Students Section -->
-        <div class="students-section">
-            <h1>Students</h1>
-            <div class="student-list">
+        <div class="section-card students-section">
+            <div class="section-title">
+                <i class="fa-solid fa-users"></i> Students
+            </div>
+            <div class="list-container">
                 {% for student in students %}
-                <p>{{ student.student_name }} {{ student.student_family }}</p>
+                <div class="list-item">
+                    <i class="fa-solid fa-user"></i> {{ student.student_name }} {{ student.student_family }}
+                </div>
                 {% endfor %}
             </div>
         </div>
