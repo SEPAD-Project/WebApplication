@@ -7,32 +7,45 @@
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/school/school_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <!-- Sidebar -->
     <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">School Info</a>
-        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">Classes</a>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">Teachers</a>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">Students</a>
-        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item">Analytics</a>
-        
-        <a href="{{ url_for('home_route.home') }}" class="go-to-home-btn">go to home</a>
+        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item active">
+            <i class="fa-solid fa-school"></i> School Info
+        </a>
+        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">
+            <i class="fa-solid fa-chalkboard"></i> Classes
+        </a>
+        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">
+            <i class="fa-solid fa-user-tie"></i> Teachers
+        </a>
+        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">
+            <i class="fa-solid fa-users"></i> Students
+        </a>
+        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item">
+            <i class="fa-solid fa-chart-line"></i> Analytics
+        </a>
+        <a href="{{ url_for('home_route.home') }}" class="go-to-home-btn">
+            <i class="fa-solid fa-house"></i> Go to Home
+        </a>
     </div>
 
     <!-- Content Area -->
     <div class="content-area">
         <div class="primary-info">
-            <p>School Name: {{ data.school_name }}</p>
-            <p>School Code: {{ data.school_code }}</p>
-            <p>Manager Personal Code: {{ data.manager_personal_code }}</p>
-            <p>Province: {{ data.province }}</p>
-            <p>City: {{ data.city }}</p>
+            <h2 style="color: #4A90E2; font-size: 1.5rem; margin-bottom: 15px;">Primary Information</h2>
+            <div class="data-item"><i class="fa-solid fa-building-columns"></i><span>School Name: {{ data.school_name }}</span></div>
+            <div class="data-item"><i class="fa-solid fa-hashtag"></i><span>School Code: {{ data.school_code }}</span></div>
+            <div class="data-item"><i class="fa-solid fa-id-badge"></i><span>Manager Personal Code: {{ data.manager_personal_code }}</span></div>
+            <div class="data-item"><i class="fa-solid fa-map-pin"></i><span>Province: {{ data.province }}</span></div>
+            <div class="data-item"><i class="fa-solid fa-city"></i><span>City: {{ data.city }}</span></div>
         </div>
         <div class="secondary-info">
-            <p>Classes Count: {{ cc }}</p>
-            <p>Teachers Count: {{ tc }}</p>
-            <p>Students Count: {{ sc }}</p>
+            <h2 style="color: #4A90E2; font-size: 1.5rem; margin-bottom: 15px;">Secondary Information</h2>
+            <div class="data-item"><i class="fa-solid fa-chalkboard"></i><span>Classes Count: {{ cc }}</span></div>
+            <div class="data-item"><i class="fa-solid fa-user-tie"></i><span>Teachers Count: {{ tc }}</span></div>
+            <div class="data-item"><i class="fa-solid fa-users"></i><span>Students Count: {{ sc }}</span></div>
         </div>
     </div>
 </body>
