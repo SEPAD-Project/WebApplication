@@ -1,6 +1,6 @@
 flask
 flask_sqlalchemy
-mysqlclient
+pymysql
 flask_login
 flask_limiter
 flask_compress
