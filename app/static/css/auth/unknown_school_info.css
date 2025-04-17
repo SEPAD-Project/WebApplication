@@ -1,12 +1,21 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+  
 body {
     align-items: center;
-    background-color: #121212;
+    background: linear-gradient(135deg, #121212, #1E1E1E);
     display: flex;
     font-family: 'Inter', sans-serif;
     height: 100vh;
     justify-content: center;
     margin: 0;
     text-align: center;
+    overflow: hidden;
+    position: relative;
+    padding: 20px;
 }
 
 #particles-js {
@@ -15,68 +24,246 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
-  }
+    z-index: 0;
+    opacity: 0.5;
+}
 
 .notification-container {
     align-items: center;
-    background-color: #1E1E1E;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    padding: 40px;
-    width: 500px;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    z-index: 1;
+    position: relative;
+    overflow: hidden;
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.notification-container::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 107, 107, 0.1) 0%, rgba(255, 107, 107, 0) 70%);
+    z-index: -1;
+    animation: rotate 15s linear infinite;
+}
+
+.warning-icon {
+    font-size: 3.5rem;
+    color: #FF6B6B;
+    margin-bottom: 15px;
+    text-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
 }
 
 .notification-title {
-    color: #4A90E2;
-    font-size: 2.5rem;
+    color: #FF6B6B;
+    font-size: 1.8rem;
     font-weight: bold;
     margin-bottom: 20px;
-    text-shadow: 2px 2px 8px rgba(74, 144, 226, 0.5);
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.3);
 }
 
-.notification-text {
+.error-details {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.error-message {
+    background: rgba(255, 107, 107, 0.1);
+    border-left: 3px solid #FF6B6B;
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: left;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.error-message i {
+    color: #FF6B6B;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.error-message p {
+    color: #E0E0E0;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.possible-reasons {
+    text-align: left;
+}
+
+.possible-reasons h3 {
     color: #E0E0E0;
     font-size: 1.1rem;
-    margin-bottom: 5px;
-    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 500;
 }
 
-.notification-action {
-    background: linear-gradient(135deg, #4A90E2, #6FBFFF);
-    border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
-    color: #121212;
+.possible-reasons ul {
+    list-style-type: none;
+}
+
+.possible-reasons li {
+    color: #E0E0E0;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+.possible-reasons i {
+    color: #FF6B6B;
+    font-size: 0.9rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.retry-button, .signup-button {
+    border-radius: 12px;
     cursor: pointer;
-    display: inline-block;
-    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.95rem;
     font-weight: bold;
-    margin-top: 1.5rem;
-    padding: 1rem 2rem;
+    padding: 12px 20px;
     text-decoration: none;
     transition: all 0.3s ease-in-out;
     position: relative;
     overflow: hidden;
+    z-index: 1;
+    min-width: 140px;
 }
 
-.notification-action::before {
+.retry-button {
+    background: rgba(44, 44, 44, 0.7);
+    border: 1px solid rgba(78, 205, 196, 0.3);
+    color: #4ECDC4;
+}
+
+.signup-button {
+    background: linear-gradient(135deg, rgba(78, 205, 196, 0.9), rgba(58, 168, 161, 0.9));
+    color: #121212;
+}
+
+.retry-button::before, .signup-button::before {
     content: '';
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    transition: left 0.5s ease-in-out;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease-in-out;
+    z-index: -1;
 }
-  
-.notification-action:hover::before {
+
+.retry-button:hover::before, .signup-button:hover::before {
     left: 100%;
 }
-  
-.notification-action:hover {
-    box-shadow: 0 8px 16px rgba(74, 144, 226, 0.4);
+
+.retry-button:hover {
+    background: rgba(44, 44, 44, 0.9);
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.2);
     transform: translateY(-2px);
+}
+
+.signup-button:hover {
+    background: linear-gradient(135deg, rgba(78, 205, 196, 1), rgba(58, 168, 161, 1));
+    box-shadow: 0 0 15px rgba(78, 205, 196, 0.4);
+    transform: translateY(-2px);
+}
+
+.support-link {
+    font-size: 0.85rem;
+    color: #B0B0B0;
+}
+
+.support-link a {
+    color: #4ECDC4;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.support-link a:hover {
+    color: #3aa8a1;
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .notification-container {
+        padding: 25px 20px;
+    }
+    
+    .warning-icon {
+        font-size: 3rem;
+    }
+    
+    .notification-title {
+        font-size: 1.6rem;
+    }
+    
+    .error-message p, .possible-reasons li {
+        font-size: 0.85rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .retry-button, .signup-button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .notification-title {
+        font-size: 1.5rem;
+    }
+    
+    .error-message {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 }
