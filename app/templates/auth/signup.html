@@ -13,17 +13,34 @@
     <div id="particles-js"></div>
 
     <!-- Back to Home Button -->
-    <a href="{{ url_for('home_route.home') }}" class="back-button">Go Back Home</a>
+    <a href="{{ url_for('home_route.home') }}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Go Back Home
+    </a>
 
     <!-- Signup Form -->
     <form method="POST" action="{{ url_for('auth_routes.signup') }}" class="signup-form">
         <h1 class="form-title">Signup</h1>
-        <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, space, and dash">
-        <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
-        <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" pattern="[0-9]+" title="Should only contain numbers" required>
-        <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
-        <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
-        <input type="text" id="email" name="email" placeholder="Email" required>
+        <div class="input-container">
+            <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, space, and dash">
+        </div>
+        <div class="input-container">
+            <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
+        </div>
+        <div class="input-container">
+            <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" pattern="[0-9]+" title="Should only contain numbers" required>
+        </div>
+        <div class="input-container">
+            <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+        </div>
+        <div class="input-container">
+            <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+        </div>
+        <div class="input-container">
+            <input type="text" id="email" name="email" placeholder="Email" required>
+        </div>
         <button type="submit" class="submit-button">Signup</button>
         <p class="form-footer">
             Have an account? 
