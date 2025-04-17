@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', function() {
             "line_linked": {
                 "enable": true,
                 "distance": 150,
-                "color": "#3aa8a1",
-                "opacity": 0.2,
+                "color": "#4ECDC4",
+                "opacity": 0.4,
                 "width": 1
             },
             "move": {
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 "grab": {
                     "distance": 140,
                     "line_linked": {
-                        "opacity": 0.5
+                        "opacity": 1
                     }
                 },
                 "bubble": {

@@ -10,25 +10,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+    <!-- بخش پارتیکل‌ها -->
     <div id="particles-js"></div>
+    
+    <!-- سایدبار کامل با تمام دکمه‌ها -->
     <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item" data-active="{{ 'true' if active_page == 'school_info' else 'false' }}">
+        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
-        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item" data-active="{{ 'true' if active_page == 'classes' else 'false' }}">
+        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">
             <i class="fa-solid fa-chalkboard"></i>
             <span class="sidebar-text">Classes</span>
         </a>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item" data-active="{{ 'true' if active_page == 'teachers' else 'false' }}">
+        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">
             <i class="fa-solid fa-user-tie"></i>
             <span class="sidebar-text">Teachers</span>
         </a>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item" data-active="{{ 'true' if active_page == 'students' else 'false' }}">
+        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">
             <i class="fa-solid fa-users"></i>
             <span class="sidebar-text">Students</span>
         </a>
-        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item" data-active="{{ 'true' if active_page == 'analytics' else 'false' }}">
+        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item">
             <i class="fa-solid fa-chart-line"></i>
             <span class="sidebar-text">Analytics</span>
         </a>
@@ -38,14 +41,51 @@
         </a>
     </div>
     
+    <!-- محتوای اصلی -->
     <div class="content-area">
-        <h1 class="content-title">Welcome!</h1>
-        <p class="content-description">
-            Here is the school panel. Enjoy our features.
-        </p>
+        <div class="glass-morphism">
+            <h1 class="content-title">Welcome!</h1>
+            <div class="divider"></div>
+            <p class="content-description">
+                Here is the school panel. Enjoy our features.
+            </p>
+        </div>
     </div>
 
+    <!-- اسکریپت‌های پارتیکل -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="{{ url_for('static', filename='js/particle.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#4ECDC4" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#4ECDC4",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1.5,
+                        "direction": "none",
+                        "random": true,
+                        "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "events": {
+                        "onhover": { "enable": true, "mode": "grab" },
+                        "onclick": { "enable": true, "mode": "push" }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
