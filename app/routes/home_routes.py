@@ -25,3 +25,8 @@ def coming_soon():
     a feature or page is under development.
     """
     return render_template('coming_soon.html')
+
+
+@bp.route('/contact')
+def contact():
+    return render_template('contact.html')
