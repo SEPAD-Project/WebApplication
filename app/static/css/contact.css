@@ -268,39 +268,47 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    body {
+        padding: 0;
+        display: block; 
+        overflow-y: auto; 
+        height: 100vh;
+    }
+
     .glass-container {
         flex-direction: column;
-        width: 95%;
-    }
-    
-    .contact-card {
-        padding: 30px;
-    }
-    
-    .contact-info {
         width: 100%;
-        padding: 25px 30px;
+        min-height: auto;
+        border-radius: 0;
+        margin: 0;
+        overflow: visible;
     }
-    
-    .info-item {
-        margin-bottom: 20px;
+
+    .contact-card {
+        min-height: 100vh; 
+        padding: 60px 25px 40px;
+        justify-content: center;
+    }
+
+    .contact-info {
+        min-height: 100vh;
+        width: 100%;
+        padding: 60px 25px 40px;
+        border-top: none; 
+    }
+
+    .social-links {
+        margin-top: 50px;
     }
 }
 
 @media (max-width: 480px) {
-    .contact-card {
-        padding: 25px;
+    .contact-card, 
+    .contact-info {
+        padding: 50px 20px 30px;
     }
     
     .contact-header h1 {
-        font-size: 1.5rem;
-    }
-    
-    .contact-form {
-        gap: 20px;
-    }
-    
-    .submit-btn {
-        padding: 10px 20px;
+        font-size: 1.8rem; 
     }
 }
