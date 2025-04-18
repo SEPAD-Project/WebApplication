@@ -10,37 +10,120 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
-    <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">
-            <i class="fa-solid fa-school"></i> School Info
-        </a>
-        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">
-            <i class="fa-solid fa-chalkboard"></i> Classes
-        </a>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">
-            <i class="fa-solid fa-user-tie"></i> Teachers
-        </a>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">
-            <i class="fa-solid fa-users"></i> Students
-        </a>
-        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item active">
-            <i class="fa-solid fa-chart-line"></i> Analytics
-        </a>
-        <a href="{{ url_for('home_route.home') }}" class="sidebar-item">
-            <i class="fa-solid fa-house"></i> Go to Home
-        </a>
+    <div id="particles-js"></div>
+    
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
     
+    <div class="overlay"></div>
+    
+    <div class="sidebar">
+        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">
+            <i class="fa-solid fa-school"></i>
+            <span class="sidebar-text">School Info</span>
+        </a>
+        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">
+            <i class="fa-solid fa-chalkboard"></i>
+            <span class="sidebar-text">Classes</span>
+        </a>
+        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">
+            <i class="fa-solid fa-user-tie"></i>
+            <span class="sidebar-text">Teachers</span>
+        </a>
+        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">
+            <i class="fa-solid fa-users"></i>
+            <span class="sidebar-text">Students</span>
+        </a>
+        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item" data-active="true">
+            <i class="fa-solid fa-chart-line"></i>
+            <span class="sidebar-text">Analytics</span>
+        </a>
+        <a href="{{ url_for('home_route.home') }}" class="sidebar-item">
+            <i class="fa-solid fa-house"></i>
+            <span class="sidebar-text">Go to Home</span>
+        </a>
+    </div>
+
     <div class="content-area">
-        <div class="button-group">
-            <a href="{{ url_for('analytics_routes.compare_students') }}" class="analytics-button">Compare Students</a>
-            <a href="{{ url_for('analytics_routes.compare_classes') }}" class="analytics-button">Compare Classes</a>
-            <a href="{{ url_for('analytics_routes.compare_teachers') }}" class="analytics-button">Compare Teachers</a>
-            <a href="{{ url_for('analytics_routes.student_accuracy_week') }}" class="analytics-button">Student Accuracy Over Week</a>
-            <a href="{{ url_for('analytics_routes.student_accuracy_by_lesson') }}" class="analytics-button"">Student Accuracy In Each Lesson</a>
+        <div class="glass-card header-section">
+            <div class="header">
+                <h1>Analytics Menu</h1>
+            </div>
+        </div>
+
+        <div class="glass-card analytics-container">
+            <div class="button-group">
+                <a href="{{ url_for('analytics_routes.compare_students') }}" class="analytics-button">Compare Students</a>
+                <a href="{{ url_for('analytics_routes.compare_classes') }}" class="analytics-button">Compare Classes</a>
+                <a href="{{ url_for('analytics_routes.compare_teachers') }}" class="analytics-button">Compare Teachers</a>
+                <a href="{{ url_for('analytics_routes.student_accuracy_week') }}" class="analytics-button">Student Accuracy Over Week</a>
+                <a href="{{ url_for('analytics_routes.student_accuracy_by_lesson') }}" class="analytics-button">Student Accuracy In Each Lesson</a>
+            </div>
         </div>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+            
+            menuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 640) {
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#4ECDC4" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#4ECDC4",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1.5,
+                        "direction": "none",
+                        "random": true,
+                        "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "events": {
+                        "onhover": { "enable": true, "mode": "grab" },
+                        "onclick": { "enable": true, "mode": "push" }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
