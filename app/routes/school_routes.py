@@ -50,12 +50,10 @@ def panel_school_info():
         teachers_count = 0  # Safeguard against malformed data
 
     # Count the number of classes associated with the school
-    classes_count = Class.query.filter_by(
-        school_code=school.school_code).count()
+    classes_count = len(school.classes)
 
     # Count the number of students enrolled in the school
-    students_count = Student.query.filter_by(
-        school_code=school.school_code).count()
+    students_count = len(school.students)
 
     # Render the school_info.html template with all calculated data
     return render_template(
