@@ -331,7 +331,6 @@ body::after {
     width: 100%;
     background-color: var(--primary-color);
     border-radius: 3px;
-    /* حذف transition */
   }
   
 
