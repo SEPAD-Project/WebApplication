@@ -170,7 +170,11 @@ body::after {
   max-width: 450px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
+.glass-card {
+  height: 380px; 
+  display: flex;
+  flex-direction: column;
+}
 .glass-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
@@ -233,7 +237,18 @@ body::after {
   gap: 20px;
   margin-top: 15px;
 }
+.secondary-info .card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+}
 
+.stats-grid {
+  margin-top: 0;
+  margin-bottom: 0;
+  align-self: center; 
+}
 .stat-item {
   display: flex;
   flex-direction: column;
