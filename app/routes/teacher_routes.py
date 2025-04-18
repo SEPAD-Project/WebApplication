@@ -19,16 +19,7 @@ def panel_teachers():
     """
     school = School.query.filter_by(
         school_code=current_user.school_code).first()
-    if not school:
-        return redirect(url_for("teacher_routes.wrong_teacher_info"))
-
-    # Retrieve teachers from the school's teacher list
-    teachers = []
-    for national_code in eval(school.teachers):
-        teacher = Teacher.query.filter_by(
-            teacher_national_code=national_code).first()
-        if teacher:
-            teachers.append(teacher)
+    teachers = school.teachers
 
     # Filter teachers based on the query (if provided)
     query = request.args.get('q')
@@ -66,33 +57,25 @@ def add_teacher():
 
         # Add selected classes to the teacher's class list
         selected_classes = request.form.getlist("selected_classes")
+
         if selected_classes:
             school = School.query.filter_by(
                 school_code=current_user.school_code).first()
-            teachers = eval(school.teachers)
-            teachers.append(teacher.teacher_national_code)
-            school.teachers = str(teachers)
+            school.teachers.append(teacher)
 
-            for class_code in selected_classes:
-                # Add the class code to the teacher's class list
-                teacher_classes = eval(teacher.teacher_classes)
-                teacher_classes.append(class_code)
-                teacher.teacher_classes = str(teacher_classes)
+        for class_code in selected_classes:
+            class_ = Class.query.filter_by(class_code=class_code).first()
+            if teacher not in class_.teachers:
+                class_.teachers.append(teacher)
 
-                # Add the teacher's national code to the class's teacher list
-                class_ = Class.query.filter_by(class_code=class_code).first()
-                class_teachers = eval(class_.teachers)
-                class_teachers.append(entry_national_code)
-                class_.teachers = str(class_teachers)
-
-            db.session.commit()
+        db.session.commit()
 
         return redirect(url_for("teacher_routes.panel_teachers"))
 
     # Render the form with available classes
-    school_classes = Class.query.filter_by(
-        school_code=current_user.school_code).all()
-    return render_template("teacher/add_teacher.html", classes=school_classes)
+    school = School.query.filter_by(
+        school_code=current_user.school_code).first()
+    return render_template("teacher/add_teacher.html", classes=school.classes)
 
 
 @bp.route("/panel/teachers/remove_teacher/<teacher_national_code>", methods=['POST', 'GET'])
@@ -102,44 +85,22 @@ def remove_teacher(teacher_national_code):
     Handles removing a teacher from the school in the panel.
     - Removes the teacher from all associated classes and the school's teacher list.
     """
+    school = School.query.filter_by(
+        school_code=current_user.school_code).first()
     teacher = Teacher.query.filter_by(
         teacher_national_code=teacher_national_code).first()
-    if not teacher:
+    if not teacher or not teacher in school.teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
     school = School.query.filter_by(
         school_code=current_user.school_code).first()
-    teachers = eval(school.teachers)
 
-    # Ensure the teacher is in the school's list
-    if teacher.teacher_national_code not in teachers:
-        session["show_error_notif"] = True
-        return redirect(url_for('teacher_routes.wrong_teacher_info'))
+    for class_ in school.classes:
+        if teacher in class_.teachers:
+            class_.teachers.remove(teacher)
 
-    # Remove the teacher's classes
-    school_code = generate_class_code(current_user.school_code, '')
-    teacher_classes = eval(teacher.teacher_classes)
-    for class_code in teacher_classes:
-        if class_code.startswith(school_code):
-            teacher_classes.remove(class_code)
-
-    teacher.teacher_classes = str(teacher_classes)
-
-    # Remove the teacher from each class's teacher list
-    classes = Class.query.filter_by(school_code=current_user.school_code).all()
-    for class_ in classes:
-        teachers = eval(class_.teachers)
-        try:
-            teachers.remove(teacher_national_code)
-        except ValueError:
-            continue
-        class_.teachers = str(teachers)
-
-    # Remove the teacher from the school's teacher list
-    school_teachers = eval(school.teachers)
-    school_teachers.remove(teacher.teacher_national_code)
-    school.teachers = str(school_teachers)
+    school.teachers.remove(teacher)
 
     db.session.commit()
     return redirect(url_for('teacher_routes.panel_teachers'))
@@ -153,53 +114,32 @@ def edit_teacher(teacher_national_code):
     - POST: Updates the teacher's class assignments.
     - GET: Renders the form for editing the teacher.
     """
-    teacher = Teacher.query.filter_by(
-        teacher_national_code=teacher_national_code).first()
-    if not teacher:
-        session["show_error_notif"] = True
-        return redirect(url_for('teacher_routes.wrong_teacher_info'))
-
     school = School.query.filter_by(
         school_code=current_user.school_code).first()
-    teachers = eval(school.teachers)
-
-    # Ensure the teacher is in the school's list
-    if teacher.teacher_national_code not in teachers:
+    teacher = Teacher.query.filter_by(
+        teacher_national_code=teacher_national_code).first()
+    if not teacher or not teacher in school.teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
     if request.method == 'POST':
         # Update the teacher's class assignments
         new_classes = request.form.getlist('selected_classes')
-        teacher_classes = eval(teacher.teacher_classes)
-        school_code = generate_class_code(current_user.school_code, '')
 
-        # Remove the teacher from all previous classes
-        for class_code in teacher_classes:
-            if class_code.startswith(school_code):
-                class_ = Class.query.filter_by(class_code=class_code).first()
-                class_teachers = eval(class_.teachers)
-                class_teachers.remove(teacher_national_code)
-                class_.teachers = str(class_teachers)
+        for class_ in school.classes:
+            if teacher in class_.teachers:
+                class_.teachers.remove(teacher)
 
         # Add the teacher to the new classes
         for class_code in new_classes:
             class_ = Class.query.filter_by(class_code=class_code).first()
-            class_teachers = eval(class_.teachers)
-            class_teachers.append(teacher_national_code)
-            class_.teachers = str(class_teachers)
-
-        # Update the teacher's class list
-        teacher_classes.clear()
-        teacher_classes.extend(new_classes)
-        teacher.teacher_classes = str(teacher_classes)
+            class_.teachers.append(teacher)
 
         db.session.commit()
         return redirect(url_for('teacher_routes.panel_teachers'))
 
     # Render the form with available classes
-    classes = Class.query.filter_by(school_code=current_user.school_code).all()
-    return render_template("teacher/edit_teacher.html", classes=classes, teacher=teacher)
+    return render_template("teacher/edit_teacher.html", classes=school.classes, teacher=teacher)
 
 
 @bp.route("/panel/teachers/teacher_info/<teacher_national_code>")
@@ -213,7 +153,7 @@ def teacher_info(teacher_national_code):
     teacher = Teacher.query.filter_by(
         teacher_national_code=teacher_national_code).first()
 
-    if not teacher or teacher.teacher_national_code not in eval(school.teachers):
+    if not teacher in school.teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
