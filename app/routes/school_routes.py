@@ -1,7 +1,5 @@
 # Import necessary models from the application
-from app.models._class import Class  # Represents classes in a school
-from app.models.school import School  # Represents a school
-from app.models.student import Student  # Represents students
+from app.models.models import Class, School, Student
 
 # Import required Flask modules
 from flask import Blueprint, render_template

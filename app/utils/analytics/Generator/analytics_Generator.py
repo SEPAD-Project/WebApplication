@@ -5,10 +5,7 @@ import glob
 from flask_login import current_user
 
 # Model imports
-from app.models._class import Class
-from app.models.school import School
-from app.models.student import Student
-from app.models.teacher import Teacher
+from app.models.models import *
 
 # Utility imports
 from app.utils.excel_reading import schedule_extraction

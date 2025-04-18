@@ -1,8 +1,6 @@
 # Import necessary modules
 from app import db
-from app.models._class import Class
-from app.models.school import School
-from app.models.teacher import Teacher
+from app.models.models import Class, School, Teacher
 from app.utils.generate_class_code import generate_class_code
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required

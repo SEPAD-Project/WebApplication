@@ -9,8 +9,7 @@ from flask_login import current_user, login_required
 
 # Internal module imports
 from app import db  # SQLAlchemy instance for database operations
-from app.models._class import Class  # Importing the Class model
-from app.models.student import Student  # Importing the Student model
+from app.models.models import Student, Class
 from app.server_side.Website.directory_manager import (
     dm_create_student,
     dm_edit_student,

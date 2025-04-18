@@ -1,8 +1,6 @@
 # Import necessary modules and components
 from app import db
-from app.models._class import Class
-from app.models.student import Student
-from app.models.teacher import Teacher
+from app.models.models import Student, Teacher, Class
 from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
 from app.server_side.Website.directory_manager import (
