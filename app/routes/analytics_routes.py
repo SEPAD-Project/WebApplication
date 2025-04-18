@@ -8,8 +8,7 @@ from app.utils.analytics.GUI.analytics_GUI import *
 
 # Import models and utilities
 from app.utils.generate_class_code import reverse_class_code
-from app.models.school import School
-from app.models.student import Student
+from app.models.models import School, Student
 from app.server_side.Website.send_email import send_styled_email
 
 

@@ -52,7 +52,7 @@ def create_app():
         return render_template('404.html')
 
     # Define the user loader for Flask-Login (loads user from database)
-    from app.models.school import School
+    from app.models.models import School
     @login_manager.user_loader
     def load_user(user_id):
         # Query the database to load the user by their ID

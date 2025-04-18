@@ -1,7 +1,5 @@
 # Import necessary models from the application
-from app.models._class import Class  # Represents classes in a school
-from app.models.school import School  # Represents a school
-from app.models.student import Student  # Represents students
+from app.models.models import Class, School, Student
 
 # Import required Flask modules
 from flask import Blueprint, render_template
@@ -52,12 +50,10 @@ def panel_school_info():
         teachers_count = 0  # Safeguard against malformed data
 
     # Count the number of classes associated with the school
-    classes_count = Class.query.filter_by(
-        school_code=school.school_code).count()
+    classes_count = len(school.classes)
 
     # Count the number of students enrolled in the school
-    students_count = Student.query.filter_by(
-        school_code=school.school_code).count()
+    students_count = len(school.students)
 
     # Render the school_info.html template with all calculated data
     return render_template(

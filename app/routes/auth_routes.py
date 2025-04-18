@@ -1,6 +1,6 @@
 # Import necessary modules
 from app import db  # SQLAlchemy database instance
-from app.models.school import School  # School model for database interaction
+from app.models.models import School  # School model for database interaction
 # Function to manage school directories
 from app.server_side.Website.directory_manager import dm_create_school
 
@@ -87,7 +87,6 @@ def signup():
             manager_personal_code=manager_personal_code,
             province=province,
             city=city,
-            teachers="[]",  # Initialize empty list of teachers
             email=email
         )
 

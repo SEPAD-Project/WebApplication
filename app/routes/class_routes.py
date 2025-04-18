@@ -1,8 +1,6 @@
 # Import necessary modules and components
 from app import db
-from app.models._class import Class
-from app.models.student import Student
-from app.models.teacher import Teacher
+from app.models.models import Student, Teacher, Class, School
 from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
 from app.server_side.Website.directory_manager import (
@@ -25,14 +23,14 @@ def panel_classes():
     """
     # Retrieve search query from URL parameters
     query = request.args.get('q')
+    school = School.query.filter(School.id==current_user.id).first()
     if not query:
         # Show all classes for the current user's school if no search term is provided
-        classes = Class.query.filter_by(
-            school_code=current_user.school_code).all()
+        classes = school.classes
     else:
         # Filter classes by name or code using the search term
         classes = Class.query.filter(
-            (Class.school_code == current_user.school_code) &
+            (Class.school_id == current_user.school_id) &
             ((Class.class_name.ilike(f'%{query}%')) | (
                 Class.class_code.ilike(f'%{query}%')))
         ).all()
@@ -59,8 +57,7 @@ def add_class():
         new_class = Class(
             class_name=class_name,
             class_code=class_code,
-            school_code=school_code,
-            teachers="[]"  # Initialize with no teachers
+            school_id=current_user.id,
         )
 
         try:
@@ -144,8 +141,7 @@ def add_from_excel():
             new_class = Class(
                 class_name=cls['name'],
                 class_code=cls['code'],
-                school_code=current_user.school_code,
-                teachers="[]"
+                school_id=current_user.id,
             )
             db.session.add(new_class)
             dm_create_class(current_user.school_code, cls['name'])
@@ -178,21 +174,6 @@ def edit_class(class_name):
         # Update class details
         cls.class_code = new_code
         cls.class_name = new_name
-
-        # Update all students in this class
-        students = Student.query.filter_by(class_code=old_code).all()
-        for student in students:
-            student.class_code = new_code
-
-        # Update class code in each teacher's class list
-        teachers_national_codes = eval(cls.teachers)
-        for national_code in teachers_national_codes:
-            teacher = Teacher.query.filter_by(
-                teacher_national_code=national_code).first()
-            teacher_classes = eval(teacher.teacher_classes)
-            index = teacher_classes.index(old_code)
-            teacher_classes[index] = new_code
-            teacher.teacher_classes = str(teacher_classes)
 
         try:
             # Commit changes and update the class directory
@@ -234,20 +215,6 @@ def remove_class(class_name):
     cls = Class.query.filter_by(class_code=class_code).first()
 
     if cls:
-        # Delete all students in this class
-        students = Student.query.filter_by(class_code=class_code).all()
-        for student in students:
-            db.session.delete(student)
-
-        # Remove this class from each teacher's class list
-        teachers_national_codes = eval(cls.teachers)
-        for national_code in teachers_national_codes:
-            teacher = Teacher.query.filter_by(
-                teacher_national_code=national_code).first()
-            teacher_classes = eval(teacher.teacher_classes)
-            teacher_classes.remove(class_code)
-            teacher.teacher_classes = str(teacher_classes)
-
         # Delete the class and commit changes
         db.session.delete(cls)
         db.session.commit()
@@ -273,9 +240,8 @@ def class_info(class_name):
         return redirect(url_for('class_routes.unknown_class_info'))
 
     # Fetch teachers and students associated with the class
-    teachers = [Teacher.query.filter_by(
-        teacher_national_code=code).first() for code in eval(cls.teachers)]
-    students = Student.query.filter_by(class_code=cls.class_code).all()
+    teachers = cls.teachers
+    students = cls.students
 
     return render_template('class/class_info.html', data=cls, teachers=teachers, students=students)
 
