@@ -87,7 +87,6 @@ def signup():
             manager_personal_code=manager_personal_code,
             province=province,
             city=city,
-            teachers="[]",  # Initialize empty list of teachers
             email=email
         )
 
