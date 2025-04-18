@@ -38,6 +38,14 @@
             <span class="sidebar-text">Go to Home</span>
         </a>
     </div>
+    
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="overlay"></div>
 
     <div class="content-area">
         <div class="glass-card primary-info">
@@ -107,13 +115,59 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+            
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            overlay.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                sidebar.classList.remove('active');
+                this.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 640) {
+                        menuToggle.classList.remove('active');
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
             particlesJS('particles-js', {
                 "particles": {
-                    "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
-                    "color": { "value": "#4ECDC4" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.5, "random": true },
-                    "size": { "value": 3, "random": true },
+                    "number": { 
+                        "value": 60, 
+                        "density": { 
+                            "enable": true, 
+                            "value_area": 800 
+                        } 
+                    },
+                    "color": { 
+                        "value": "#4ECDC4" 
+                    },
+                    "shape": { 
+                        "type": "circle" 
+                    },
+                    "opacity": { 
+                        "value": 0.5, 
+                        "random": true 
+                    },
+                    "size": { 
+                        "value": 3, 
+                        "random": true 
+                    },
                     "line_linked": {
                         "enable": true,
                         "distance": 150,
@@ -131,12 +185,32 @@
                 },
                 "interactivity": {
                     "events": {
-                        "onhover": { "enable": true, "mode": "grab" },
-                        "onclick": { "enable": true, "mode": "push" }
+                        "onhover": { 
+                            "enable": true, 
+                            "mode": "grab" 
+                        },
+                        "onclick": { 
+                            "enable": true, 
+                            "mode": "push" 
+                        }
                     }
                 }
             });
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 640 && sidebar.classList.contains('active')) {
+                    menuToggle.classList.remove('active');
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                if (typeof pJSDom !== 'undefined' && pJSDom.length > 0) {
+                    pJSDom[0].pJS.fn.vendors.destroy();
+                    pJSDom[0].pJS.fn.vendors.init();
+                }
+            });
         });
-    </script>
+        </script>
 </body>
 </html>
