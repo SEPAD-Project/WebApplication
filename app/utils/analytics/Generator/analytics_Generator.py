@@ -9,10 +9,9 @@ from app.models.models import *
 
 # Utility imports
 from app.utils.excel_reading import schedule_extraction
-from app.utils.generate_class_code import generate_class_code
 
 
-def calculate_students_accuracy(class_name):
+def calculate_students_accuracy(class_id):
     """
     Calculate and compare the accuracy percentages of students in a given class
     based on their result files.
@@ -33,18 +32,17 @@ def calculate_students_accuracy(class_name):
         {'John Doe': 85.5, 'Jane Smith': 92.3}
     """
     # Base path where student result files are stored
-    BASE_PATH = f"c:\sap-project\server\schools\{current_user.school_code}\{class_name}"
+    BASE_PATH = f"c:\sap-project\server\schools\{str(current_user.id)}\{class_id}"
 
     # Dictionary to store accuracy percentages by student name
     students_accuracy = {}
 
     # Generate the class code and get all students in this class
-    class_code = generate_class_code(current_user.school_code, class_name)
-    students = Student.query.filter(Student.class_code == class_code).all()
+    class_ = Class.query.filter(Class.id==int(class_id))
 
-    for student in students:
+    for student in class_.students:
         # Construct the file path for each student's result file
-        file_path = BASE_PATH + f"\{student.student_national_code}.txt"
+        file_path = BASE_PATH + f"\{student.id}.txt"
 
         # Read and process the result file
         with open(file_path, 'r') as file:
@@ -87,17 +85,13 @@ def calculate_classes_accuracy():
     classes_accuracy = {}  # Dictionary to store results
 
     # Get all class names in the current school
-    classes = [
-        class_.class_name
-        for class_ in Class.query.filter(
-            Class.school_code == current_user.school_code
-        ).all()
-    ]
-
-    for class_name in classes:
+    classes = Class.query.filter(Class.school_id == current_user.id).all()
+    
+    class_info = [(class_.id, class_.name) for class_ in classes]
+    for class_id, class_name in class_info:
         # Get accuracy percentages for all students in this class
         student_accuracies = list(
-            calculate_students_accuracy(class_name).values())
+            calculate_students_accuracy(str(class_id)).values())
 
         # Handle empty classes (avoid division by zero)
         if not student_accuracies:
@@ -124,26 +118,26 @@ def calculate_teachers_performance():
         dict: Teacher national codes mapped to [correct_codes, total_codes]
     """
     # Use raw string for Windows paths and os.path.join for path construction
-    school_dir = f"c:\sap-project\server\schools\{current_user.school_code}"
+    school_dir = f"c:\sap-project\server\schools\{str(current_user.id)}"
 
     # Initialize teacher tracking dictionary
     teachers_performance = {}
 
     # Get all teachers in the school
     school = School.query.filter(
-        School.school_code == current_user.school_code
+        School.id == current_user.id
     ).first()
 
     # Convert string representation of list to actual list
-    teacher_codes = eval(school.teachers) if school.teachers else []
+    teacher_codes = [teacher.teacher_national_code for teacher in school.teachers]
 
     # Initialize counters for each teacher: [correct_codes, total_codes]
     for teacher_code in teacher_codes:
         teachers_performance[teacher_code] = [0, 0]
 
     # Process each class directory
-    for class_name in os.listdir(school_dir):
-        class_dir = os.path.join(school_dir, class_name)
+    for class_id in os.listdir(school_dir):
+        class_dir = os.path.join(school_dir, class_id)
 
         # Skip if not a directory
         if not os.path.isdir(class_dir):
@@ -229,7 +223,7 @@ def calculate_teachers_performance():
     return final_performance
 
 
-def calculate_student_accuracy_by_lesson(class_name, national_code):
+def calculate_student_accuracy_by_lesson(class_id, student_id):
     """
     Calculate a student's performance by lesson based on their result files.
 
@@ -241,8 +235,8 @@ def calculate_student_accuracy_by_lesson(class_name, national_code):
         dict: Lesson names mapped to performance percentages (0-100)
     """
     # Use raw strings for Windows paths and os.path.join for path construction
-    base_dir = f"c:\sap-project\server\schools\{current_user.school_code}\{class_name}"
-    result_file = os.path.join(base_dir, f"{national_code}.txt")
+    base_dir = f"c:\sap-project\server\schools\{str(current_user.school_code)}\{class_id}"
+    result_file = os.path.join(base_dir, f"{student_id}.txt")
     schedule_file = os.path.join(base_dir, "schedule.xlsx")
 
     # Initialize lessons tracking dictionary
@@ -256,8 +250,8 @@ def calculate_student_accuracy_by_lesson(class_name, national_code):
 
     # Get all teachers and their lessons in one query
     school = School.query.filter(
-        School.school_code == current_user.school_code).first()
-    teacher_codes = eval(school.teachers) if school.teachers else []
+        School.id == current_user.id).first()
+    teacher_codes = [teacher.teacher_national_code for teacher in school.teachers]
 
     # Create teacher-lesson mapping
     teachers = Teacher.query.filter(
@@ -316,7 +310,7 @@ def calculate_student_accuracy_by_lesson(class_name, national_code):
     return lessons_performance
 
 
-def calculate_student_weekly_accuracy(class_name, national_code):
+def calculate_student_weekly_accuracy(class_id, student_id):
     """
     Calculate a student's daily accuracy over the past week.
 
@@ -329,11 +323,7 @@ def calculate_student_weekly_accuracy(class_name, national_code):
               for the past 7 days (including today)
     """
     # Construct file path using os.path.join for cross-platform compatibility
-    file_path = os.path.join(
-        f"c:\sap-project\server\schools\{current_user.school_code}",
-        class_name,
-        f"{national_code}.txt"
-    )
+    file_path = f"c:\sap-project\server\schools\{str(current_user.id)}\{class_id}\{student_id}.txt"
 
     # Generate dates for the past week (today + previous 6 days)
     today = datetime.date.today()
