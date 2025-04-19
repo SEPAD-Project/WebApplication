@@ -17,7 +17,7 @@ bp = Blueprint('analytics_routes', __name__)  # Create Flask Blueprint
 
 def get_school_email() -> str:
     """Returns the email of the current user's school (cached query)"""
-    return School.query.filter(School.school_code == current_user.school_code).first().email
+    return School.query.filter(School.id == current_user.id).first().email
 
 
 @bp.route('/panel/analytics')
@@ -33,8 +33,8 @@ def compare_students():
     """Compare students within a class"""
     if request.method == "POST":
         # Process form submission
-        class_name = reverse_class_code(request.form['selected_class'])[1]
-        data = calculate_students_accuracy(class_name)
+        class_id = request.form['selected_class']
+        data = calculate_students_accuracy(str(class_id))
 
         # Generate PDF and email it
         show_students_accuracy(data)
@@ -47,7 +47,7 @@ def compare_students():
 
     # Show class selection form
     classes = Class.query.filter(
-        Class.school_code == current_user.school_code).all()
+        Class.school_id == current_user.id).all()
     return render_template('analytics/compare_students_form.html', classes=classes)
 
 
@@ -94,8 +94,8 @@ def student_accuracy_week():
         if student:
             # Generate and send report
             data = calculate_student_weekly_accuracy(
-                reverse_class_code(student.class_code)[1],
-                student.student_national_code
+                str(student.class_id),
+                str(student.id)
             )
             show_student_weekly_accuracy(
                 f"{student.student_name} {student.student_family}", data)
@@ -122,8 +122,8 @@ def student_accuracy_by_lesson():
         if student:
             # Generate and send report
             data = calculate_student_accuracy_by_lesson(
-                reverse_class_code(student.class_code)[1],
-                student.student_national_code
+                str(student.class_id),
+                str(student.id)
             )
             show_student_accuracy_by_lesson(
                 f"{student.student_name} {student.student_family}", data)

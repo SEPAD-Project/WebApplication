@@ -36,18 +36,15 @@ def panel_school_info():
     - Passes this data to the 'school_info.html' template for rendering.
     """
     # Retrieve the school based on the current user's associated school code
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
+    school = School.query.filter(
+        School.id==current_user.id).first()
 
     if not school:
         # Handle the case where the school is not found
         return render_template('errors/404.html'), 404
 
     # Count the number of teachers by evaluating the stored list (as a string)
-    try:
-        teachers_count = len(eval(school.teachers)) if school.teachers else 0
-    except Exception:
-        teachers_count = 0  # Safeguard against malformed data
+    teachers_count = len(school.teachers)
 
     # Count the number of classes associated with the school
     classes_count = len(school.classes)
