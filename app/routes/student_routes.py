@@ -116,6 +116,8 @@ def add_from_excel():
         students = school.students
         existing_ncs = [s.student_national_code for s in students]
 
+        print(existing_ncs)
+
         # Read file and mapping from user input
         excel_file = request.files["file_input"]
         zip_file = request.files["zip_input"]
@@ -168,7 +170,7 @@ def add_from_excel():
             return redirect(url_for("student_routes.error_in_excel"))
 
         # Process the ZIP file containing student images
-        zip_path = f"c:/sap-project/server/schools/{str(current_user.ip)}/student_ref_images.zip"
+        zip_path = f"c:/sap-project/server/schools/{str(current_user.id)}/student_ref_images.zip"
         extracted_files_path = zip_path[:-4]
         zip_file.save(zip_path)
 
@@ -184,28 +186,31 @@ def add_from_excel():
                 student_national_code=student['national_code'],
                 class_id=class_id,
                 student_password=student['password'],
-                school_code=current_user.id
+                school_id=current_user.id
             )
             db.session.add(new_student)
+            db.session.flush()
 
             try:
                 shutil.move(
                     f"{extracted_files_path}/{reverse_class_code(student['class'])[1]}/{student['national_code']}.jpg",
-                    f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}"
+                    f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
                 )
             except FileNotFoundError:
                 texts = [
                     f"Cannot find image for student with national code '{student['national_code']}' in your ZIP file."]
                 session["show_error_notif"] = True
+                db.session.rollback()
                 return redirect(url_for("student_routes.error_in_excel"))
-
+            
+            db.session.commit()
+                
             dm_create_student(
-                school_id=(current_user.id),
+                school_id=str(current_user.id),
                 class_id=str(class_id),
-                student_id=new_student.id
+                student_id=str(new_student.id)
             )
 
-        db.session.commit()
         shutil.rmtree(extracted_files_path)
         os.remove(zip_path)
         return redirect(url_for("student_routes.panel_students"))
@@ -222,7 +227,7 @@ def edit_student(student_national_code):
     - POST: Applies updates to the database and directory.
     """
     school = School.query.filter(School.id==current_user.id).first()
-    student = Student.query.filter(Student.school_id==school.id & Student.student_national_code==student_national_code).first()
+    student = Student.query.filter((Student.school_id==school.id) & (Student.student_national_code==student_national_code)).first()
     if not student in school.students:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
@@ -252,10 +257,10 @@ def remove_student(student_national_code):
     """
     school = School.query.filter(School.id==current_user.id).first()
     student = Student.query.filter(
-        Student.student_national_code==student_national_code & Student.school_id==school.id
+       (Student.student_national_code==student_national_code) & (Student.school_id==school.id)
     ).first()
 
-    if not student in school.classes:
+    if not student in school.students:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
 
@@ -278,7 +283,7 @@ def student_info(student_national_code):
     """
     school = School.query.filter(School.id==current_user.id).first()
     student = Student.query.filter(
-        Student.student_national_code==student_national_code & Student.school_id==school.id
+        (Student.student_national_code==student_national_code) & (Student.school_id==school.id)
     ).first()
 
     if not student in school.students:

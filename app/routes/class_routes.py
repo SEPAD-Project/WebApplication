@@ -64,7 +64,7 @@ def add_class():
             # Add class to the database and create its directory
             db.session.add(new_class)
             db.session.commit()
-            dm_create_class(school_id=str(school_id), class_id=(str))
+            dm_create_class(school_id=str(school_id), class_id=str(new_class.id))
         except Exception:
             # Handle duplicate class errors
             session["show_error_notif"] = True
@@ -144,9 +144,10 @@ def add_from_excel():
                 school_id=current_user.id,
             )
             db.session.add(new_class)
-            dm_create_class(str(current_user.id), new_class.id)
+            db.session.commit()
+            
+            dm_create_class(str(current_user.id), str(new_class.id))
 
-        db.session.commit()
         return redirect(url_for('class_routes.panel_classes'))
 
     # Render the upload form for GET requests
@@ -175,17 +176,19 @@ def edit_class(class_name):
         cls.class_code = new_code
         cls.class_name = new_name
 
-        try:
-            # Commit changes and update the class directory
-            db.session.commit()
-
-            # Save the uploaded schedule file
-            file = request.files['file-input']
+        # Save the uploaded schedule file
+        file = request.files['file-input']
+        if not file:
+            try:
+                # Commit changes and update the class directory
+                db.session.commit()
+            except Exception:
+                session["show_error_notif"] = True
+                return redirect(url_for('class_routes.duplicated_class_info'))
+        else:
             file.save(
                 f'C:\\sap-project\\server\\schools\\{str(current_user.id)}\\{str(cls.id)}\\schedule.xlsx')
-        except Exception:
-            session["show_error_notif"] = True
-            return redirect(url_for('class_routes.duplicated_class_info'))
+            
 
         return redirect(url_for('class_routes.panel_classes'))
 

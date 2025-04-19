@@ -46,7 +46,7 @@ def add_teacher():
 
         # Validate teacher existence and password
         teacher = Teacher.query.filter(
-            Teacher.teacher_national_code==entry_national_code & Teacher.teacher_password==entry_password).first()
+            (Teacher.teacher_national_code==entry_national_code) & (Teacher.teacher_password==entry_password)).first()
         if not teacher:
             session["show_error_notif"] = True
             return redirect(url_for("teacher_routes.wrong_teacher_info"))
