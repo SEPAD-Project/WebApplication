@@ -125,6 +125,7 @@ def student_accuracy_by_lesson():
                 str(student.class_id),
                 str(student.id)
             )
+            print(data)
             show_student_accuracy_by_lesson(
                 f"{student.student_name} {student.student_family}", data)
 

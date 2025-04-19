@@ -38,7 +38,7 @@ def calculate_students_accuracy(class_id):
     students_accuracy = {}
 
     # Generate the class code and get all students in this class
-    class_ = Class.query.filter(Class.id==int(class_id))
+    class_ = Class.query.filter(Class.id==int(class_id)).first()
 
     for student in class_.students:
         # Construct the file path for each student's result file
@@ -58,8 +58,11 @@ def calculate_students_accuracy(class_id):
                 results[index] = 0  # Incorrect answer
 
         # Calculate accuracy percentage and store in dictionary
-        students_accuracy[student.student_name] = (
-            sum(results) / len(results)) * 100
+        try:
+            students_accuracy[f"{student.student_name} {student.student_family}"] = (
+                sum(results) / len(results)) * 100
+        except:
+            students_accuracy[f"{student.student_name} {student.student_family}"] = 0
 
     return students_accuracy
 
@@ -87,7 +90,7 @@ def calculate_classes_accuracy():
     # Get all class names in the current school
     classes = Class.query.filter(Class.school_id == current_user.id).all()
     
-    class_info = [(class_.id, class_.name) for class_ in classes]
+    class_info = [(class_.id, class_.class_name) for class_ in classes]
     for class_id, class_name in class_info:
         # Get accuracy percentages for all students in this class
         student_accuracies = list(
@@ -235,9 +238,9 @@ def calculate_student_accuracy_by_lesson(class_id, student_id):
         dict: Lesson names mapped to performance percentages (0-100)
     """
     # Use raw strings for Windows paths and os.path.join for path construction
-    base_dir = f"c:\sap-project\server\schools\{str(current_user.school_code)}\{class_id}"
-    result_file = os.path.join(base_dir, f"{student_id}.txt")
-    schedule_file = os.path.join(base_dir, "schedule.xlsx")
+    base_dir = f"c:\sap-project\server\schools\{str(current_user.id)}\{class_id}"
+    result_file = f"{base_dir}/{student_id}.txt"
+    schedule_file = f"{base_dir}/schedule.xlsx"
 
     # Initialize lessons tracking dictionary
     lessons_performance = {}
@@ -301,6 +304,7 @@ def calculate_student_accuracy_by_lesson(class_id, student_id):
                     lessons_performance[lesson][1] += 1
 
     # Calculate final percentages
+    print(list(lessons_performance.items()))
     for lesson, (correct, total) in lessons_performance.items():
         try:
             lessons_performance[lesson] = round((correct / total) * 100, 2)
@@ -341,7 +345,7 @@ def calculate_student_weekly_accuracy(class_id, student_id):
                 if len(parts) < 2:
                     continue  # Skip malformed lines
 
-                result_code, _, datetime_str = parts
+                result_code, datetime_str = parts
                 result_date = datetime_str.split()[0]
 
                 if result_date in daily_performance:
