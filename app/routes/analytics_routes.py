@@ -48,7 +48,7 @@ def compare_students():
     # Show class selection form
     classes = Class.query.filter(
         Class.school_id == current_user.id).all()
-    return render_template('analytics/compare_students_form.html', classes=classes)
+    return render_template('analytics/class_name_for_compare_students.html', classes=classes)
 
 
 @bp.route('/panel/analytics/compare_classes')
@@ -107,7 +107,7 @@ def student_accuracy_week():
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 
-    return render_template("analytics/student_weekly_form.html")
+    return render_template("analytics/student_nc_for_accuracy_week.html")
 
 
 @bp.route('/panel/analytics/student_accuracy_by_lesson', methods=['GET', 'POST'])
@@ -135,4 +135,4 @@ def student_accuracy_by_lesson():
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 
-    return render_template("analytics/student_lessons_form.html")
+    return render_template("analytics/student_nc_for_accuracy_lesson.html")
