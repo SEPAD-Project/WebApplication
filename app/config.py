@@ -8,7 +8,7 @@ class Config:
     """
 
     # URI for the MySQL database (change the username, password, and host as needed)
-    SQLALCHEMY_DATABASE_URI = 'mysql://root:sapprogram2583@185.4.28.110:5000/sap'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:sapprogram2583@185.4.28.110:5000/sap'
     
     # Disables Flask-SQLAlchemy event system to reduce overhead.
     SQLALCHEMY_TRACK_MODIFICATIONS = False

@@ -10,43 +10,207 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+    <div id="particles-js"></div>
+    
     <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item active">
-            <i class="fa-solid fa-school"></i> School Info
+        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item" data-active="true">
+            <i class="fa-solid fa-school"></i>
+            <span class="sidebar-text">School Info</span>
         </a>
         <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">
-            <i class="fa-solid fa-chalkboard"></i> Classes
+            <i class="fa-solid fa-chalkboard"></i>
+            <span class="sidebar-text">Classes</span>
         </a>
         <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">
-            <i class="fa-solid fa-user-tie"></i> Teachers
+            <i class="fa-solid fa-user-tie"></i>
+            <span class="sidebar-text">Teachers</span>
         </a>
         <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">
-            <i class="fa-solid fa-users"></i> Students
+            <i class="fa-solid fa-users"></i>
+            <span class="sidebar-text">Students</span>
         </a>
         <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item">
-            <i class="fa-solid fa-chart-line"></i> Analytics
+            <i class="fa-solid fa-chart-line"></i>
+            <span class="sidebar-text">Analytics</span>
         </a>
         <a href="{{ url_for('home_route.home') }}" class="sidebar-item">
-            <i class="fa-solid fa-house"></i> Go to Home
+            <i class="fa-solid fa-house"></i>
+            <span class="sidebar-text">Go to Home</span>
         </a>
     </div>
+    
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <div class="overlay"></div>
 
-    <!-- Content Area -->
     <div class="content-area">
-        <div class="primary-info">
-            <h2 style="color: #4A90E2; font-size: 1.5rem; margin-bottom: 15px;">Primary Information</h2>
-            <div class="data-item"><i class="fa-solid fa-building-columns"></i><span>School Name: {{ data.school_name }}</span></div>
-            <div class="data-item"><i class="fa-solid fa-hashtag"></i><span>School Code: {{ data.school_code }}</span></div>
-            <div class="data-item"><i class="fa-solid fa-id-badge"></i><span>Manager Personal Code: {{ data.manager_personal_code }}</span></div>
-            <div class="data-item"><i class="fa-solid fa-map-pin"></i><span>Province: {{ data.province }}</span></div>
-            <div class="data-item"><i class="fa-solid fa-city"></i><span>City: {{ data.city }}</span></div>
+        <div class="glass-card primary-info">
+            <div class="card-header">
+                <i class="fa-solid fa-id-card"></i>
+                <h2>School Identity</h2>
+            </div>
+            <div class="card-body">
+                <div class="data-item">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <div class="data-content">
+                        <span class="data-label">School Name</span>
+                        <span class="data-value">{{ data.school_name }}</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <i class="fa-solid fa-hashtag"></i>
+                    <div class="data-content">
+                        <span class="data-label">School Code</span>
+                        <span class="data-value">{{ data.school_code }}</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <i class="fa-solid fa-id-badge"></i>
+                    <div class="data-content">
+                        <span class="data-label">Manager Code</span>
+                        <span class="data-value">{{ data.manager_personal_code }}</span>
+                    </div>
+                </div>
+                <div class="data-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <div class="data-content">
+                        <span class="data-label">Location</span>
+                        <span class="data-value">{{ data.city }}, {{ data.province }}</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="secondary-info">
-            <h2 style="color: #4A90E2; font-size: 1.5rem; margin-bottom: 15px;">Secondary Information</h2>
-            <div class="data-item"><i class="fa-solid fa-chalkboard"></i><span>Classes Count: {{ cc }}</span></div>
-            <div class="data-item"><i class="fa-solid fa-user-tie"></i><span>Teachers Count: {{ tc }}</span></div>
-            <div class="data-item"><i class="fa-solid fa-users"></i><span>Students Count: {{ sc }}</span></div>
+
+        <div class="glass-card secondary-info">
+            <div class="card-header">
+                <i class="fa-solid fa-chart-pie"></i>
+                <h2>School Statistics</h2>
+            </div>
+            <div class="card-body">
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <i class="fa-solid fa-chalkboard"></i>
+                        <span class="stat-value">{{ cc }}</span>
+                        <span class="stat-label">Classes</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fa-solid fa-user-tie"></i>
+                        <span class="stat-value">{{ tc }}</span>
+                        <span class="stat-label">Teachers</span>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fa-solid fa-users"></i>
+                        <span class="stat-value">{{ sc }}</span>
+                        <span class="stat-label">Students</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+            
+            menuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+            });
+            
+            overlay.addEventListener('click', function() {
+                menuToggle.classList.remove('active');
+                sidebar.classList.remove('active');
+                this.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            document.querySelectorAll('.sidebar-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (window.innerWidth <= 640) {
+                        menuToggle.classList.remove('active');
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            });
+            
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { 
+                        "value": 60, 
+                        "density": { 
+                            "enable": true, 
+                            "value_area": 800 
+                        } 
+                    },
+                    "color": { 
+                        "value": "#4ECDC4" 
+                    },
+                    "shape": { 
+                        "type": "circle" 
+                    },
+                    "opacity": { 
+                        "value": 0.5, 
+                        "random": true 
+                    },
+                    "size": { 
+                        "value": 3, 
+                        "random": true 
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#4ECDC4",
+                        "opacity": 0.3,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1.2,
+                        "direction": "none",
+                        "random": true,
+                        "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "events": {
+                        "onhover": { 
+                            "enable": true, 
+                            "mode": "grab" 
+                        },
+                        "onclick": { 
+                            "enable": true, 
+                            "mode": "push" 
+                        }
+                    }
+                }
+            });
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 640 && sidebar.classList.contains('active')) {
+                    menuToggle.classList.remove('active');
+                    sidebar.classList.remove('active');
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+
+                if (typeof pJSDom !== 'undefined' && pJSDom.length > 0) {
+                    pJSDom[0].pJS.fn.vendors.destroy();
+                    pJSDom[0].pJS.fn.vendors.init();
+                }
+            });
+        });
+        </script>
 </body>
 </html>

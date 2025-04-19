@@ -1,70 +1,185 @@
-/* General Reset */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: #121212;
-    color: #E0E0E0;
-    display: flex;
     font-family: 'Inter', sans-serif;
-    height: 100vh;
-    margin: 0;
-    overflow: hidden;
-    padding: 0;
-}
-  
-body::before,
-body::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-    z-index: -1;
-}
-  
-body::before {
-    top: -10%;
-    left: 20%;
-    width: 500px;
-    height: 500px;
-    background: rgba(74, 144, 226, 0.5);
-}
-  
-  body::after {
-    bottom: -10%;
-    right: 20%;
-    width: 500px;
-    height: 500px;
-    background: rgba(179, 200, 207, 0.3);
-  }
-
-.content-area {
+    background: linear-gradient(135deg, #121212, #1a1a1a);
+    color: #e0e0e0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    color: #E0E0E0;
+    overflow: hidden;
+    position: relative;
+}
+
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.glass-container {
+    width: 90%;
+    max-width: 700px;
+    padding: 50px;
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 1;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.error-content {
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    align-items: center;
+    gap: 20px;
+}
+
+.error-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 107, 107, 0.1);
+    border-radius: 50%;
+    display: flex;
     justify-content: center;
-    overflow-y: auto;
-    padding: 40px;
-    text-align: center;
+    align-items: center;
+    font-size: 32px;
+    color: #FF6B6B;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    margin-bottom: 15px;
+    animation: pulse 1.5s infinite;
 }
 
-.content-title {
-    color: #4A90E2;
-    font-size: 4rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-    text-shadow: 2px 2px 6px rgba(78, 205, 196, 0.3);
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
 }
 
-.content-description {
-    color: #E0E0E0;
-    font-size: 1.2rem;
+.error-title {
+    font-size: 5rem;
+    font-weight: 700;
+    background: linear-gradient(to right, #FF6B6B, #FF8E8E);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.error-subtitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.error-description {
+    font-size: 1.1rem;
+    color: #b0b0b0;
+    max-width: 500px;
     line-height: 1.6;
-    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.error-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.home-btn, .contact-btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.home-btn {
+    background: linear-gradient(to right, #4ECDC4, #3aa8a1);
+    color: #121212;
+}
+
+.contact-btn {
+    background: rgba(44, 44, 44, 0.7);
+    border: 1px solid rgba(78, 205, 196, 0.3);
+    color: #4ECDC4;
+}
+
+.home-btn:hover, .contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .glass-container {
+        padding: 40px 25px;
+    }
+    
+    .error-title {
+        font-size: 4rem;
+    }
+    
+    .error-subtitle {
+        font-size: 1.5rem;
+    }
+    
+    .error-description {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .glass-container {
+        padding: 30px 20px;
+    }
+    
+    .error-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .error-title {
+        font-size: 3.5rem;
+    }
+    
+    .error-subtitle {
+        font-size: 1.3rem;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .home-btn, .contact-btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

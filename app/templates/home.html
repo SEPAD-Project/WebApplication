@@ -6,38 +6,142 @@
     <title>SAP - Student Attention Platform</title>
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <div id="top" aria-hidden="true"></div>
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <a href="{{ url_for('home_route.home') }}" class="nav-link">
-            <i class="fa-solid fa-house"></i> Home
-        </a>
-        <a href="{{ url_for('auth_routes.login') }}" class="nav-link">
-            <i class="fa-solid fa-user-lock"></i> School Management Panel
-        </a>
-        <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link">
-            <i class="fa-solid fa-download"></i> Downloads
-        </a>
-        <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link">
-            <i class="fa-solid fa-book-open"></i> Guide
-        </a>
-        <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link">
-            <i class="fa-solid fa-info-circle"></i> About Us
-        </a>
+        <div class="nav-links">
+            <a href="#top" class="nav-link"><i class="fas fa-home"></i> Home</a>            <a href="{{ url_for('auth_routes.login') }}" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Panel</a>
+            <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link"><i class="fas fa-download"></i> Downloads</a>
+            <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link"><i class="fas fa-book"></i> Guide</a>
+            <a href="{{ url_for('home_route.coming_soon') }}" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <h1 class="hero-title">HELLO</h1>
-        <p class="hero-subtitle">Welcome to the Student Attention Platform</p>
+        <div class="hero-content">
+            <h1 class="hero-title">Enhance Learning Engagement</h1>
+            <p class="hero-subtitle">Advanced analytics for student attention in virtual classrooms</p>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </section>
 
-    <section class="content">
-        <p class="content-text">
-            Here, our goal is to create an optimized experience for students and improve their attention accuracy in online classrooms. By using advanced technologies, we can simulate and provide precise analysis of student behavior. With this platform, you can gain a better understanding of student attention and achieve the best results in the online learning process using our tools.
-        </p>
-        <a href="{{ url_for('auth_routes.signup') }}" class="cta-button">Get Started</a>
-    </section>
+    <!-- Main Content Section -->
+    <main class="main-content">
+        <!-- Introduction Section -->
+        <section class="intro-section">
+            <h2 class="section-title centered-title">Optimize Your Virtual Classroom</h2>
+            <p class="intro-text">
+                The Student Attention Platform revolutionizes online education by providing real-time insights into student engagement. 
+                Our cutting-edge technology analyzes facial expressions and behavior patterns to deliver precise attention metrics, 
+                helping educators adapt their teaching methods for maximum effectiveness. 
+                With our platform, you'll gain unprecedented visibility into the learning process and 
+                discover new ways to improve educational outcomes.
+            </p>
+            <a href="{{ url_for('auth_routes.signup') }}" class="cta-button">Start Your Free Trial</a>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <!-- Feature Card 1 -->
+                <div class="feature-card">
+                    <div class="card-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="card-title">Real-Time Monitoring</h3>
+                    <p class="card-text">
+                        Get instant feedback on student attention levels during live sessions, 
+                        allowing for immediate adjustments to teaching approach.
+                    </p>
+                    <div class="card-wave"></div>
+                </div>
+
+                <!-- Feature Card 2 -->
+                <div class="feature-card">
+                    <div class="card-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h3 class="card-title">Precision Analytics</h3>
+                    <p class="card-text">
+                        Our advanced facial recognition technology provides 95% accuracy in 
+                        detecting engagement levels and focus states.
+                    </p>
+                    <div class="card-wave"></div>
+                </div>
+
+                <!-- Feature Card 3 -->
+                <div class="feature-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="card-title">Comprehensive Reports</h3>
+                    <p class="card-text">
+                        Detailed session analytics and historical trends help identify patterns 
+                        and improve long-term teaching strategies.
+                    </p>
+                    <div class="card-wave"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact Us</a>
+            </div>
+            <div class="footer-copyright">
+                &copy; 2023 Student Attention Platform. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Back to top button functionality
+        const backToTop = document.querySelector('.back-to-top');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('show');
+            } else {
+                backToTop.classList.remove('show');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+    </script>
 </body>
 </html>
