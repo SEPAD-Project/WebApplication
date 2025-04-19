@@ -1,7 +1,6 @@
 # Import necessary modules
 from app import db
 from app.models.models import Class, School, Teacher
-from app.utils.generate_class_code import generate_class_code
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
@@ -17,8 +16,8 @@ def panel_teachers():
     - Filters teachers by name or national code if a query is provided.
     - Shows all teachers if no query is provided.
     """
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
+    school = School.query.filter(
+        School.id==current_user.id).first()
     teachers = school.teachers
 
     # Filter teachers based on the query (if provided)
@@ -46,12 +45,9 @@ def add_teacher():
         entry_password = request.form["teacher_password"]
 
         # Validate teacher existence and password
-        teacher = Teacher.query.filter_by(
-            teacher_national_code=entry_national_code).first()
+        teacher = Teacher.query.filter(
+            (Teacher.teacher_national_code==entry_national_code) & (Teacher.teacher_password==entry_password)).first()
         if not teacher:
-            session["show_error_notif"] = True
-            return redirect(url_for("teacher_routes.wrong_teacher_info"))
-        if teacher.teacher_password != entry_password:
             session["show_error_notif"] = True
             return redirect(url_for("teacher_routes.wrong_teacher_info"))
 
@@ -59,12 +55,12 @@ def add_teacher():
         selected_classes = request.form.getlist("selected_classes")
 
         if selected_classes:
-            school = School.query.filter_by(
-                school_code=current_user.school_code).first()
+            school = School.query.filter(
+                School.id==current_user.id).first()
             school.teachers.append(teacher)
 
-        for class_code in selected_classes:
-            class_ = Class.query.filter_by(class_code=class_code).first()
+        for class_id in selected_classes:
+            class_ = Class.query.filter(Class.id==class_id).first()
             if teacher not in class_.teachers:
                 class_.teachers.append(teacher)
 
@@ -73,8 +69,8 @@ def add_teacher():
         return redirect(url_for("teacher_routes.panel_teachers"))
 
     # Render the form with available classes
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
+    school = School.query.filter(
+        School.id==current_user.id).first()
     return render_template("teacher/add_teacher.html", classes=school.classes)
 
 
@@ -85,16 +81,13 @@ def remove_teacher(teacher_national_code):
     Handles removing a teacher from the school in the panel.
     - Removes the teacher from all associated classes and the school's teacher list.
     """
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
-    teacher = Teacher.query.filter_by(
-        teacher_national_code=teacher_national_code).first()
-    if not teacher or not teacher in school.teachers:
+    school = School.query.filter(
+        School.id==current_user.id).first()
+    teacher = Teacher.query.filter(
+        Teacher.teacher_national_code==teacher_national_code).first()
+    if not teacher in school.teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
-
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
 
     for class_ in school.classes:
         if teacher in class_.teachers:
@@ -114,11 +107,11 @@ def edit_teacher(teacher_national_code):
     - POST: Updates the teacher's class assignments.
     - GET: Renders the form for editing the teacher.
     """
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
-    teacher = Teacher.query.filter_by(
-        teacher_national_code=teacher_national_code).first()
-    if not teacher or not teacher in school.teachers:
+    school = School.query.filter(
+        School.id==current_user.id).first()
+    teacher = Teacher.query.filter(
+        Teacher.teacher_national_code==teacher_national_code).first()
+    if not teacher in school.teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))
 
@@ -148,11 +141,10 @@ def teacher_info(teacher_national_code):
     """
     Displays detailed information about a specific teacher.
     """
-    school = School.query.filter_by(
-        school_code=current_user.school_code).first()
-    teacher = Teacher.query.filter_by(
-        teacher_national_code=teacher_national_code).first()
-
+    school = School.query.filter(
+        School.id==current_user.id).first()
+    teacher = Teacher.query.filter(
+        Teacher.teacher_national_code==teacher_national_code).first()
     if not teacher in school.teachers:
         session["show_error_notif"] = True
         return redirect(url_for('teacher_routes.wrong_teacher_info'))

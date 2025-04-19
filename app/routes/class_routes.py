@@ -4,7 +4,7 @@ from app.models.models import Student, Teacher, Class, School
 from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
 from app.server_side.Website.directory_manager import (
-    dm_create_class, dm_edit_class, dm_delete_class
+    dm_create_class, dm_delete_class
 )
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
@@ -49,22 +49,22 @@ def add_class():
     """
     if request.method == 'POST':
         # Extract form data
-        school_code = current_user.school_code
         class_name = request.form['class_name']
-        class_code = generate_class_code(school_code, class_name)
-
+        class_code = generate_class_code(current_user.school_code, class_name)
+        
+        school_id = current_user.id
         # Create a new Class object
         new_class = Class(
             class_name=class_name,
             class_code=class_code,
-            school_id=current_user.id,
+            school_id=school_id,
         )
 
         try:
             # Add class to the database and create its directory
             db.session.add(new_class)
             db.session.commit()
-            dm_create_class(school_code=school_code, class_name=class_name)
+            dm_create_class(school_id=str(school_id), class_id=str(new_class.id))
         except Exception:
             # Handle duplicate class errors
             session["show_error_notif"] = True
@@ -88,8 +88,8 @@ def add_from_excel():
     if request.method == 'POST':
         global texts
         # Get existing class names to prevent duplicates
-        classes = Class.query.filter_by(
-            school_code=current_user.school_code).all()
+        classes = Class.query.filter(
+            Class.school_id==current_user.id).all()
         existing_class_names = [cls.class_name for cls in classes]
 
         # Retrieve uploaded file and form data
@@ -97,7 +97,7 @@ def add_from_excel():
         sheet_name = request.form["sheet"]
         name_letter = request.form["name"]
 
-        excel_path = f"c:\\sap-project\\server\\schools\\{current_user.school_code}\\classes.xlsx"
+        excel_path = f"c:\\sap-project\\server\\schools\\{str(current_user.id)}\\classes.xlsx"
         try:
             file.save(excel_path)
         except PermissionError:
@@ -144,9 +144,10 @@ def add_from_excel():
                 school_id=current_user.id,
             )
             db.session.add(new_class)
-            dm_create_class(current_user.school_code, cls['name'])
+            db.session.commit()
+            
+            dm_create_class(str(current_user.id), str(new_class.id))
 
-        db.session.commit()
         return redirect(url_for('class_routes.panel_classes'))
 
     # Render the upload form for GET requests
@@ -167,7 +168,7 @@ def edit_class(class_name):
         old_code = generate_class_code(current_user.school_code, class_name)
 
         # Fetch the class from the database
-        cls = Class.query.filter_by(class_code=old_code).first()
+        cls = Class.query.filter(Class.class_code==old_code).first()
         if cls is None:
             return redirect(url_for('class_routes.unknown_class_info'))
 
@@ -175,29 +176,25 @@ def edit_class(class_name):
         cls.class_code = new_code
         cls.class_name = new_name
 
-        try:
-            # Commit changes and update the class directory
-            db.session.commit()
-            dm_edit_class(
-                school_code=current_user.school_code,
-                old_class_name=class_name,
-                new_class_name=new_name
-            )
-
-            # Save the uploaded schedule file
-            file = request.files['file-input']
+        # Save the uploaded schedule file
+        file = request.files['file-input']
+        if not file:
+            try:
+                # Commit changes and update the class directory
+                db.session.commit()
+            except Exception:
+                session["show_error_notif"] = True
+                return redirect(url_for('class_routes.duplicated_class_info'))
+        else:
             file.save(
-                f'C:\\sap-project\\server\\schools\\{current_user.school_code}\\{new_name}\\schedule.xlsx')
-        except Exception:
-            session["show_error_notif"] = True
-            return redirect(url_for('class_routes.duplicated_class_info'))
+                f'C:\\sap-project\\server\\schools\\{str(current_user.id)}\\{str(cls.id)}\\schedule.xlsx')
+            
 
         return redirect(url_for('class_routes.panel_classes'))
 
     # Render the edit form for GET requests
-    school_code = current_user.school_code
-    class_code = generate_class_code(school_code, class_name)
-    cls = Class.query.filter_by(class_code=class_code).first()
+    class_code = generate_class_code(current_user.school_code, class_name)
+    cls = Class.query.filter(Class.class_code==class_code).first()
     if cls is None:
         session["show_error_notif"] = True
         return redirect(url_for('class_routes.unknown_class_info'))
@@ -212,7 +209,7 @@ def remove_class(class_name):
     """
     # Generate class code and fetch class object
     class_code = generate_class_code(current_user.school_code, class_name)
-    cls = Class.query.filter_by(class_code=class_code).first()
+    cls = Class.query.filter(Class.class_code==class_code).first()
 
     if cls:
         # Delete the class and commit changes
@@ -220,8 +217,8 @@ def remove_class(class_name):
         db.session.commit()
 
         # Remove the class directory
-        dm_delete_class(school_code=current_user.school_code,
-                        class_name=class_name)
+        dm_delete_class(school_id=str(current_user.id),
+                        class_id=str(cls.id))
 
     return redirect(url_for('class_routes.panel_classes'))
 
@@ -233,7 +230,7 @@ def class_info(class_name):
     Displays detailed information about a specific class, including students and teachers.
     """
     class_code = generate_class_code(current_user.school_code, class_name)
-    cls = Class.query.filter_by(class_code=class_code).first()
+    cls = Class.query.filter(Class.class_code==class_code).first()
 
     if cls is None:
         session["show_error_notif"] = True

@@ -12,7 +12,6 @@ from app import db  # SQLAlchemy instance for database operations
 from app.models.models import Student, Class, School
 from app.server_side.Website.directory_manager import (
     dm_create_student,
-    dm_edit_student,
     dm_delete_student
 )
 from app.utils.excel_reading import add_students
@@ -32,7 +31,7 @@ def panel_students():
     - If a search query (q) is provided, filters students by name, family name, or national code.
     - Otherwise, displays all students from the school.
     """
-    school = School.query.filter(School.school_code==current_user.school_code).first()
+    school = School.query.filter(School.id==current_user.id).first()
     query = request.args.get('q')
     if query:
         students = Student.query.filter(
@@ -61,16 +60,8 @@ def add_student():
         student_family = request.form['student_family']
         student_national_code = request.form['student_national_code']
         student_password = request.form['student_password']
-        class_code = request.form['selected_class']
-        school_id = current_user.id
+        class_id = request.form['selected_class']
         student_image = request.files['file_input']
-        
-        school_code = current_user.school_code
-        class_id = Class.query.filter(Class.class_code==class_code).first().id
-
-        # Save the student image
-        image_path = f"c:/sap-project/server/schools/{current_user.school_code}/{reverse_class_code(class_code)[1]}/{student_national_code}.jpg"
-        student_image.save(image_path)
 
         # Create and save the new student
         new_student = Student(
@@ -79,16 +70,22 @@ def add_student():
             student_national_code=student_national_code,
             student_password=student_password,
             class_id=class_id,
-            school_id=school_id
+            school_id=current_user.id
         )
         try:
             db.session.add(new_student)
             db.session.commit()
+
+            # Save the student image
+            image_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
+            student_image.save(image_path)
+
             dm_create_student(
-                school_code=school_code,
-                class_name=reverse_class_code(class_code)[1],
-                student_code=student_national_code
+                school_id=str(current_user.id),
+                class_id=str(class_id),
+                student_id=str(new_student.id)
             )
+
             return redirect(url_for('student_routes.panel_students'))
         except Exception:
             db.session.rollback()
@@ -96,7 +93,7 @@ def add_student():
             return redirect(url_for('student_routes.duplicated_student_info'))
 
     # Render the form with available classes
-    school = School.query.filter(School.school_code==current_user.school_code).first()
+    school = School.query.filter(School.id==current_user.id).first()
     return render_template('student/add_student.html', classes=school.classes)
 
 
@@ -111,13 +108,15 @@ def add_from_excel():
     if request.method == 'POST':
         global texts
 
-        school = School.query.filter(School.school_code==current_user.school_code).first()
+        school = School.query.filter(School.id==current_user.id).first()
 
         # Prepare references for validation
         classes = school.classes
         class_names = [c.class_name for c in classes]
         students = school.students
         existing_ncs = [s.student_national_code for s in students]
+
+        print(existing_ncs)
 
         # Read file and mapping from user input
         excel_file = request.files["file_input"]
@@ -129,7 +128,7 @@ def add_from_excel():
         class_letter = request.form["class"]
         pass_letter = request.form["password"]
 
-        excel_path = f"c:/sap-project/server/schools/{current_user.school_code}/students.xlsx"
+        excel_path = f"c:/sap-project/server/schools/{str(current_user.id)}/students.xlsx"
         try:
             excel_file.save(excel_path)
         except PermissionError:
@@ -171,7 +170,7 @@ def add_from_excel():
             return redirect(url_for("student_routes.error_in_excel"))
 
         # Process the ZIP file containing student images
-        zip_path = f"c:/sap-project/server/schools/{current_user.school_code}/student_ref_images.zip"
+        zip_path = f"c:/sap-project/server/schools/{str(current_user.id)}/student_ref_images.zip"
         extracted_files_path = zip_path[:-4]
         zip_file.save(zip_path)
 
@@ -180,34 +179,38 @@ def add_from_excel():
 
         # Add validated students to the database
         for student in result:
+            class_id = Class.query.filter(Class.class_code==student['class']).first().id
             new_student = Student(
                 student_name=student['name'],
                 student_family=student['family'],
                 student_national_code=student['national_code'],
-                class_id=Class.query.filter(Class.class_code==student['class']).first().id,
+                class_id=class_id,
                 student_password=student['password'],
-                school_code=current_user.id
+                school_id=current_user.id
             )
             db.session.add(new_student)
+            db.session.flush()
 
             try:
                 shutil.move(
                     f"{extracted_files_path}/{reverse_class_code(student['class'])[1]}/{student['national_code']}.jpg",
-                    f"c:/sap-project/server/schools/{current_user.school_code}/{reverse_class_code(student['class'])[1]}"
+                    f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
                 )
             except FileNotFoundError:
                 texts = [
                     f"Cannot find image for student with national code '{student['national_code']}' in your ZIP file."]
                 session["show_error_notif"] = True
+                db.session.rollback()
                 return redirect(url_for("student_routes.error_in_excel"))
-
+            
+            db.session.commit()
+                
             dm_create_student(
-                school_code=current_user.school_code,
-                class_name=reverse_class_code(student['class'])[1],
-                student_code=student['national_code']
+                school_id=str(current_user.id),
+                class_id=str(class_id),
+                student_id=str(new_student.id)
             )
 
-        db.session.commit()
         shutil.rmtree(extracted_files_path)
         os.remove(zip_path)
         return redirect(url_for("student_routes.panel_students"))
@@ -223,8 +226,8 @@ def edit_student(student_national_code):
     - GET: Displays the form with current student data.
     - POST: Applies updates to the database and directory.
     """
-    school = School.query.filter(School.school_code==current_user.school_code).first()
-    student = Student.query.filter(Student.school_id==school.id).first()
+    school = School.query.filter(School.id==current_user.id).first()
+    student = Student.query.filter((Student.school_id==school.id) & (Student.student_national_code==student_national_code)).first()
     if not student in school.students:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
@@ -237,12 +240,6 @@ def edit_student(student_national_code):
 
         try:
             db.session.commit()
-            dm_edit_student(
-                school_code=current_user.school_code,
-                class_name=reverse_class_code(student.class_code)[1],
-                old_student_code=student_national_code,
-                new_student_code=student.student_national_code
-            )
             return redirect(url_for('student_routes.panel_students'))
         except Exception:
             db.session.rollback()
@@ -258,22 +255,23 @@ def remove_student(student_national_code):
     """
     Deletes a student from the database and filesystem.
     """
-    student = Student.query.filter_by(
-        student_national_code=student_national_code,
-        school_id=current_user.id
+    school = School.query.filter(School.id==current_user.id).first()
+    student = Student.query.filter(
+       (Student.student_national_code==student_national_code) & (Student.school_id==school.id)
     ).first()
 
-    if not student:
+    if not student in school.students:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
 
+    dm_delete_student(
+        school_id=str(current_user.id),
+        class_id=str(student.class_id),
+        student_id=str(student.id)
+    )
     db.session.delete(student)
     db.session.commit()
-    dm_delete_student(
-        school_code=current_user.school_code,
-        class_name=reverse_class_code(Class.query.filter(Class.id==student.class_code).first().class_code)[1],
-        student_code=student_national_code
-    )
+
     return redirect(url_for('student_routes.panel_students'))
 
 
@@ -283,12 +281,12 @@ def student_info(student_national_code):
     """
     Displays detailed information about a student.
     """
-    student = Student.query.filter_by(
-        student_national_code=student_national_code,
-        school_id=current_user.id
+    school = School.query.filter(School.id==current_user.id).first()
+    student = Student.query.filter(
+        (Student.student_national_code==student_national_code) & (Student.school_id==school.id)
     ).first()
 
-    if not student:
+    if not student in school.students:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
 

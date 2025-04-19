@@ -96,7 +96,7 @@ def signup():
             db.session.commit()
 
             # Create a directory for the school
-            dm_create_school(school_code=school_code)
+            dm_create_school(school_id=str(new_school.id))
 
             # Notify the user of successful registration
             session["show_error_notif"] = True

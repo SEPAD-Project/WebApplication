@@ -23,7 +23,7 @@
                 <label for="selected_classes">Select Classes</label>
                 <select name="selected_classes" id="selected_classes" multiple class="multi-select-dropdown">
                     {% for class in classes %}
-                    <option value="{{ class.class_code }}">{{ class.class_name }}</option>
+                    <option value="{{ class.id }}">{{ class.class_name }}</option>
                     {% endfor %}
                 </select>
             </div>
