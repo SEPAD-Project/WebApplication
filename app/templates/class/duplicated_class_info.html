@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duplicated Class Info - SAP</title>
+    <title>Duplicate Class Error - SAP</title>
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/class/duplicated_class_info.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
@@ -16,18 +16,18 @@
     <div class="content-area">
         <div class="glass-card notification-container">
             <div class="notification-icon">
-                <i class="fas fa-school"></i>
+                <i class="fas fa-chalkboard-teacher"></i>
             </div>
-            <h1 class="notification-title">DUPLICATE SCHOOL</h1>
+            <h1 class="notification-title">DUPLICATE CLASS</h1>
             <div class="notification-content">
                 <p class="notification-text">
-                    Some of these school details are already registered under your account.
+                    This class information is already registered in the system.
                 </p>
                 <p class="notification-text">
-                    Please verify your information and try again.
+                    Please check your entries and try again.
                 </p>
             </div>
-            <a href="{{ url_for('auth_routes.signup') }}" class="notification-action">
+            <a href="{{ url_for('class_routes.add_class') }}" class="notification-action">
                 <i class="fas fa-redo"></i> Try Again
             </a>
         </div>
