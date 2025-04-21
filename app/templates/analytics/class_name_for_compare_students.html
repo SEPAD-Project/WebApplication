@@ -11,22 +11,59 @@
 </head>
 <body>
     <div id="particles-js"></div>
-
-    <form method="POST" action="{{ url_for('analytics_routes.compare_students') }}" class="compare-student-form" enctype="multipart/form-data">
-        <h1 class="form-title">Compare Students</h1>
-        <select name="selected_class" class="select-field">
-            {% for class in classes %}
-            <option value="{{ class.id }}">{{ class.class_name }}</option>
-            {% endfor %}
-        </select>
-
-        <div class="button-group">
-            <button type="submit" class="action-button">Process</button>
-            <a href='{{ url_for("analytics_routes.analytics_menu") }}'><button type="button" class="cancel-button">Cancel</button></a>
+    
+    <div class="container">
+        <div class="glass-card">
+            <form method="POST" action="{{ url_for('analytics_routes.compare_students') }}" class="compare-student-form" enctype="multipart/form-data">
+                <h1 class="form-title">Compare Students</h1>
+                <select name="selected_class" class="select-field">
+                    {% for class in classes %}
+                    <option value="{{ class.id }}">{{ class.class_name }}</option>
+                    {% endfor %}
+                </select>
+        
+                <div class="button-group">
+                    <button type="submit" class="action-button">Process</button>
+                    <a href='{{ url_for("analytics_routes.analytics_menu") }}'><button type="button" class="cancel-button">Cancel</button></a>
+                </div>
+            </form>  
         </div>
-    </form>  
+    </div>
 
-    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#4ECDC4" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#4ECDC4",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1.5,
+                        "direction": "none",
+                        "random": true,
+                        "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "events": {
+                        "onhover": { "enable": true, "mode": "grab" },
+                        "onclick": { "enable": true, "mode": "push" }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

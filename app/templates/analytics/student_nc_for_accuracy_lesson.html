@@ -11,16 +11,18 @@
 </head>
 <body>
     <div id="particles-js"></div>
+    
+    <div class="glass-card">
+                <form method="POST" action="{{ url_for('analytics_routes.student_accuracy_by_lesson') }}" class="student-lesson-form" enctype="multipart/form-data">
+            <h1 class="form-title">Student By Lesson</h1>
+            <input type="text" id="student_national_code" name="student_national_code" placeholder="Student National Code" pattern="[0-9]+" title="Should only contain numbers" required>
 
-    <form method="POST" action="{{ url_for('analytics_routes.student_accuracy_by_lesson') }}" class="student-lesson-form" enctype="multipart/form-data">
-        <h1 class="form-title">Student By Lesson</h1>
-        <input type="text" id="student_national_code" name="student_national_code" placeholder="Student National Code" pattern="[0-9]+" title="Should only contain numbers" required>
-
-        <div class="button-group">
-            <button type="submit" class="action-button">Process</button>
-            <a href='{{ url_for("analytics_routes.analytics_menu") }}'><button type="button" class="cancel-button">Cancel</button></a>
-        </div>
-    </form>  
+            <div class="button-group">
+                <button type="submit" class="action-button">Process</button>
+                <a href='{{ url_for("analytics_routes.analytics_menu") }}'><button type="button" class="cancel-button">Cancel</button></a>
+            </div>
+        </form>  
+    </div>
     
     <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
