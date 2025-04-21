@@ -30,7 +30,7 @@ def panel_classes():
     else:
         # Filter classes by name or code using the search term
         classes = Class.query.filter(
-            (Class.school_id == current_user.school_id) &
+            (Class.school_id == current_user.id) &
             ((Class.class_name.ilike(f'%{query}%')) | (
                 Class.class_code.ilike(f'%{query}%')))
         ).all()
