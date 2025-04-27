@@ -17,39 +17,42 @@
 }
 
 body {
+    align-items: center;
     background-color: var(--dark-bg);
     color: var(--light-gray);
+    display: flex;
     font-family: 'Inter', sans-serif;
-    min-height: 100vh;
+    height: 100vh;
+    justify-content: center;
     margin: 0;
-    overflow-x: hidden;
+    overflow: hidden;
     position: relative;
 }
 
 body::before,
 body::after {
     content: '';
-    position: fixed;
+    position: absolute;
     border-radius: 50%;
     filter: blur(80px);
-    opacity: 0.2;
+    opacity: 0.4;
     z-index: -1;
 }
 
 body::before {
     top: -10%;
     left: 20%;
-    width: 300px;
-    height: 300px;
-    background: rgba(78, 205, 196, 0.1);
+    width: 500px;
+    height: 500px;
+    background: rgba(78, 205, 196, 0.15);
 }
 
 body::after {
     bottom: -10%;
     right: 20%;
-    width: 300px;
-    height: 300px;
-    background: rgba(255, 107, 107, 0.1);
+    width: 500px;
+    height: 500px;
+    background: rgba(255, 107, 107, 0.15);
 }
 
 #particles-js {
@@ -59,42 +62,32 @@ body::after {
     z-index: -1;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-    width: 100%;
-}
-
 .glass-card {
-    background: rgba(30, 30, 30, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 14px;
+    background: rgba(30, 30, 30, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
     border: 1px solid rgba(78, 205, 196, 0.2);
-    box-shadow: var(--shadow);
-    padding: 30px;
-    width: 100%;
-    max-width: 500px;
-    margin: 20px 0;
+    box-shadow: var(--shadow),
+                0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: fit-content;
 }
 
 .add-student-form {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    gap: 20px;
     width: 100%;
 }
 
 .form-title {
     color: var(--primary-color);
-    font-size: 1.8rem;
+    font-size: 40px;
     font-weight: 700;
-    margin-bottom: 10px;
-    text-align: center;
-    text-shadow: 1px 1px 4px rgba(78, 205, 196, 0.3);
+    margin-bottom: 35px;
+    text-shadow: 2px 2px 8px rgba(78, 205, 196, 0.5);
 }
 
 .form-grid {
@@ -105,103 +98,106 @@ body::after {
 
 .input-row {
     display: flex;
-    gap: 15px;
+    flex-direction: row;
+    gap: 20px;
 }
 
-.input-group {
-    flex: 1;
-    min-width: 0;
-}
-
-input {
+input, .select-field{
     background-color: var(--medium-gray);
     border: none;
     border-radius: 8px;
     color: var(--light-gray);
-    font-size: 0.95rem;
-    height: 45px;
-    padding: 0 15px;
+    font-size: 17px;
+    height: 50px;
+    padding: 15px;
+    transition: all 0.3s ease;
     width: 100%;
-    transition: all 0.2s ease;
 }
 
 input::placeholder {
     color: var(--light-gray);
-    opacity: 0.6;
-    font-size: 0.9rem;
+    opacity: 0.7;
 }
 
 input:hover,
-input:focus {
+input:focus,
+.select-field:hover,
+.select-field:focus {
     background-color: var(--medium-gray);
     box-shadow: 0 0 0 2px var(--primary-color);
     outline: none;
 }
 
+.select-field {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234ECDC4' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-position: right 20px center;
+    background-repeat: no-repeat;
+}
+
 .file-input-wrapper {
-    display: flex;
     align-items: center;
-    justify-content: center;
     background-color: var(--medium-gray);
     border-radius: 8px;
-    height: 45px;
+    display: flex;
+    height: 50px;
+    justify-content: center;
     position: relative;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     width: 100%;
 }
 
 .file-input-wrapper:hover {
+    background-color: var(--medium-gray);
     box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 .file-input-label {
     color: var(--light-gray);
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
+    font-size: 1rem;
     pointer-events: none;
 }
 
 .file-input-icon {
     color: var(--primary-color);
-    margin-right: 8px;
-    font-size: 1rem;
+    margin-right: 10px;
+    pointer-events: none;
 }
 
 .file-input-hidden {
+    height: 100%;
+    left: 0;
+    opacity: 0;
     position: absolute;
     top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
 }
 
 .button-group {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 15px;
     width: 100%;
-    margin-top: 10px;
 }
 
 .action-button {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     border: none;
     border-radius: 8px;
+    box-shadow: var(--shadow);
     color: var(--dark-bg);
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 16px;
     font-weight: 600;
-    height: 45px;
-    transition: all 0.2s ease;
+    height: 50px;
+    margin-top: 25px;
+    transition: all 0.3s ease;
     width: 100%;
 }
 
 .action-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(78, 205, 196, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(78, 205, 196, 0.4);
 }
 
 .cancel-button {
@@ -210,10 +206,10 @@ input:focus {
     border-radius: 8px;
     color: var(--primary-color);
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 16px;
     font-weight: 600;
-    height: 45px;
-    transition: all 0.2s ease;
+    height: 50px;
+    transition: all 0.3s ease;
     width: 100%;
 }
 
@@ -222,43 +218,15 @@ input:focus {
     color: var(--dark-bg);
 }
 
-@media (max-width: 600px) {
+/* Responsive */
+@media (max-width: 480px) {
     .glass-card {
+        width: fit-content;
         padding: 25px;
     }
-    
+
     .input-row {
         flex-direction: column;
         gap: 15px;
-    }
-    
-    .form-title {
-        font-size: 1.6rem;
-    }
-    
-    input, .file-input-wrapper, .action-button, .cancel-button {
-        height: 42px;
-    }
-}
-
-@media (max-width: 400px) {
-    .container {
-        padding: 15px;
-    }
-    
-    .glass-card {
-        padding: 20px;
-    }
-    
-    .form-title {
-        font-size: 1.4rem;
-    }
-    
-    input {
-        font-size: 0.9rem;
-    }
-    
-    .file-input-label {
-        font-size: 0.85rem;
     }
 }
