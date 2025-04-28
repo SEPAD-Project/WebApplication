@@ -16,16 +16,18 @@
     <div class="glass-card">
         <form method="POST" action="{{ url_for('teacher_routes.add_teacher') }}" class="add-teacher-form">
             <h1 class="form-title">Add a Teacher</h1>
-            <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" pattern="[0-9]+" title="Should only contain numbers" required>
-            <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" pattern="[0-9]+" title="Should only contain numbers" required>
+            <div class="inputs-part">
+                <input type="text" id="teacher_national_code" name="teacher_national_code" placeholder="Teacher National Code" pattern="[0-9]+" title="Should only contain numbers" required>
+                <input type="text" id="teacher_password" name="teacher_password" placeholder="Teacher Password" pattern="[0-9]+" title="Should only contain numbers" required>
 
-            <div class="multi-select-wrapper">
-                <label for="selected_classes">Select Classes</label>
-                <select name="selected_classes" id="selected_classes" multiple class="multi-select-dropdown">
-                    {% for class in classes %}
-                    <option value="{{ class.id }}">{{ class.class_name }}</option>
-                    {% endfor %}
-                </select>
+                <div class="multi-select-wrapper">
+                    <label for="selected_classes">Select Classes</label>
+                    <select name="selected_classes" id="selected_classes" multiple class="multi-select-dropdown">
+                        {% for class in classes %}
+                        <option value="{{ class.id }}">{{ class.class_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <div class="button-group">
