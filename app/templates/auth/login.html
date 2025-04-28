@@ -22,12 +22,15 @@
     <!-- Login Form -->
     <form method="POST" action="{{ url_for('auth_routes.login') }}" class="login-form">
         <h1 class="form-title">Login</h1>
-        <div class="input-container">
-            <input type="text" name="username" placeholder="Username" pattern="[0-9]+" title="Should only contain numbers" required>
+        <div class="inputs-part">
+            <div class="input-container">
+                <input type="text" name="username" placeholder="Username" pattern="[0-9]+" title="Should only contain numbers" required>
+            </div>
+            <div class="input-container">
+                <input type="password" name="password" placeholder="Password" pattern="[0-9]+" title="Should only contain numbers" required>
+            </div>
         </div>
-        <div class="input-container">
-            <input type="password" name="password" placeholder="Password" pattern="[0-9]+" title="Should only contain numbers" required>
-        </div>
+
         <button type="submit" class="submit-button">Login</button>
         <p class="form-footer">
             Don't have an account? 

@@ -13,47 +13,45 @@
 <body>
     <div id="particles-js"></div>
 
-    <div class="container">
         <div class="glass-card">
             <form method="POST" action="{{ url_for('student_routes.add_from_excel') }}" class="add-student-form" enctype="multipart/form-data">
                 <h1 class="form-title">Add From Excel</h1>
                 
-                <div class="form-grid">
+            <div class="form-grid">
+                <div class="input-group">
+                    <input type="text" placeholder="Sheet Name" name="sheet" required>
+                </div>
+                
+                <div class="input-row">
                     <div class="input-group">
-                        <input type="text" placeholder="Sheet Name" name="sheet" required>
+                        <input type="text" placeholder="Name Column" name="name" required>
                     </div>
-                    
-                    <div class="input-row">
-                        <div class="input-group">
-                            <input type="text" placeholder="Name Column" name="name" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" placeholder="Family Column" name="family" required>
-                        </div>
-                    </div>
-                    
-                    <div class="input-row">
-                        <div class="input-group">
-                            <input type="text" placeholder="National Code Column" name="national_code" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="text" placeholder="Class Column" name="class" required>
-                        </div>
-                    </div>
-                    
                     <div class="input-group">
-                        <input type="text" placeholder="Password Column" name="password" required>
+                        <input type="text" placeholder="Family Column" name="family" required>
                     </div>
-                    
-                    <div class="file-input-wrapper">
-                        <span class="file-input-label"><i class="fa-solid fa-file-excel file-input-icon"></i>Excel File</span>
-                        <input type="file" class="file-input-hidden" name="file_input" accept=".xlsx" required>
+                </div>
+                
+                <div class="input-row">
+                    <div class="input-group">
+                        <input type="text" placeholder="National Code Column" name="national_code" required>
                     </div>
-                    
-                    <div class="file-input-wrapper">
-                        <span class="file-input-label"><i class="fa-solid fa-file-zipper file-input-icon"></i>Images ZIP File</span>
-                        <input type="file" class="file-input-hidden" name="zip_input" accept=".zip" required>
+                    <div class="input-group">
+                        <input type="text" placeholder="Class Column" name="class" required>
                     </div>
+                </div>
+                
+                <div class="input-group">
+                    <input type="text" placeholder="Password Column" name="password" required>
+                </div>
+                
+                <div class="file-input-wrapper">
+                    <span class="file-input-label"><i class="fa-solid fa-file-excel file-input-icon"></i>Excel File</span>
+                    <input type="file" class="file-input-hidden" name="file_input" accept=".xlsx" required>
+                </div>
+                
+                <div class="file-input-wrapper">
+                    <span class="file-input-label"><i class="fa-solid fa-file-zipper file-input-icon"></i>Images ZIP File</span>
+                    <input type="file" class="file-input-hidden" name="zip_input" accept=".zip" required>
                 </div>
 
                 <div class="button-group">

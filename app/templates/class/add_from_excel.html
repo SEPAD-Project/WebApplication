@@ -16,13 +16,16 @@
     <div class="glass-card">
         <form method="POST" action="{{ url_for('class_routes.add_from_excel') }}" class="add-excel-form" enctype="multipart/form-data">
             <h1 class="form-title">Add From Excel</h1>
-            <input type="text" placeholder="Sheet Name" name="sheet" required>
-            <input type="text" placeholder="Name Column Letter" name="name" required>
-            
-            <div class="file-input-wrapper">
-                <span class="file-input-label"><i class="fa-solid fa-upload file-input-icon"></i>Choose Excel File</span>
-                <input type="file" class="file-input-hidden" name="file_input" accept=".xlsx" required>
+            <div class="inputs-part">
+                <input type="text" placeholder="Sheet Name" name="sheet" required>
+                <input type="text" placeholder="Name Column Letter" name="name" required>
+                
+                <div class="file-input-wrapper">
+                    <span class="file-input-label"><i class="fa-solid fa-upload file-input-icon"></i>Choose Excel File</span>
+                    <input type="file" class="file-input-hidden" name="file_input" accept=".xlsx" required>
+                </div>
             </div>
+
 
             <div class="button-group">
                 <button type="submit" class="action-button">Add</button>
