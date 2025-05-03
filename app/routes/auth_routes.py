@@ -1,12 +1,13 @@
-# Import necessary modules
-from app import db  # SQLAlchemy database instance
-from app.models.models import School  # School model for database interaction
-# Function to manage school directories
-from app.server_side.Website.directory_manager import dm_create_school
+# Standard Library Imports
 
-# Flask web utilities
+# Third-party Imports
 from flask import Blueprint, redirect, render_template, request, url_for, session
-from flask_login import login_user, current_user  # User session management
+from flask_login import login_user, current_user
+
+# Local Application Imports
+from app import db
+from app.models.models import School
+from app.server_side.Website.directory_manager import dm_create_school
 
 # Initialize the Blueprint for authentication-related routes
 bp = Blueprint('auth_routes', __name__)
@@ -14,65 +15,65 @@ bp = Blueprint('auth_routes', __name__)
 
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
-    """
-    Handles the login process for a school manager.
+    '''
+    Handle the login process for school managers.
 
     GET:
-        - If the user is already authenticated, redirect them to the dashboard.
-        - Otherwise, show the login form.
+        - If the user is already authenticated, redirect to the dashboard.
+        - Otherwise, render the login form.
 
     POST:
-        - Extracts the provided school code and manager personal code from the form.
-        - Authenticates against the database.
-        - If valid, logs in the user and redirects to the panel home.
-        - Otherwise, redirects to an error notification page.
-    """
-    # Redirect authenticated users to the dashboard
+        - Retrieve school code and manager's personal code from the form.
+        - Authenticate the user against the database.
+        - If credentials are valid, log the user in and redirect to the panel home.
+        - If invalid, redirect to an error notification page.
+    '''
     if current_user.is_authenticated:
+        # User is already logged in; redirect to dashboard
         return redirect(url_for('school_routes.panel_home'))
 
     if request.method == 'POST':
-        # Retrieve login credentials from the form
+        # Retrieve login form data
         given_school_code = request.form['username']
         given_manager_personal_code = request.form['password']
 
-        # Query the database for the school
+        # Query the database for a school with the given code
         school = School.query.filter_by(school_code=given_school_code).first()
 
         if not school:
-            # School code not found
-            session["show_error_notif"] = True
+            # No school found with the provided code
+            session['show_error_notif'] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
-        # Validate the manager's personal code
         if school.manager_personal_code == given_manager_personal_code:
+            # Credentials are valid; log the user in
             login_user(school, remember=True)
             return redirect(url_for('school_routes.panel_home'))
         else:
-            # Invalid personal code
-            session["show_error_notif"] = True
+            # Invalid manager personal code
+            session['show_error_notif'] = True
             return redirect(url_for('auth_routes.unknown_school_info'))
 
-    # Render the login page for GET requests
+    # Render login page for GET request
     return render_template('auth/login.html')
 
 
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
-    """
-    Handles the registration process for new schools.
+    '''
+    Handle the registration process for new schools.
 
     GET:
-        - Renders the signup form.
+        - Render the signup form.
 
     POST:
-        - Collects data from the form and creates a new School record.
-        - Attempts to commit it to the database.
-        - If successful, also creates a corresponding directory for the school.
-        - If there's a conflict (e.g., duplicate school code), redirects to an error page.
-    """
+        - Collect school registration data from the form.
+        - Create a new school record and save it in the database.
+        - Create a directory for the new school.
+        - If an error occurs (e.g., duplicate entry), redirect to an error page.
+    '''
     if request.method == 'POST':
-        # Collect registration data from the form
+        # Retrieve registration form data
         school_name = request.form['school_name']
         school_code = request.form['school_code']
         manager_personal_code = request.form['manager_personal_code']
@@ -80,7 +81,7 @@ def signup():
         city = request.form['city']
         email = request.form['email']
 
-        # Create a new School object
+        # Create a new School instance
         new_school = School(
             school_name=school_name,
             school_code=school_code,
@@ -91,58 +92,67 @@ def signup():
         )
 
         try:
-            # Add the new school to the database
+            # Add and commit the new school to the database
             db.session.add(new_school)
             db.session.commit()
 
-            # Create a directory for the school
+            # Create a corresponding directory for the school
             dm_create_school(school_id=str(new_school.id))
 
-            # Notify the user of successful registration
-            session["show_error_notif"] = True
+            # Notify user of successful registration
+            session['show_error_notif'] = True
             return redirect(url_for('auth_routes.notify_user'))
-        except Exception as e:
-            # Handle database errors (e.g., duplicate entries)
-            session["show_error_notif"] = True
+
+        except Exception:
+            # Error occurred (e.g., duplicate school code)
+            session['show_error_notif'] = True
             return redirect(url_for('auth_routes.duplicated_school_info'))
 
-    # Render the signup form for GET requests
+    # Render signup page for GET request
     return render_template('auth/signup.html')
 
 
 @bp.route('/notify_username_password')
 def notify_user():
     """
-    Displays a page that informs the user of their assigned username and password after registration.
+    Display a page that informs the user of their assigned username and password after registration.
 
-    Prevents direct access without context by checking the session flag.
+    Prevents direct access without proper session context by checking the session flag.
     """
+    # Check session flag to prevent unauthorized access
     if not session.pop('show_error_notif', False):
         return redirect(url_for('auth_routes.login'))
+
+    # Render notification page
     return render_template('auth/notify_username_password.html')
 
 
 @bp.route('/duplicated_school_info')
 def duplicated_school_info():
     """
-    Shows an error page when a school code or personal code already exists during signup.
+    Show an error page when a duplicate school code or personal code is detected during signup.
 
-    Prevents direct access without context by checking the session flag.
+    Prevents direct access without proper session context by checking the session flag.
     """
+    # Check session flag to prevent unauthorized access
     if not session.pop('show_error_notif', False):
         return redirect(url_for('auth_routes.signup'))
+
+    # Render duplicate information error page
     return render_template('auth/duplicated_school_info.html')
 
 
 @bp.route('/unknown_school_info')
 def unknown_school_info():
     """
-    Displays an error message when:
-    - The provided school code does not exist, or
-    - The manager personal code (password) is incorrect.
+    Display an error message when the provided school code does not exist
+    or the manager personal code is incorrect.
 
-    Prevents direct access without context by checking the session flag.
+    Prevents direct access without proper session context by checking the session flag.
     """
+    # Check session flag to prevent unauthorized access
     if not session.pop('show_error_notif', False):
         return redirect(url_for('auth_routes.signup'))
+
+    # Render unknown school information error page
     return render_template('auth/unknown_school_info.html')

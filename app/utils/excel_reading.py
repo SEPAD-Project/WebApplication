@@ -1,37 +1,38 @@
+# Third-party Imports
 import openpyxl
-from datetime import time
 from flask_login import current_user
 
+# Internal Imports
 from app.utils.generate_class_code import generate_class_code
 
 
 def add_students(
-    path_to_xlsx, sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, available_classes, registered_national_codes
+    path_to_xlsx, sheet_name, name_letter, family_letter,
+    nc_letter, class_letter, pass_letter,
+    available_classes, registered_national_codes
 ):
     """
-    Adds students from an Excel file to the database, verifying format and preventing duplicates.
+    Parse and validate student data from an Excel file.
 
     Args:
-        path_to_xlsx (str): Path to the Excel file containing student data.
-        sheet_name (str): Name of the sheet in the Excel file.
+        path_to_xlsx (str): Path to the Excel file.
+        sheet_name (str): Sheet name within the Excel file.
         name_letter (str): Column letter for student names.
-        family_letter (str): Column letter for student family names.
-        nc_letter (str): Column letter for student national codes.
-        class_letter (str): Column letter for class codes.
-        pass_letter (str): Column letter for student passwords.
-        available_classes (list): List of valid class codes.
-        registered_national_codes (list): List of national codes already registered in the system.
+        family_letter (str): Column letter for family names.
+        nc_letter (str): Column letter for national codes.
+        class_letter (str): Column letter for class names.
+        pass_letter (str): Column letter for passwords.
+        available_classes (list): Valid class names to match against.
+        registered_national_codes (list): Existing national codes in DB.
 
     Returns:
-        list or str: A list of student dictionaries if the data is valid, or an error message/list of problems.
+        list[dict] or list[list] or str: Parsed student list, or errors, or a string error code.
     """
-
-    # Load the workbook and select the specified sheet
-    workbook = openpyxl.load_workbook(path_to_xlsx)
     try:
+        workbook = openpyxl.load_workbook(path_to_xlsx)
         sheet = workbook[sheet_name]
     except KeyError:
-        return 'sheet_not_found'  # Return error if the sheet is not found
+        return 'sheet_not_found'
 
     # Convert column letters to zero-based indices
     try:
@@ -42,73 +43,59 @@ def add_students(
         class_index = openpyxl.utils.column_index_from_string(class_letter) - 1
         pass_index = openpyxl.utils.column_index_from_string(pass_letter) - 1
     except ValueError:
-        return 'bad_column_letter'  # Return error if invalid column letters are provided
+        return 'bad_column_letter'
 
-    # Validate the data format and check for issues
     problems = []
     nc_list = []
 
-    # Validate names and family names
-    for cell in sheet[name_letter]:
-        if cell.row == 1:
-            continue
-        if not isinstance(cell.value, str):
-            problems.append(['bad_format', cell.row, cell.column_letter])
+    for row in sheet.iter_rows(min_row=2):
+        # Fetch raw cell values
+        name = row[name_index].value
+        family = row[family_index].value
+        nc = row[nc_index].value
+        class_raw = row[class_index].value
+        password = row[pass_index].value
 
-    for cell in sheet[family_letter]:
-        if cell.row == 1:
-            continue
-        if not isinstance(cell.value, str):
-            problems.append(['bad_format', cell.row, cell.column_letter])
+        row_number = row[0].row
 
-    # Validate national codes
-    for cell in sheet[nc_letter]:
-        if cell.row == 1:
-            continue
-        if not isinstance(cell.value, int):
-            problems.append(['bad_format', cell.row, cell.column_letter])
-        elif str(cell.value) in registered_national_codes or str(cell.value) in nc_list:
-            problems.append(['duplicated_nc', cell.row, cell.column_letter])
+        # Validate name and family
+        if not isinstance(name, str):
+            problems.append(['bad_format', row_number, name_letter])
+        if not isinstance(family, str):
+            problems.append(['bad_format', row_number, family_letter])
+
+        # Validate national code
+        if not isinstance(nc, int):
+            problems.append(['bad_format', row_number, nc_letter])
+        elif str(nc) in registered_national_codes or str(nc) in nc_list:
+            problems.append(['duplicated_nc', row_number, nc_letter])
         else:
-            nc_list.append(str(cell.value))
+            nc_list.append(str(nc))
 
-    # Validate class codes
-    for cell in sheet[class_letter]:
-        if cell.row == 1:
-            continue
-        if not isinstance(cell.value, (str, int)):
-            problems.append(['bad_format', cell.row, cell.column_letter])
-        elif str(cell.value) not in available_classes:
-            problems.append(['unknown_class', cell.row, cell.column_letter])
+        # Validate class
+        if not isinstance(class_raw, (str, int)):
+            problems.append(['bad_format', row_number, class_letter])
+        elif str(class_raw) not in available_classes:
+            problems.append(['unknown_class', row_number, class_letter])
 
-    # Validate passwords
-    for cell in sheet[pass_letter]:
-        if cell.row == 1:
-            continue
-        if not isinstance(cell.value, int):
-            problems.append(['bad_format', cell.row, cell.column_letter])
+        # Validate password
+        if not isinstance(password, int):
+            problems.append(['bad_format', row_number, pass_letter])
 
-    # If any problems are detected, return them
     if problems:
         return problems
 
-    # Extract valid student data
+    # Build clean data
     students = []
     school_code = current_user.school_code
 
     for row in sheet.iter_rows(values_only=True, min_row=2):
-        name = row[name_index]
-        family = row[family_index]
-        nc = row[nc_index]
-        class_ = generate_class_code(school_code, str(row[class_index]))
-        password = row[pass_index]
-
         students.append({
-            'name': name,
-            'family': family,
-            'national_code': nc,
-            'class': class_,
-            'password': password
+            'name': row[name_index],
+            'family': row[family_index],
+            'national_code': row[nc_index],
+            'class': generate_class_code(school_code, str(row[class_index])),
+            'password': row[pass_index],
         })
 
     return students
@@ -116,90 +103,85 @@ def add_students(
 
 def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
     """
-    Adds class data from an Excel file, checking for duplicates and format errors.
+    Parse and validate class names from Excel input.
 
     Args:
-        path_to_xlsx (str): Path to the Excel file containing class data.
-        sheet_name (str): Name of the sheet in the Excel file.
+        path_to_xlsx (str): Path to the Excel file.
+        sheet_name (str): Sheet to read.
         name_letter (str): Column letter for class names.
-        available_classes (list): List of class codes already available in the system.
+        available_classes (list): Existing class names to avoid duplication.
 
     Returns:
-        list or str: A list of class dictionaries if the data is valid, or an error message/list of problems.
+        list[dict] or list[list] or str: Parsed class list, or errors, or a string error code.
     """
-
-    # Load the workbook and select the specified sheet
-    workbook = openpyxl.load_workbook(path_to_xlsx)
     try:
+        workbook = openpyxl.load_workbook(path_to_xlsx)
         sheet = workbook[sheet_name]
     except KeyError:
-        return 'sheet_not_found'  # Return error if the sheet is not found
+        return 'sheet_not_found'
 
-    # Convert column letter to zero-based index
     try:
         name_index = openpyxl.utils.column_index_from_string(name_letter) - 1
     except ValueError:
-        return 'bad_column_letter'  # Return error if invalid column letter is provided
+        return 'bad_column_letter'
 
-    # Validate the data format and check for issues
     problems = []
     names_list = []
 
-    for cell in sheet[name_letter]:
-        if cell.row == 1:
-            continue
-        if not isinstance(cell.value, (str, int)):
-            problems.append(['bad_format', cell.row, cell.column_letter])
-        elif str(cell.value) in available_classes or str(cell.value) in names_list:
-            problems.append(['duplicated_name', cell.row, cell.column_letter])
-        else:
-            names_list.append(str(cell.value))
+    for row in sheet.iter_rows(min_row=2):
+        name = row[name_index].value
+        row_number = row[0].row
 
-    # If any problems are detected, return them
+        # Check format and duplication
+        if not isinstance(name, (str, int)):
+            problems.append(['bad_format', row_number, name_letter])
+        elif str(name) in available_classes or str(name) in names_list:
+            problems.append(['duplicated_name', row_number, name_letter])
+        else:
+            names_list.append(str(name))
+
     if problems:
         return problems
 
-    # Extract valid class data
-    classes = []
+    # Build valid class data
     school_code = current_user.school_code
+    classes = []
 
     for row in sheet.iter_rows(values_only=True, min_row=2):
-        name = row[name_index]
-        code = generate_class_code(school_code, str(name))
-        classes.append({'name': str(name), 'code': code})
+        name = str(row[name_index])
+        code = generate_class_code(school_code, name)
+        classes.append({'name': name, 'code': code})
 
     return classes
 
 
 def schedule_extraction(path_to_xlsx, sheet_name):
     """
-    Extracts a schedule from an Excel file.
-
-    The schedule is represented as a dictionary where each key corresponds to a row identifier (weekday),
-    and the value is another dictionary mapping column headers (time range) to cell values (teacher national code).
+    Extract structured schedule data from an Excel file.
 
     Args:
-        path_to_xlsx (str): Path to the Excel file containing the schedule.
-        sheet_name (str): Name of the sheet in the Excel file.
+        path_to_xlsx (str): Excel file path.
+        sheet_name (str): Sheet name to read from.
 
     Returns:
-        dict or str: A dictionary representing the schedule, or an error message if the sheet is not found.
+        dict or str: Schedule dictionary or 'sheet_not_found' error.
     """
-
-    # Load the workbook and select the specified sheet
-    workbook = openpyxl.load_workbook(path_to_xlsx)
-
     try:
+        workbook = openpyxl.load_workbook(path_to_xlsx)
         sheet = workbook[sheet_name]
     except KeyError:
-        return 'sheet_not_found'  # Return error if the sheet is not found
+        return 'sheet_not_found'
 
-    # Extract the schedule data
     schedule = {}
 
     for row_index, row in enumerate(sheet.iter_rows(values_only=True, min_row=2)):
-        schedule[str(row[0])] = {}
-        for column in sheet.iter_cols(values_only=True, min_col=2):
-            schedule[str(row[0])][str(column[0])] = column[row_index + 1]
+        row_label = str(row[0])
+        schedule[row_label] = {}
+
+        # Match each column header (time) with value for that day
+        for col_index, column in enumerate(sheet.iter_cols(values_only=True, min_col=2), start=1):
+            header = str(column[0])
+            value = column[row_index + 1]
+            schedule[row_label][header] = value
 
     return schedule

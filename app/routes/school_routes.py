@@ -1,62 +1,54 @@
-# Import necessary models from the application
-from app.models.models import Class, School, Student
-
-# Import required Flask modules
+# Third-party Imports
 from flask import Blueprint, render_template
 from flask_login import current_user, login_required
+
+# Local Application Imports
+from app.models.models import School
 
 # Initialize the Blueprint for school-related routes
 bp = Blueprint('school_routes', __name__)
 
 
 @bp.route('/panel/home')
-@login_required  # Ensures only logged-in users can access the panel
+@login_required
 def panel_home():
     """
-    Displays the home page of the school panel.
+    Render the dashboard (home page) for authenticated school users.
 
-    This page serves as a dashboard or welcome screen for authenticated users (e.g., school admins).
-    It provides quick access to different parts of the system.
+    Returns:
+        Rendered HTML template for the school panel's home page.
     """
     return render_template('school/home.html')
 
 
 @bp.route('/panel/school_info')
-@login_required  # Access is restricted to authenticated users
+@login_required
 def panel_school_info():
     """
-    Displays detailed information about the school on the school panel.
+    Display detailed information about the current school.
 
-    This view:
-    - Retrieves the school object using the school code of the currently logged-in user.
-    - Calculates and displays:
-        - Total number of teachers registered in the school.
-        - Total number of classes in the school.
-        - Total number of students enrolled in the school.
-    - Passes this data to the 'school_info.html' template for rendering.
+    Retrieves the school based on the currently logged-in user.
+    Gathers and sends statistics (teachers, classes, students) to the template.
+
+    Returns:
+        Rendered HTML template with school details and counts.
     """
-    # Retrieve the school based on the current user's associated school code
-    school = School.query.filter(
-        School.id==current_user.id).first()
+    # Retrieve the school by the current user's ID
+    school = School.query.filter(School.id == current_user.id).first()
 
     if not school:
-        # Handle the case where the school is not found
+        # If the school is not found, return a 404 page
         return render_template('errors/404.html'), 404
 
-    # Count the number of teachers by evaluating the stored list (as a string)
+    # Gather stats
     teachers_count = len(school.teachers)
-
-    # Count the number of classes associated with the school
     classes_count = len(school.classes)
-
-    # Count the number of students enrolled in the school
     students_count = len(school.students)
 
-    # Render the school_info.html template with all calculated data
     return render_template(
         'school/school_info.html',
-        data=school,           # The full school object
-        tc=teachers_count,     # Teacher count
-        cc=classes_count,      # Class count
-        sc=students_count      # Student count
+        data=school,
+        tc=teachers_count,
+        cc=classes_count,
+        sc=students_count
     )

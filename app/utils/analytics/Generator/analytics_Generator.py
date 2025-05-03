@@ -1,225 +1,183 @@
-import datetime
+# Standard Library Imports
 import os
 import glob
+import datetime
 
+# Third-party Imports
 from flask_login import current_user
 
-# Model imports
-from app.models.models import *
-
-# Utility imports
+# Internal Imports
+from app.models.models import Class, Teacher, School
 from app.utils.excel_reading import schedule_extraction
 
 
 def calculate_students_accuracy(class_id):
     """
-    Calculate and compare the accuracy percentages of students in a given class
-    based on their result files.
-
-    This function reads each student's result file (in txt format), processes the data,
-    and calculates their accuracy percentage. The results are returned as a dictionary
-    mapping student names to their accuracy percentages.
+    Calculate accuracy percentages for all students in a class based on their result files.
 
     Args:
-        class_name (str): The name of the class to evaluate students from
+        class_id (str): ID of the class to process.
 
     Returns:
-        dict: A dictionary where keys are student names and values are their 
-              accuracy percentages (0-100)
-
-    Example:
-        >>> Generator_compare_students("10A")
-        {'John Doe': 85.5, 'Jane Smith': 92.3}
+        dict: Mapping of student full names to their accuracy percentage (0–100).
     """
-    # Base path where student result files are stored
-    BASE_PATH = f"c:\sap-project\server\schools\{str(current_user.id)}\{class_id}"
-
-    # Dictionary to store accuracy percentages by student name
+    # Define base path to student result files
+    base_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{class_id}"
     students_accuracy = {}
 
-    # Generate the class code and get all students in this class
-    class_ = Class.query.filter(Class.id==int(class_id)).first()
+    # Fetch the class object
+    class_ = Class.query.filter(Class.id == int(class_id)).first()
 
+    # Iterate over students in the class
     for student in class_.students:
-        # Construct the file path for each student's result file
-        file_path = BASE_PATH + f"\{student.id}.txt"
+        file_path = os.path.join(base_path, f"{student.id}.txt")
 
-        # Read and process the result file
-        with open(file_path, 'r') as file:
-            # Skip header line and extract the first part of each result (before '|=|')
-            results = [result.split('|=|')[0]
-                       for result in file.readlines()[1:]]
-
-        # Convert results to binary values (1 for '5', 0 otherwise)
-        for index, content in enumerate(results):
-            if content == '5':
-                results[index] = 1  # Correct answer
-            else:
-                results[index] = 0  # Incorrect answer
-
-        # Calculate accuracy percentage and store in dictionary
         try:
-            students_accuracy[f"{student.student_name} {student.student_family}"] = (
-                sum(results) / len(results)) * 100
-        except:
-            students_accuracy[f"{student.student_name} {student.student_family}"] = 0
+            with open(file_path, 'r') as file:
+                lines = file.readlines()[1:]  # Skip header
+                # Convert each result to 1 if correct ('5'), else 0
+                results = [1 if line.split(
+                    '|=|')[0] == '5' else 0 for line in lines]
+
+            # Calculate accuracy percentage
+            accuracy = (sum(results) / len(results)) * 100
+
+        except FileNotFoundError:
+            # No result file found for this student
+            accuracy = 0
+        except ZeroDivisionError:
+            # File exists but has no valid results
+            accuracy = 0
+
+        # Store result by student full name
+        full_name = f"{student.student_name} {student.student_family}"
+        students_accuracy[full_name] = accuracy
 
     return students_accuracy
 
 
 def calculate_classes_accuracy():
     """
-    Calculate the average accuracy percentage for all classes in the current user's school.
-
-    This function:
-    1. Retrieves all classes in the current school
-    2. For each class, gets individual student accuracies
-    3. Calculates the class average accuracy
-    4. Returns a dictionary of class names to their average accuracy
+    Calculate average accuracy percentage for each class in the current school.
 
     Returns:
-        dict: A dictionary mapping class names to their average accuracy percentages (0-100).
-              Returns 0 for classes with no students.
-
-    Example:
-        >>> calculate_class_accuracy()
-        {'10A': 78.5, '10B': 85.2, '11A': 72.8}
+        dict: Mapping of class names to their average accuracy (0–100).
     """
-    classes_accuracy = {}  # Dictionary to store results
+    classes_accuracy = {}
 
-    # Get all class names in the current school
+    # Fetch all classes that belong to the current school
     classes = Class.query.filter(Class.school_id == current_user.id).all()
-    
-    class_info = [(class_.id, class_.class_name) for class_ in classes]
-    for class_id, class_name in class_info:
-        # Get accuracy percentages for all students in this class
-        student_accuracies = list(
-            calculate_students_accuracy(str(class_id)).values())
 
-        # Handle empty classes (avoid division by zero)
+    for class_ in classes:
+        # Get list of accuracy values for students in the class
+        student_accuracies = list(
+            calculate_students_accuracy(str(class_.id)).values()
+        )
+
         if not student_accuracies:
-            classes_accuracy[class_name] = 0
+            # Handle case where class has no valid student results
+            classes_accuracy[class_.class_name] = 0
             continue
 
-        # Calculate class average accuracy
-        classes_accuracy[class_name] = sum(
-            student_accuracies) / len(student_accuracies)
+        # Calculate and store average class accuracy
+        avg_accuracy = sum(student_accuracies) / len(student_accuracies)
+        classes_accuracy[class_.class_name] = avg_accuracy
 
     return classes_accuracy
 
 
 def calculate_teachers_performance():
     """
-    Calculate teacher performance metrics based on student result files.
-
-    Processes student result files across all classes to determine:
-    - Number of correct results (code '5')
-    - Total result attempts
-    for each teacher based on their scheduled class times.
+    Calculate performance metrics for each teacher based on student result files.
 
     Returns:
-        dict: Teacher national codes mapped to [correct_codes, total_codes]
+        dict: Mapping from teacher full name to accuracy percentage (0–100).
     """
-    # Use raw string for Windows paths and os.path.join for path construction
-    school_dir = f"c:\sap-project\server\schools\{str(current_user.id)}"
-
-    # Initialize teacher tracking dictionary
+    school_dir = f"c:/sap-project/server/schools/{str(current_user.id)}"
     teachers_performance = {}
 
-    # Get all teachers in the school
-    school = School.query.filter(
-        School.id == current_user.id
-    ).first()
+    # Fetch all teachers for current school
+    school = School.query.filter(School.id == current_user.id).first()
+    teacher_codes = [t.teacher_national_code for t in school.teachers]
 
-    # Convert string representation of list to actual list
-    teacher_codes = [teacher.teacher_national_code for teacher in school.teachers]
-
-    # Initialize counters for each teacher: [correct_codes, total_codes]
+    # Initialize performance counter for each teacher
     for teacher_code in teacher_codes:
-        teachers_performance[teacher_code] = [0, 0]
+        teachers_performance[teacher_code] = [0, 0]  # [correct, total]
 
-    # Process each class directory
+    # Traverse class directories in the school directory
     for class_id in os.listdir(school_dir):
         class_dir = os.path.join(school_dir, class_id)
 
-        # Skip if not a directory
         if not os.path.isdir(class_dir):
-            continue
+            continue  # Skip files
 
-        # Get all student result files
-        result_files = glob.glob(os.path.join(class_dir, "*.txt"))
-
-        # Load class schedule
+        # Load class schedule (if exists)
         schedule_path = os.path.join(class_dir, "schedule.xlsx")
         try:
             class_schedule = schedule_extraction(schedule_path, "Sheet1")
         except FileNotFoundError:
-            continue  # Skip if no schedule file
+            continue
 
-        # Process each student's result file
+        # Get all student result files (.txt)
+        result_files = glob.glob(os.path.join(class_dir, "*.txt"))
+
         for file_path in result_files:
             try:
-                with open(file_path) as f:
-                    # Skip header line
-                    result_lines = f.readlines()[1:]
+                with open(file_path, 'r') as f:
+                    lines = f.readlines()[1:]  # Skip header
             except IOError:
                 continue  # Skip unreadable files
 
-            for line in result_lines:
-                # Parse result data: result_code|=|datetime
+            for line in lines:
+                # Parse line into result and datetime
                 parts = line.strip().split('|=|')
                 if len(parts) < 2:
-                    continue  # Skip malformed lines
+                    continue
 
                 result_code, datetime_str = parts
-                date_str, time_str = datetime_str.split()
 
                 try:
-                    # Parse date and determine weekday
+                    date_str, time_str = datetime_str.split()
                     date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
                     result_weekday = date_obj.strftime("%A")
                     result_time = datetime.time.fromisoformat(time_str)
                 except ValueError:
-                    continue  # Skip invalid date/time formats
+                    continue  # Skip malformed date/time
 
-                # Check scheduled time slots for this weekday
+                # Find which teacher was responsible at that time
                 for time_range, teacher_code in class_schedule.get(result_weekday, {}).items():
                     try:
                         start_str, end_str = time_range.split('-')
                         start_time = datetime.time.fromisoformat(start_str)
                         end_time = datetime.time.fromisoformat(end_str)
                     except ValueError:
-                        continue  # Skip invalid time ranges
+                        continue  # Skip bad time ranges
 
-                    # If result date and time falls within this time slot
+                    # Check if result time falls in the range
                     if start_time <= result_time <= end_time:
                         teacher_code = str(teacher_code)
-                        # Count correct result code (code '5')
+
                         if result_code == '5':
+                            # correct
                             teachers_performance[teacher_code][0] += 1
-                        # Count total result codes
-                        teachers_performance[teacher_code][1] += 1
+                        teachers_performance[teacher_code][1] += 1  # total
 
-    # Create a mapping from teacher codes to their full names
-    teacher_name_map = {
-        teacher_nc: f"{teacher.teacher_name} {teacher.teacher_family}"
-        for teacher_nc in teacher_codes
-        if (teacher := Teacher.query.filter(
+    # Map teacher codes to their full names
+    teacher_name_map = {}
+    for teacher_nc in teacher_codes:
+        teacher = Teacher.query.filter(
             Teacher.teacher_national_code == teacher_nc
-        ).first())
-    }
+        ).first()
+        if teacher:
+            teacher_name_map[teacher_nc] = f"{teacher.teacher_name} {teacher.teacher_family}"
 
-    # Calculate and transform the performance data
+    # Compute final percentage performance
     final_performance = {}
     for teacher_nc, (correct, total) in teachers_performance.items():
         if teacher_nc not in teacher_name_map:
-            continue  # Skip if teacher not found
+            continue
 
-        try:
-            score = (correct / total) * 100 if total > 0 else 0
-        except ZeroDivisionError:
-            score = 0
-
+        score = (correct / total) * 100 if total > 0 else 0
         full_name = teacher_name_map[teacher_nc]
         final_performance[full_name] = round(score, 2)
 
@@ -228,83 +186,78 @@ def calculate_teachers_performance():
 
 def calculate_student_accuracy_by_lesson(class_id, student_id):
     """
-    Calculate a student's performance by lesson based on their result files.
+    Calculate a student's answer accuracy by lesson, based on result timestamps.
 
     Args:
-        class_name (str): The name of the student's class
-        national_code (str): The student's national identification code
+        class_id (str): ID of the class the student belongs to.
+        student_id (str): ID of the student.
 
     Returns:
-        dict: Lesson names mapped to performance percentages (0-100)
+        dict: Mapping from lesson names to accuracy percentage (0–100).
     """
-    # Use raw strings for Windows paths and os.path.join for path construction
-    base_dir = f"c:\sap-project\server\schools\{str(current_user.id)}\{class_id}"
-    result_file = f"{base_dir}/{student_id}.txt"
-    schedule_file = f"{base_dir}/schedule.xlsx"
+    base_dir = f"c:/sap-project/server/schools/{str(current_user.id)}/{class_id}"
+    result_file = os.path.join(base_dir, f"{student_id}.txt")
+    schedule_file = os.path.join(base_dir, "schedule.xlsx")
 
-    # Initialize lessons tracking dictionary
     lessons_performance = {}
 
+    # Load schedule for this class
     try:
-        # Load class schedule
         class_schedule = schedule_extraction(schedule_file, 'Sheet1')
     except FileNotFoundError:
-        return {}  # Return empty if schedule missing
+        return {}
 
-    # Get all teachers and their lessons in one query
-    school = School.query.filter(
-        School.id == current_user.id).first()
-    teacher_codes = [teacher.teacher_national_code for teacher in school.teachers]
-
-    # Create teacher-lesson mapping
+    # Get teacher → lesson map
+    school = School.query.filter(School.id == current_user.id).first()
+    teacher_codes = [t.teacher_national_code for t in school.teachers]
     teachers = Teacher.query.filter(
         Teacher.teacher_national_code.in_(teacher_codes)).all()
     teacher_lesson_map = {t.teacher_national_code: t.lesson for t in teachers}
 
+    # Read result file
     try:
         with open(result_file) as f:
             result_lines = f.readlines()[1:]  # Skip header
     except IOError:
-        return {}  # Return empty if answer file missing
+        return {}
 
+    # Parse and assign each result to a lesson
     for line in result_lines:
         parts = line.strip().split('|=|')
         if len(parts) < 2:
-            continue  # Skip malformed lines
+            continue
 
         result_code, datetime_str = parts
         try:
             date_str, time_str = datetime_str.split()
             date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
             result_weekday = date_obj.strftime("%A")
-            result__time = datetime.time.fromisoformat(time_str)
+            result_time = datetime.time.fromisoformat(time_str)
         except ValueError:
-            continue  # Skip invalid date/time
+            continue
 
-        # Check scheduled time slots for this weekday
+        # Match result to time slot and teacher
         for time_range, teacher_code in class_schedule.get(result_weekday, {}).items():
             try:
                 start_str, end_str = time_range.split('-')
                 start_time = datetime.time.fromisoformat(start_str)
                 end_time = datetime.time.fromisoformat(end_str)
             except ValueError:
-                continue  # Skip invalid time ranges
+                continue
 
-            if start_time <= result__time <= end_time:
+            if start_time <= result_time <= end_time:
                 lesson = teacher_lesson_map.get(str(teacher_code))
-                if lesson:
-                    # Initialize lesson tracking if not exists
-                    if lesson not in lessons_performance:
-                        lessons_performance[lesson] = [
-                            0, 0]  # [correct, total]
+                if not lesson:
+                    continue
 
-                    # Count answers
-                    if result_code == '5':
-                        lessons_performance[lesson][0] += 1
-                    lessons_performance[lesson][1] += 1
+                if lesson not in lessons_performance:
+                    lessons_performance[lesson] = [0, 0]  # [correct, total]
 
-    # Calculate final percentages
-    print(list(lessons_performance.items()))
+                if result_code == '5':
+                    lessons_performance[lesson][0] += 1  # correct
+                lessons_performance[lesson][1] += 1  # total
+
+    # Convert to percentage
     for lesson, (correct, total) in lessons_performance.items():
         try:
             lessons_performance[lesson] = round((correct / total) * 100, 2)
@@ -316,53 +269,58 @@ def calculate_student_accuracy_by_lesson(class_id, student_id):
 
 def calculate_student_weekly_accuracy(class_id, student_id):
     """
-    Calculate a student's daily accuracy over the past week.
+    Calculate a student's answer accuracy for each day in the past week.
 
     Args:
-        class_name (str): The student's class name
-        national_code (str): The student's national ID code
+        class_id (str): ID of the class the student belongs to.
+        student_id (str): ID of the student.
 
     Returns:
-        dict: Dates (YYYY-MM-DD) mapped to daily performance percentages (0-100)
-              for the past 7 days (including today)
+        dict: Mapping from date (YYYY-MM-DD) to accuracy percentage (0–100).
     """
-    # Construct file path using os.path.join for cross-platform compatibility
-    file_path = f"c:\sap-project\server\schools\{str(current_user.id)}\{class_id}\{student_id}.txt"
+    # Build the path to the result file
+    file_path = os.path.join(
+        f"c:/sap-project/server/schools/{str(current_user.id)}",
+        class_id,
+        f"{student_id}.txt"
+    )
 
-    # Generate dates for the past week (today + previous 6 days)
+    # Generate past 7 days including today
     today = datetime.date.today()
-    date_range = [today - datetime.timedelta(days=i) for i in range(7)]
-    date_strings = [d.strftime("%Y-%m-%d") for d in date_range]
+    date_strings = [
+        (today - datetime.timedelta(days=i)).strftime("%Y-%m-%d")
+        for i in range(7)
+    ]
 
-    # Initialize daily performance tracking
-    daily_performance = {date: [0, 0]
-                         for date in date_strings}  # [correct, total]
+    # Initialize dictionary to track correct and total answers per day
+    daily_performance = {date: [0, 0] for date in date_strings}
 
     try:
         with open(file_path, 'r') as f:
-            for line in f.readlines()[1:]:  # Skip header line
+            lines = f.readlines()[1:]  # Skip header
+
+            for line in lines:
                 parts = line.strip().split('|=|')
                 if len(parts) < 2:
-                    continue  # Skip malformed lines
+                    continue
 
                 result_code, datetime_str = parts
                 result_date = datetime_str.split()[0]
 
+                # Track performance if the date is in range
                 if result_date in daily_performance:
-                    # Count correct answers (code '5') and total answers
                     if result_code == '5':
-                        daily_performance[result_date][0] += 1
-                    daily_performance[result_date][1] += 1
+                        daily_performance[result_date][0] += 1  # correct
+                    daily_performance[result_date][1] += 1     # total
 
     except FileNotFoundError:
-        # Return zeros if file missing
+        # If result file doesn't exist, return all 0.0s
         return {date: 0.0 for date in date_strings}
 
-    # Calculate percentages
+    # Convert [correct, total] to percentage
     for date, (correct, total) in daily_performance.items():
-        try:
-            daily_performance[date] = round((correct / total) * 100, 2)
-        except ZeroDivisionError:
-            daily_performance[date] = 0.0
+        daily_performance[date] = (
+            round((correct / total) * 100, 2) if total > 0 else 0.0
+        )
 
     return daily_performance

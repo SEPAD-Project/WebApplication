@@ -1,4 +1,4 @@
-# Import necessary functions and classes from Flask
+# Third-party Imports
 from flask import render_template, Blueprint
 
 # Initialize the Blueprint for home-related routes
@@ -8,10 +8,10 @@ bp = Blueprint('home_route', __name__)
 @bp.route('/')
 def home():
     """
-    Home page route handler.
+    Render the home (landing) page.
 
-    Renders the 'home.html' template.
-    Typically used as the landing page for the application.
+    Returns:
+        Rendered HTML for 'home.html'.
     """
     return render_template('home.html')
 
@@ -19,14 +19,20 @@ def home():
 @bp.route('/coming_soon')
 def coming_soon():
     """
-    "Coming Soon" page route handler.
+    Render the 'Coming Soon' placeholder page.
 
-    Renders a placeholder page (coming_soon.html) indicating that 
-    a feature or page is under development.
+    Returns:
+        Rendered HTML for 'coming_soon.html'.
     """
     return render_template('coming_soon.html')
 
 
 @bp.route('/contact')
 def contact():
+    """
+    Render the contact page.
+
+    Returns:
+        Rendered HTML for 'contact.html'.
+    """
     return render_template('contact.html')

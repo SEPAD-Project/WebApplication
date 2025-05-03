@@ -1,14 +1,16 @@
-# Import necessary modules and components
+# Standard Library Imports
+import os
+
+# Third-party Imports
+from flask import Blueprint, redirect, render_template, request, url_for, session
+from flask_login import current_user, login_required
+
+# Local Application Imports
 from app import db
 from app.models.models import Student, Teacher, Class, School
 from app.utils.generate_class_code import generate_class_code
 from app.utils.excel_reading import add_classes
-from app.server_side.Website.directory_manager import (
-    dm_create_class, dm_delete_class
-)
-from flask import Blueprint, redirect, render_template, request, url_for, session
-from flask_login import current_user, login_required
-import os
+from app.server_side.Website.directory_manager import dm_create_class, dm_delete_class
 
 # Initialize Blueprint for class-related routes
 bp = Blueprint('class_routes', __name__)
@@ -18,24 +20,26 @@ bp = Blueprint('class_routes', __name__)
 @login_required
 def panel_classes():
     """
-    Displays the main panel for managing classes.
-    Includes a search bar to filter classes by name or code.
+    Display the main panel for managing classes with optional search functionality.
+
+    GET:
+        - Show all classes or filter them by search query.
+    POST:
+        - Not used in this route.
     """
-    # Retrieve search query from URL parameters
     query = request.args.get('q')
-    school = School.query.filter(School.id==current_user.id).first()
+    school = School.query.filter(School.id == current_user.id).first()
+
     if not query:
-        # Show all classes for the current user's school if no search term is provided
+        # Show all classes if no search query is provided
         classes = school.classes
     else:
-        # Filter classes by name or code using the search term
+        # Filter classes by class name or class code
         classes = Class.query.filter(
             (Class.school_id == current_user.id) &
-            ((Class.class_name.ilike(f'%{query}%')) | (
-                Class.class_code.ilike(f'%{query}%')))
+            ((Class.class_name.ilike(f'%{query}%')) | (Class.class_code.ilike(f'%{query}%')))
         ).all()
 
-    # Render the class list page
     return render_template('class/classes.html', classes=classes)
 
 
@@ -43,17 +47,21 @@ def panel_classes():
 @login_required
 def add_class():
     """
-    Handles adding a new class.
-    - GET: Renders the "Add Class" form.
-    - POST: Processes form data, creates a new class, and redirects to the class list.
+    Handle the process of adding a new class.
+
+    GET:
+        - Render the 'Add Class' form.
+
+    POST:
+        - Process form data, create a new class, and redirect to the class list.
     """
     if request.method == 'POST':
-        # Extract form data
+        # Extract class name from form
         class_name = request.form['class_name']
         class_code = generate_class_code(current_user.school_code, class_name)
-        
         school_id = current_user.id
-        # Create a new Class object
+
+        # Create a new Class instance
         new_class = Class(
             class_name=class_name,
             class_code=class_code,
@@ -61,19 +69,17 @@ def add_class():
         )
 
         try:
-            # Add class to the database and create its directory
+            # Save the new class to the database and create its directory
             db.session.add(new_class)
             db.session.commit()
             dm_create_class(school_id=str(school_id), class_id=str(new_class.id))
         except Exception:
-            # Handle duplicate class errors
+            # Handle possible database errors (e.g., duplicate entry)
             session["show_error_notif"] = True
             return redirect(url_for('class_routes.duplicated_class_info'))
 
-        # Redirect to the class list after successful creation
         return redirect(url_for('class_routes.panel_classes'))
 
-    # Render the "Add Class" form for GET requests
     return render_template('class/add_class.html')
 
 
@@ -81,62 +87,69 @@ def add_class():
 @login_required
 def add_from_excel():
     """
-    Adds multiple classes from an Excel file.
-    - GET: Renders the upload form.
-    - POST: Processes the uploaded Excel file, validates data, and adds classes to the database.
+    Handle the process of adding multiple classes from an uploaded Excel file.
+
+    GET:
+        - Render the Excel upload form.
+
+    POST:
+        - Process the uploaded Excel file and add classes.
     """
     if request.method == 'POST':
-        global texts
-        # Get existing class names to prevent duplicates
-        classes = Class.query.filter(
-            Class.school_id==current_user.id).all()
+        # Retrieve existing classes to check for duplicates
+        classes = Class.query.filter(Class.school_id == current_user.id).all()
         existing_class_names = [cls.class_name for cls in classes]
 
-        # Retrieve uploaded file and form data
+        # Retrieve uploaded file and form inputs
         file = request.files["file_input"]
         sheet_name = request.form["sheet"]
         name_letter = request.form["name"]
 
+        # Define file save path
         excel_path = f"c:\\sap-project\\server\\schools\\{str(current_user.id)}\\classes.xlsx"
+
         try:
+            # Save the uploaded file
             file.save(excel_path)
         except PermissionError:
+            # Handle file save permission issues
             session["show_error_notif"] = True
             return redirect(url_for("class_routes.file_permission_error"))
 
-        # Process the Excel file and validate format
-        result = add_classes(excel_path, sheet_name,
-                             name_letter, existing_class_names)
+        # Process the Excel file
+        result = add_classes(excel_path, sheet_name, name_letter, existing_class_names)
+
+        # Delete the uploaded file after processing
         os.remove(excel_path)
 
-        # Handle known issues returned from the Excel parser
+        # Handle known errors returned by Excel processing
         if result == 'sheet_not_found':
             session["show_error_notif"] = True
-            texts = ["Please review your input for the sheet name."]
-            return redirect(url_for("class_routes.error_in_excel"))
-        if result == 'bad_column_letter':
-            session["show_error_notif"] = True
-            texts = ["Please review your input for column letters."]
+            session["excel_errors"] = ["Please review your input for the sheet name."]
             return redirect(url_for("class_routes.error_in_excel"))
 
-        # Handle data-specific errors in the Excel file
+        if result == 'bad_column_letter':
+            session["show_error_notif"] = True
+            session["excel_errors"] = ["Please review your input for column letters."]
+            return redirect(url_for("class_routes.error_in_excel"))
+
         if isinstance(result[0], list):
-            texts = []
+            # Collect detailed Excel data errors
+            excel_errors = []
             for problem in result:
                 cell = f"{problem[2]}{problem[1]}"
                 if problem[0] == "bad_format":
-                    texts.append(
-                        f"Please review the cell {cell} because of bad data format.")
+                    excel_errors.append(f"Bad data format in cell {cell}.")
                 elif problem[0] == "duplicated_name":
-                    texts.append(
-                        f"Please review the cell {cell} because of duplicated value.")
+                    excel_errors.append(f"Duplicated value in cell {cell}.")
                 else:
-                    texts.append(
-                        f"Please review the cell {cell} due to an unknown issue.")
+                    excel_errors.append(f"Unknown issue in cell {cell}.")
+
             session["show_error_notif"] = True
+            session["excel_errors"] = excel_errors
             return redirect(url_for("class_routes.error_in_excel"))
 
-        # Save successfully parsed class data to the database
+        # If no errors, add classes to the database
         for cls in result:
             new_class = Class(
                 class_name=cls['name'],
@@ -145,12 +158,10 @@ def add_from_excel():
             )
             db.session.add(new_class)
             db.session.commit()
-            
             dm_create_class(str(current_user.id), str(new_class.id))
 
         return redirect(url_for('class_routes.panel_classes'))
 
-    # Render the upload form for GET requests
     return render_template("class/add_from_excel.html")
 
 
@@ -158,46 +169,52 @@ def add_from_excel():
 @login_required
 def edit_class(class_name):
     """
-    Handles editing an existing class.
-    Updates the class name, code, and related student/teacher references.
+    Handle editing an existing class.
+
+    GET:
+        - Render the class edit form.
+
+    POST:
+        - Update class name and class code.
+        - Save uploaded schedule file if provided.
     """
     if request.method == "POST":
-        # Generate new and old class codes
+        # Extract new class name from form
         new_name = request.form['class_name']
         new_code = generate_class_code(current_user.school_code, new_name)
         old_code = generate_class_code(current_user.school_code, class_name)
 
-        # Fetch the class from the database
-        cls = Class.query.filter(Class.class_code==old_code).first()
+        # Fetch the current class from the database
+        cls = Class.query.filter(Class.class_code == old_code).first()
         if cls is None:
+            session["show_error_notif"] = True
             return redirect(url_for('class_routes.unknown_class_info'))
 
-        # Update class details
-        cls.class_code = new_code
+        # Update class name and code
         cls.class_name = new_name
+        cls.class_code = new_code
 
-        # Save the uploaded schedule file
-        file = request.files['file-input']
-        if not file:
-            try:
-                # Commit changes and update the class directory
-                db.session.commit()
-            except Exception:
-                session["show_error_notif"] = True
-                return redirect(url_for('class_routes.duplicated_class_info'))
-        else:
-            file.save(
-                f'C:\\sap-project\\server\\schools\\{str(current_user.id)}\\{str(cls.id)}\\schedule.xlsx')
-            
+        # Handle uploaded schedule file
+        file = request.files.get('file-input')
+        if file:
+            file_path = f'C:\\sap-project\\server\\schools\\{str(current_user.id)}\\{str(cls.id)}\\schedule.xlsx'
+            file.save(file_path)
+
+        try:
+            db.session.commit()
+        except Exception:
+            session["show_error_notif"] = True
+            return redirect(url_for('class_routes.duplicated_class_info'))
 
         return redirect(url_for('class_routes.panel_classes'))
 
-    # Render the edit form for GET requests
+    # Handle GET request: Render the edit form
     class_code = generate_class_code(current_user.school_code, class_name)
-    cls = Class.query.filter(Class.class_code==class_code).first()
+    cls = Class.query.filter(Class.class_code == class_code).first()
     if cls is None:
         session["show_error_notif"] = True
         return redirect(url_for('class_routes.unknown_class_info'))
+
     return render_template('class/edit_class.html', name=cls.class_name)
 
 
@@ -205,20 +222,20 @@ def edit_class(class_name):
 @login_required
 def remove_class(class_name):
     """
-    Removes a class and all associated data (students and teacher references).
+    Remove a class along with all associated data (students, teachers).
+
+    GET/POST:
+        - Delete the class record.
+        - Remove the corresponding directory.
     """
-    # Generate class code and fetch class object
+    # Generate class code and fetch the class
     class_code = generate_class_code(current_user.school_code, class_name)
-    cls = Class.query.filter(Class.class_code==class_code).first()
+    cls = Class.query.filter(Class.class_code == class_code).first()
 
     if cls:
-        # Delete the class and commit changes
         db.session.delete(cls)
         db.session.commit()
-
-        # Remove the class directory
-        dm_delete_class(school_id=str(current_user.id),
-                        class_id=str(cls.id))
+        dm_delete_class(school_id=str(current_user.id), class_id=str(cls.id))
 
     return redirect(url_for('class_routes.panel_classes'))
 
@@ -227,31 +244,31 @@ def remove_class(class_name):
 @login_required
 def class_info(class_name):
     """
-    Displays detailed information about a specific class, including students and teachers.
+    Display detailed information about a specific class, including students and teachers.
     """
+    # Generate class code and fetch the class
     class_code = generate_class_code(current_user.school_code, class_name)
-    cls = Class.query.filter(Class.class_code==class_code).first()
+    cls = Class.query.filter(Class.class_code == class_code).first()
 
     if cls is None:
         session["show_error_notif"] = True
         return redirect(url_for('class_routes.unknown_class_info'))
 
-    # Fetch teachers and students associated with the class
     teachers = cls.teachers
     students = cls.students
 
     return render_template('class/class_info.html', data=cls, teachers=teachers, students=students)
 
 
-# Error pages for user feedback
 @bp.route('/panel/classes/unknown_class_info')
 @login_required
 def unknown_class_info():
     """
-    Displays an error page for unknown classes.
+    Display an error page when the specified class is not found.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('class_routes.panel_classes'))
+
     return render_template('class/unknown_class_info.html')
 
 
@@ -259,10 +276,11 @@ def unknown_class_info():
 @login_required
 def duplicated_class_info():
     """
-    Displays an error page for duplicate class names/codes.
+    Display an error page when a class name or code conflict occurs.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('class_routes.add_class'))
+
     return render_template('class/duplicated_class_info.html')
 
 
@@ -270,20 +288,24 @@ def duplicated_class_info():
 @login_required
 def error_in_excel():
     """
-    Displays an error page for Excel file parsing issues.
-    Shows detailed feedback about which cells need correction.
+    Display detailed feedback for Excel file parsing errors.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('class_routes.add_from_excel'))
-    return render_template('class/error_in_excel.html', texts=texts)
+
+    # Retrieve error messages stored in session
+    excel_errors = session.get("excel_errors", [])
+
+    return render_template('class/error_in_excel.html', texts=excel_errors)
 
 
 @bp.route('/panel/classes/file_permission_error')
 @login_required
 def file_permission_error():
     """
-    Displays an error page for file saving permission issues.
+    Display an error page for file saving permission issues.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('class_routes.add_from_excel'))
+
     return render_template('class/file_permission_error.html')

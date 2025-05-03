@@ -1,23 +1,18 @@
-# Standard library imports
+# Standard Library Imports
 import os
 import shutil
 import zipfile
 
-# Third-party library imports
+# Third-party Imports
 from flask import Blueprint, redirect, render_template, request, url_for, session
 from flask_login import current_user, login_required
 
-# Internal module imports
-from app import db  # SQLAlchemy instance for database operations
+# Internal Application Imports
+from app import db
 from app.models.models import Student, Class, School
-from app.server_side.Website.directory_manager import (
-    dm_create_student,
-    dm_delete_student
-)
+from app.server_side.Website.directory_manager import dm_create_student, dm_delete_student
 from app.utils.excel_reading import add_students
-# Utility to reverse-engineer class code
 from app.utils.generate_class_code import reverse_class_code
-
 
 # Create a new Blueprint for all student-related routes
 bp = Blueprint('student_routes', __name__)
@@ -27,13 +22,21 @@ bp = Blueprint('student_routes', __name__)
 @login_required
 def panel_students():
     """
-    Displays all students of the logged-in user's school.
-    - If a search query (q) is provided, filters students by name, family name, or national code.
-    - Otherwise, displays all students from the school.
+    Display all students belonging to the logged-in user's school.
+
+    If a search query is provided (via ?q=...), filter students by:
+    - First name
+    - Last name
+    - National code
+
+    Returns:
+        Rendered HTML page with a list of students.
     """
-    school = School.query.filter(School.id==current_user.id).first()
+    school = School.query.filter(School.id == current_user.id).first()
     query = request.args.get('q')
+
     if query:
+        # Filter students based on search query
         students = Student.query.filter(
             ((Student.student_name.ilike(f"%{query}%")) |
              (Student.student_family.ilike(f"%{query}%")) |
@@ -41,6 +44,7 @@ def panel_students():
             (Student.school_id == current_user.id)
         ).all()
     else:
+        # Return all students in the school
         students = school.students
 
     return render_template('student/students.html', students=students)
@@ -50,12 +54,21 @@ def panel_students():
 @login_required
 def add_student():
     """
-    Handles the creation of a new student via form submission.
-    - GET: Renders the form.
-    - POST: Saves new student data in the database and file system.
+    Handle creation of a new student via form submission.
+
+    GET:
+        - Render the student creation form.
+
+    POST:
+        - Receive form data and create a new student in the database.
+        - Save the student image file.
+        - Create necessary directory structure.
+
+    Returns:
+        Redirect to the student list or show error on failure.
     """
     if request.method == 'POST':
-        # Extract form data
+        # Extract form inputs
         student_name = request.form['student_name']
         student_family = request.form['student_family']
         student_national_code = request.form['student_national_code']
@@ -63,7 +76,7 @@ def add_student():
         class_id = request.form['selected_class']
         student_image = request.files['file_input']
 
-        # Create and save the new student
+        # Create Student instance
         new_student = Student(
             student_name=student_name,
             student_family=student_family,
@@ -72,14 +85,17 @@ def add_student():
             class_id=class_id,
             school_id=current_user.id
         )
+
         try:
+            # Save student to database
             db.session.add(new_student)
             db.session.commit()
 
-            # Save the student image
+            # Save student image file
             image_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
             student_image.save(image_path)
 
+            # Create directory for the student
             dm_create_student(
                 school_id=str(current_user.id),
                 class_id=str(class_id),
@@ -87,13 +103,15 @@ def add_student():
             )
 
             return redirect(url_for('student_routes.panel_students'))
+
         except Exception:
+            # Rollback in case of error (e.g., duplicate national code)
             db.session.rollback()
             session["show_error_notif"] = True
             return redirect(url_for('student_routes.duplicated_student_info'))
 
-    # Render the form with available classes
-    school = School.query.filter(School.id==current_user.id).first()
+    # GET: Render form with available classes
+    school = School.query.filter(School.id == current_user.id).first()
     return render_template('student/add_student.html', classes=school.classes)
 
 
@@ -101,24 +119,31 @@ def add_student():
 @login_required
 def add_from_excel():
     """
-    Reads student data from an Excel file and adds them in bulk.
-    - Handles file saving, data extraction, validation, and database commit.
-    - Redirects to error pages if issues occur.
+    Handle bulk student import from an Excel file.
+
+    GET:
+        - Render the upload form.
+
+    POST:
+        - Save uploaded Excel and ZIP files.
+        - Validate and parse Excel data.
+        - Handle known Excel-related errors.
+        - Extract student images from ZIP.
+        - Add validated students and associate their image files.
+
+    Returns:
+        Redirect to student list or an error page.
     """
     if request.method == 'POST':
-        global texts
+        school = School.query.filter(School.id == current_user.id).first()
 
-        school = School.query.filter(School.id==current_user.id).first()
-
-        # Prepare references for validation
+        # Gather existing data for validation
         classes = school.classes
         class_names = [c.class_name for c in classes]
         students = school.students
         existing_ncs = [s.student_national_code for s in students]
 
-        print(existing_ncs)
-
-        # Read file and mapping from user input
+        # Get form inputs and files
         excel_file = request.files["file_input"]
         zip_file = request.files["zip_input"]
         sheet_name = request.form["sheet"]
@@ -128,6 +153,7 @@ def add_from_excel():
         class_letter = request.form["class"]
         pass_letter = request.form["password"]
 
+        # Save Excel file to disk
         excel_path = f"c:/sap-project/server/schools/{str(current_user.id)}/students.xlsx"
         try:
             excel_file.save(excel_path)
@@ -135,6 +161,7 @@ def add_from_excel():
             session["show_error_notif"] = True
             return redirect(url_for("student_routes.file_permission_error"))
 
+        # Parse and validate Excel file
         result = add_students(
             excel_path, sheet_name,
             name_letter, family_letter, nc_letter,
@@ -143,33 +170,39 @@ def add_from_excel():
         )
         os.remove(excel_path)
 
-        # Handle different result outcomes
+        # Handle known Excel validation errors
         if result == 'sheet_not_found':
             session["show_error_notif"] = True
-            texts = ["Please review your input for sheet name."]
+            session["excel_errors"] = [
+                "Please review your input for sheet name."]
             return redirect(url_for("student_routes.error_in_excel"))
-        
+
         if result == 'bad_column_letter':
             session["show_error_notif"] = True
-            texts = ["Please review your input for column letters."]
+            session["excel_errors"] = [
+                "Please review your input for column letters."]
             return redirect(url_for("student_routes.error_in_excel"))
 
         if isinstance(result[0], list):
-            texts = []
+            # Build error messages from structured errors
+            excel_errors = []
             for problem in result:
-                col_msg = f"Please review the cell {problem[2]}{problem[1]}"
+                cell = f"{problem[2]}{problem[1]}"
                 if problem[0] == "bad_format":
-                    texts.append(f"{col_msg} because of bad data format.")
+                    excel_errors.append(f"Bad data format in cell {cell}.")
                 elif problem[0] == "duplicated_nc":
-                    texts.append(f"{col_msg} due to duplicated national code.")
+                    excel_errors.append(
+                        f"Duplicated national code in cell {cell}.")
                 elif problem[0] == 'unknown_class':
-                    texts.append(f"{col_msg} due to unknown class name.")
+                    excel_errors.append(f"Unknown class name in cell {cell}.")
                 else:
-                    texts.append(f"{col_msg} due to an unknown issue.")
+                    excel_errors.append(f"Unknown issue in cell {cell}.")
+
             session["show_error_notif"] = True
+            session["excel_errors"] = excel_errors
             return redirect(url_for("student_routes.error_in_excel"))
 
-        # Process the ZIP file containing student images
+        # Save ZIP file and extract student images
         zip_path = f"c:/sap-project/server/schools/{str(current_user.id)}/student_ref_images.zip"
         extracted_files_path = zip_path[:-4]
         zip_file.save(zip_path)
@@ -177,9 +210,10 @@ def add_from_excel():
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(extracted_files_path)
 
-        # Add validated students to the database
+        # Add validated students to database
         for student in result:
-            class_id = Class.query.filter(Class.class_code==student['class']).first().id
+            class_id = Class.query.filter(
+                Class.class_code == student['class']).first().id
             new_student = Student(
                 student_name=student['name'],
                 student_family=student['family'],
@@ -188,31 +222,35 @@ def add_from_excel():
                 student_password=student['password'],
                 school_id=current_user.id
             )
+
             db.session.add(new_student)
             db.session.flush()
 
             try:
-                shutil.move(
-                    f"{extracted_files_path}/{reverse_class_code(student['class'])[1]}/{student['national_code']}.jpg",
-                    f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
-                )
+                # Move image file to student's folder
+                src = f"{extracted_files_path}/{reverse_class_code(student['class'])[1]}/{student['national_code']}.jpg"
+                dst = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
+                shutil.move(src, dst)
             except FileNotFoundError:
-                texts = [
-                    f"Cannot find image for student with national code '{student['national_code']}' in your ZIP file."]
-                session["show_error_notif"] = True
                 db.session.rollback()
+                session["show_error_notif"] = True
+                session["excel_errors"] = [
+                    f"Cannot find image for student with national code '{student['national_code']}' in your ZIP file."
+                ]
                 return redirect(url_for("student_routes.error_in_excel"))
-            
+
             db.session.commit()
-                
+
             dm_create_student(
                 school_id=str(current_user.id),
                 class_id=str(class_id),
                 student_id=str(new_student.id)
             )
 
+        # Clean up
         shutil.rmtree(extracted_files_path)
         os.remove(zip_path)
+
         return redirect(url_for("student_routes.panel_students"))
 
     return render_template("student/add_from_excel.html")
@@ -222,17 +260,29 @@ def add_from_excel():
 @login_required
 def edit_student(student_national_code):
     """
-    Edits a specific student's information.
-    - GET: Displays the form with current student data.
-    - POST: Applies updates to the database and directory.
+    Edit a specific student's information.
+
+    GET:
+        - Display the edit form with the student's current data.
+
+    POST:
+        - Update student fields and save changes to the database.
+
+    Returns:
+        Redirect to student list or an error page.
     """
-    school = School.query.filter(School.id==current_user.id).first()
-    student = Student.query.filter((Student.school_id==school.id) & (Student.student_national_code==student_national_code)).first()
-    if not student in school.students:
+    school = School.query.filter(School.id == current_user.id).first()
+    student = Student.query.filter(
+        (Student.school_id == school.id) &
+        (Student.student_national_code == student_national_code)
+    ).first()
+
+    if not student:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
 
     if request.method == "POST":
+        # Update student fields with form data
         student.student_name = request.form['student_name']
         student.student_family = request.form['student_family']
         student.student_national_code = request.form['student_national_code']
@@ -253,17 +303,22 @@ def edit_student(student_national_code):
 @login_required
 def remove_student(student_national_code):
     """
-    Deletes a student from the database and filesystem.
+    Delete a student from the database and filesystem.
+
+    Returns:
+        Redirect to student list or error page if student not found.
     """
-    school = School.query.filter(School.id==current_user.id).first()
+    school = School.query.filter(School.id == current_user.id).first()
     student = Student.query.filter(
-       (Student.student_national_code==student_national_code) & (Student.school_id==school.id)
+        (Student.student_national_code == student_national_code) &
+        (Student.school_id == school.id)
     ).first()
 
-    if not student in school.students:
+    if not student:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
 
+    # Remove student directory and delete from database
     dm_delete_student(
         school_id=str(current_user.id),
         class_id=str(student.class_id),
@@ -279,29 +334,37 @@ def remove_student(student_national_code):
 @login_required
 def student_info(student_national_code):
     """
-    Displays detailed information about a student.
+    Display detailed information about a student.
+
+    Returns:
+        Rendered HTML page with student data or error page.
     """
-    school = School.query.filter(School.id==current_user.id).first()
+    school = School.query.filter(School.id == current_user.id).first()
     student = Student.query.filter(
-        (Student.student_national_code==student_national_code) & (Student.school_id==school.id)
+        (Student.student_national_code == student_national_code) &
+        (Student.school_id == school.id)
     ).first()
 
-    if not student in school.students:
+    if not student:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
 
     return render_template('student/student_info.html', data=student)
 
 
-# Error Handling Routes
 @bp.route("/panel/students/unknown_student_info", methods=['GET', 'POST'])
 @login_required
 def unknown_student_info():
     """
-    Renders an error page when a student is not found.
+    Render an error page when the student is not found in the system.
+
+    Returns:
+        Redirect to student panel if access is invalid.
+        Rendered HTML error page otherwise.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('student_routes.panel_students'))
+
     return render_template('student/unknown_student_info.html')
 
 
@@ -309,10 +372,15 @@ def unknown_student_info():
 @login_required
 def duplicated_student_info():
     """
-    Renders an error page when duplicate student data is detected.
+    Render an error page when a duplicate student entry is detected.
+
+    Returns:
+        Redirect to add student form if access is invalid.
+        Rendered HTML error page otherwise.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('student_routes.add_student'))
+
     return render_template('student/duplicated_student_info.html')
 
 
@@ -320,19 +388,30 @@ def duplicated_student_info():
 @login_required
 def error_in_excel():
     """
-    Renders an error page when issues are found in the Excel file.
+    Render an error page with validation issues from the uploaded Excel file.
+
+    Returns:
+        Redirect to Excel upload form if access is invalid.
+        Rendered HTML error page otherwise.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('student_routes.add_from_excel'))
-    return render_template('student/error_in_excel.html', texts=texts)
+
+    errors = session.get("excel_errors", [])
+    return render_template('student/error_in_excel.html', texts=errors)
 
 
 @bp.route('/panel/students/file_permission_error')
 @login_required
 def file_permission_error():
     """
-    Renders an error page when the Excel file cannot be saved due to permissions.
+    Render an error page when the server cannot save the uploaded Excel file due to permission issues.
+
+    Returns:
+        Redirect to Excel upload form if access is invalid.
+        Rendered HTML error page otherwise.
     """
     if not session.pop('show_error_notif', False):
         return redirect(url_for('student_routes.add_from_excel'))
+
     return render_template('student/file_permission_error.html')
