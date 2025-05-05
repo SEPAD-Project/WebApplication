@@ -46,10 +46,10 @@ Now you're ready! 🚀
 ## Running the Project
 To run the project, simply execute run.py:
 ```bash
-python run.py
+run.bat
 ```
 You can then access the output at:
 ```
-http://127.0.0.1:2568
+http://0.0.0.0:2568
 ```
 >(Note: The actual URL may differ. Check the Flask log in your runnig terminal for the correct address.)
