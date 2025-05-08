@@ -3,7 +3,7 @@ import openpyxl
 from flask_login import current_user
 
 # Internal Imports
-from app.utils.generate_class_code import generate_class_code
+from source.utils.generate_class_code import generate_class_code
 
 
 def add_students(

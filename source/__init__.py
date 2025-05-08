@@ -9,7 +9,7 @@ from flask_limiter.util import get_remote_address
 from flask_compress import Compress
 
 # Internal Imports
-from app.config import Config
+from source.config import Config
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -36,7 +36,7 @@ def create_app():
     Compress(app)
 
     # Register blueprints
-    from app.routes import (
+    from source.routes import (
         home_routes, auth_routes, school_routes,
         class_routes, student_routes, teacher_routes, analytics_routes
     )
@@ -54,7 +54,7 @@ def create_app():
         return render_template('404.html')
 
     # Flask-Login user loader
-    from app.models.models import School
+    from source.models.models import School
 
     @login_manager.user_loader
     def load_user(user_id):

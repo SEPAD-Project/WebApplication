@@ -3,8 +3,8 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import current_user, login_required
 
 # Internal Imports
-from app import db
-from app.models.models import Class, School, Teacher
+from source import db
+from source.models.models import Class, School, Teacher
 
 # Initialize the Blueprint for teacher-related routes
 bp = Blueprint('teacher_routes', __name__)

@@ -3,7 +3,7 @@ from flask import Blueprint, render_template
 from flask_login import current_user, login_required
 
 # Local Application Imports
-from app.models.models import School
+from source.models.models import School
 
 # Initialize the Blueprint for school-related routes
 bp = Blueprint('school_routes', __name__)

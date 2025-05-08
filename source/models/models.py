@@ -1,4 +1,4 @@
-from app import db
+from source import db
 from flask_login import UserMixin
 
 # جدول میانی Teacher <-> Class

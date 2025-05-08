@@ -7,8 +7,8 @@ import datetime
 from flask_login import current_user
 
 # Internal Imports
-from app.models.models import Class, Teacher, School
-from app.utils.excel_reading import schedule_extraction
+from source.models.models import Class, Teacher, School
+from source.utils.excel_reading import schedule_extraction
 
 
 def calculate_students_accuracy(class_id):

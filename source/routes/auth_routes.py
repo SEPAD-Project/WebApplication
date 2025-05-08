@@ -5,9 +5,9 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import login_user, current_user
 
 # Local Application Imports
-from app import db
-from app.models.models import School
-from app.server_side.Website.directory_manager import dm_create_school
+from source import db
+from source.models.models import School
+from source.server_side.Website.directory_manager import dm_create_school
 
 # Initialize the Blueprint for authentication-related routes
 bp = Blueprint('auth_routes', __name__)

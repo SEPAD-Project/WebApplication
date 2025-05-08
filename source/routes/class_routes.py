@@ -6,11 +6,11 @@ from flask import Blueprint, redirect, render_template, request, url_for, sessio
 from flask_login import current_user, login_required
 
 # Local Application Imports
-from app import db
-from app.models.models import Student, Teacher, Class, School
-from app.utils.generate_class_code import generate_class_code
-from app.utils.excel_reading import add_classes
-from app.server_side.Website.directory_manager import dm_create_class, dm_delete_class
+from source import db
+from source.models.models import Student, Teacher, Class, School
+from source.utils.generate_class_code import generate_class_code
+from source.utils.excel_reading import add_classes
+from source.server_side.Website.directory_manager import dm_create_class, dm_delete_class
 
 # Initialize Blueprint for class-related routes
 bp = Blueprint('class_routes', __name__)

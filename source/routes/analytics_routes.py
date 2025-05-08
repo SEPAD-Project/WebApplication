@@ -4,7 +4,7 @@ from flask_login import login_required, current_user
 from threading import Thread
 
 # Analytics logic
-from app.utils.analytics.Generator.analytics_Generator import (
+from source.utils.analytics.Generator.analytics_Generator import (
     calculate_students_accuracy,
     calculate_classes_accuracy,
     calculate_teachers_performance,
@@ -13,7 +13,7 @@ from app.utils.analytics.Generator.analytics_Generator import (
 )
 
 # Chart generation
-from app.utils.analytics.GUI.analytics_GUI import (
+from source.utils.analytics.GUI.analytics_GUI import (
     show_students_accuracy,
     show_classes_accuracy,
     show_teachers_performance,
@@ -22,8 +22,8 @@ from app.utils.analytics.GUI.analytics_GUI import (
 )
 
 # Models and utilities
-from app.models.models import School, Student, Class
-from app.server_side.Website.send_email import send_styled_email
+from source.models.models import School, Student, Class
+from source.server_side.Website.send_email import send_styled_email
 
 # Initialize the Blueprint for analytics-related routes
 bp = Blueprint('analytics_routes', __name__)
