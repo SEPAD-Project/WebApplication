@@ -64,7 +64,7 @@ def create_app():
     login_manager.login_view = 'auth_routes.login'
 
     # Set up rate limiting
-    Limiter(app=app, key_func=get_remote_address, default_limits=["10/minute"])
+    Limiter(app=app, key_func=get_remote_address, storage_uri="redis://localhost:6379/0", default_limits=["10/minute"])
 
     # Ensure database tables exist
     with app.app_context():
