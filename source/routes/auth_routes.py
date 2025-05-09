@@ -1,4 +1,6 @@
 # Standard Library Imports
+from random import randint
+from pathlib import Path
 
 # Third-party Imports
 from flask import Blueprint, redirect, render_template, request, url_for, session
@@ -8,6 +10,7 @@ from flask_login import login_user, current_user
 from source import db
 from source.models.models import School
 from source.server_side.Website.directory_manager import dm_create_school
+from source.server_side.Website.Email.signup_verify import verify_code_sender
 
 # Initialize the Blueprint for authentication-related routes
 bp = Blueprint('auth_routes', __name__)
@@ -73,43 +76,69 @@ def signup():
         - If an error occurs (e.g., duplicate entry), redirect to an error page.
     '''
     if request.method == 'POST':
+        generated_code = str(randint(1000000, 9999999))
+
         # Retrieve registration form data
-        school_name = request.form['school_name']
-        school_code = request.form['school_code']
-        manager_personal_code = request.form['manager_personal_code']
-        province = request.form['province']
-        city = request.form['city']
-        email = request.form['email']
+        session['tmp_school_data'] = {
+            'school_name' : request.form['school_name'],
+            'school_code' : request.form['school_code'],
+            'manager_personal_code' : request.form['manager_personal_code'],
+            'province' : request.form['province'],
+            'city' : request.form['city'],
+            'email' : request.form['email'],
+            'generated_code' : generated_code
+        }
 
-        # Create a new School instance
-        new_school = School(
-            school_name=school_name,
-            school_code=school_code,
-            manager_personal_code=manager_personal_code,
-            province=province,
-            city=city,
-            email=email
-        )
 
-        try:
-            # Add and commit the new school to the database
-            db.session.add(new_school)
-            db.session.commit()
+        template_path = Path(__file__).parent.parent / 'server_side' / 'Website' / 'Email' / 'templates' / 'signup_verify.html'
 
-            # Create a corresponding directory for the school
-            dm_create_school(school_id=str(new_school.id))
+        with open(template_path, 'r') as file:
+            html_content = file.read().replace('{{ verification_code }}', generated_code)
 
-            # Notify user of successful registration
-            session['show_error_notif'] = True
-            return redirect(url_for('auth_routes.notify_user'))
+        verify_code_sender(request.form['email'], 'Verify Email', html_content)
 
-        except Exception:
-            # Error occurred (e.g., duplicate school code)
-            session['show_error_notif'] = True
-            return redirect(url_for('auth_routes.duplicated_school_info'))
+        return redirect(url_for('auth_routes.verify_email'))
 
     # Render signup page for GET request
     return render_template('auth/signup.html')
+
+@bp.route('/verify_email', methods=['GET', 'POST'])
+def verify_email():
+    if request.method=="POST":
+            temp_data = session.get('tmp_school_data')
+            entered_code = request.form['code']
+
+            if entered_code == temp_data['generated_code']:
+                # Create a new School instance
+                new_school = School(
+                    school_name=temp_data['school_name'],
+                    school_code=temp_data['school_code'],
+                    manager_personal_code=temp_data['manager_personal_code'],
+                    province=temp_data['province'],
+                    city=temp_data['city'],
+                    email=temp_data['email']
+                )
+
+                session.pop('tmp_school_data')
+
+                try:
+                    # Add and commit the new school to the database
+                    db.session.add(new_school)
+                    db.session.commit()
+
+                    # Create a corresponding directory for the school
+                    dm_create_school(school_id=str(new_school.id))
+
+                    # Notify user of successful registration
+                    session['show_error_notif'] = True
+                    return redirect(url_for('auth_routes.notify_user'))
+
+                except Exception:
+                    # Error occurred (e.g., duplicate school code)
+                    session['show_error_notif'] = True
+                    return redirect(url_for('auth_routes.duplicated_school_info'))
+
+    return render_template("auth/verify_email.html")
 
 
 @bp.route('/notify_username_password')
