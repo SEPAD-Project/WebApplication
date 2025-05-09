@@ -10,7 +10,7 @@ from flask_login import current_user, login_required
 # Internal Application Imports
 from source import db
 from source.models.models import Student, Class, School
-from source.server_side.Website.directory_manager import dm_create_student, dm_delete_student
+from source.server_side.Website.directory_manager import dm_create_student, dm_delete_student, dm_edit_student
 from source.utils.excel_reading import add_students
 from source.utils.generate_class_code import reverse_class_code
 
@@ -86,29 +86,23 @@ def add_student():
             school_id=current_user.id
         )
 
-        try:
-            # Save student to database
-            db.session.add(new_student)
-            db.session.commit()
+        # Save student to database
+        db.session.add(new_student)
+        db.session.commit()
 
-            # Save student image file
-            image_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
-            student_image.save(image_path)
+        # Save student image file
+        image_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.student_national_code)}.jpg"
+        student_image.save(image_path)
 
-            # Create directory for the student
-            dm_create_student(
-                school_id=str(current_user.id),
-                class_id=str(class_id),
-                student_id=str(new_student.id)
-            )
+        # Create directory for the student
+        dm_create_student(
+            school_id=str(current_user.id),
+            class_id=str(class_id),
+            student_code=str(new_student.student_national_code)
+        )
 
-            return redirect(url_for('student_routes.panel_students'))
+        return redirect(url_for('student_routes.panel_students'))
 
-        except Exception:
-            # Rollback in case of error (e.g., duplicate national code)
-            db.session.rollback()
-            session["show_error_notif"] = True
-            return redirect(url_for('student_routes.duplicated_student_info'))
 
     # GET: Render form with available classes
     school = School.query.filter(School.id == current_user.id).first()
@@ -229,7 +223,7 @@ def add_from_excel():
             try:
                 # Move image file to student's folder
                 src = f"{extracted_files_path}/{reverse_class_code(student['class'])[1]}/{student['national_code']}.jpg"
-                dst = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.id)}.jpg"
+                dst = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.student_national_code)}.jpg"
                 shutil.move(src, dst)
             except FileNotFoundError:
                 db.session.rollback()
@@ -244,7 +238,7 @@ def add_from_excel():
             dm_create_student(
                 school_id=str(current_user.id),
                 class_id=str(class_id),
-                student_id=str(new_student.id)
+                student_code=str(new_student.student_national_code)
             )
 
         # Clean up
@@ -277,6 +271,8 @@ def edit_student(student_national_code):
         (Student.student_national_code == student_national_code)
     ).first()
 
+    old_student_code = student.student_national_code
+
     if not student:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
@@ -290,6 +286,12 @@ def edit_student(student_national_code):
 
         try:
             db.session.commit()
+            dm_edit_student(
+                school_id=str(current_user.id),
+                class_id=str(student.class_id),
+                old_student_code=str(old_student_code),
+                new_student_code=str(student.student_national_code)
+            )
             return redirect(url_for('student_routes.panel_students'))
         except Exception:
             db.session.rollback()
@@ -322,7 +324,7 @@ def remove_student(student_national_code):
     dm_delete_student(
         school_id=str(current_user.id),
         class_id=str(student.class_id),
-        student_id=str(student.id)
+        student_code=str(student.student_national_code)
     )
     db.session.delete(student)
     db.session.commit()
