@@ -23,7 +23,7 @@ from source.utils.analytics.GUI.analytics_GUI import (
 
 # Models and utilities
 from source.models.models import School, Student, Class
-from source.server_side.Website.send_email import send_styled_email
+from source.server_side.Website.Email import analytics_sender
 
 # Initialize the Blueprint for analytics-related routes
 bp = Blueprint('analytics_routes', __name__)
@@ -71,7 +71,7 @@ def compare_students():
         show_students_accuracy(data)
 
         # Send the report via email in background
-        Thread(target=send_styled_email,
+        Thread(target=analytics_sender,
                args=(get_school_email(), 'Compare Students',
                      r"c:\sap-project\server\compare_students.pdf")
                ).start()
@@ -94,7 +94,7 @@ def compare_classes():
     data = calculate_classes_accuracy()
     show_classes_accuracy(data)
 
-    Thread(target=send_styled_email,
+    Thread(target=analytics_sender,
            args=(get_school_email(), 'Compare Classes',
                  r"c:\sap-project\server\compare_classes.pdf")
            ).start()
@@ -113,7 +113,7 @@ def compare_teachers():
     data = calculate_teachers_performance()
     show_teachers_performance(data)
 
-    Thread(target=send_styled_email,
+    Thread(target=analytics_sender,
            args=(get_school_email(), 'Compare Teachers',
                  r"c:\sap-project\server\compare_teachers.pdf")
            ).start()
@@ -148,7 +148,7 @@ def student_accuracy_week():
             show_student_weekly_accuracy(
                 f"{student.student_name} {student.student_family}", data)
 
-            Thread(target=send_styled_email,
+            Thread(target=analytics_sender,
                    args=(get_school_email(), 'Weekly Accuracy',
                          r"c:\sap-project\server\student_accuracy_week.pdf")
                    ).start()
@@ -184,7 +184,7 @@ def student_accuracy_by_lesson():
             show_student_accuracy_by_lesson(
                 f"{student.student_name} {student.student_family}", data)
 
-            Thread(target=send_styled_email,
+            Thread(target=analytics_sender,
                    args=(get_school_email(), 'Accuracy By Lesson',
                          r"c:\sap-project\server\student_accuracy_by_lesson.pdf")
                    ).start()
