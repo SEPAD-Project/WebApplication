@@ -105,11 +105,13 @@ def signup():
 
 @bp.route('/verify_email', methods=['GET', 'POST'])
 def verify_email():
+    if not 'tmp_school_data' in session:
+        return redirect(url_for('auth_routes.signup'))
+    
     if request.method=="POST":
             temp_data = session.get('tmp_school_data')
             entered_code = request.form['code']
 
-            print(session['tmp_school_data']['attempts_count'])
             if session['tmp_school_data']['attempts_count'] < 3:
                 session['tmp_school_data']['attempts_count'] += 1
                 session.modified = True
@@ -145,7 +147,7 @@ def verify_email():
             else:
                 session.pop('tmp_school_data')
                 return redirect(url_for('auth_routes.signup'))
-
+    
     return render_template("auth/verify_email.html")
 
 
