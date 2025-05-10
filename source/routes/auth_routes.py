@@ -86,7 +86,8 @@ def signup():
             'province' : request.form['province'],
             'city' : request.form['city'],
             'email' : request.form['email'],
-            'generated_code' : generated_code
+            'generated_code' : generated_code,
+            'attempts_count' : 0
         }
 
 
@@ -108,35 +109,42 @@ def verify_email():
             temp_data = session.get('tmp_school_data')
             entered_code = request.form['code']
 
-            if entered_code == temp_data['generated_code']:
-                # Create a new School instance
-                new_school = School(
-                    school_name=temp_data['school_name'],
-                    school_code=temp_data['school_code'],
-                    manager_personal_code=temp_data['manager_personal_code'],
-                    province=temp_data['province'],
-                    city=temp_data['city'],
-                    email=temp_data['email']
-                )
+            print(session['tmp_school_data']['attempts_count'])
+            if session['tmp_school_data']['attempts_count'] < 3:
+                session['tmp_school_data']['attempts_count'] += 1
+                session.modified = True
+                if entered_code == temp_data['generated_code']:
+                    # Create a new School instance
+                    new_school = School(
+                        school_name=temp_data['school_name'],
+                        school_code=temp_data['school_code'],
+                        manager_personal_code=temp_data['manager_personal_code'],  
+                        province=temp_data['province'],
+                        city=temp_data['city'],
+                        email=temp_data['email']
+                    )
 
+                    session.pop('tmp_school_data')
+
+                    try:
+                        # Add and commit the new school to the database
+                        db.session.add(new_school)
+                        db.session.commit()
+
+                        # Create a corresponding directory for the school
+                        dm_create_school(school_id=str(new_school.id))
+
+                        # Notify user of successful registration
+                        session['show_error_notif'] = True
+                        return redirect(url_for('auth_routes.notify_user'))
+
+                    except Exception:
+                        # Error occurred (e.g., duplicate school code)
+                        session['show_error_notif'] = True
+                        return redirect(url_for('auth_routes.duplicated_school_info'))
+            else:
                 session.pop('tmp_school_data')
-
-                try:
-                    # Add and commit the new school to the database
-                    db.session.add(new_school)
-                    db.session.commit()
-
-                    # Create a corresponding directory for the school
-                    dm_create_school(school_id=str(new_school.id))
-
-                    # Notify user of successful registration
-                    session['show_error_notif'] = True
-                    return redirect(url_for('auth_routes.notify_user'))
-
-                except Exception:
-                    # Error occurred (e.g., duplicate school code)
-                    session['show_error_notif'] = True
-                    return redirect(url_for('auth_routes.duplicated_school_info'))
+                return redirect(url_for('auth_routes.signup'))
 
     return render_template("auth/verify_email.html")
 
