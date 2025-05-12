@@ -36,3 +36,15 @@ def contact():
         Rendered HTML for 'contact.html'.
     """
     return render_template('contact.html')
+
+
+@bp.route('/downloads')
+def downloads():
+    """
+    Render the contact page.
+
+    Returns:
+        Rendered HTML for 'contact.html'.
+    """
+    return render_template('downloads.html')
+

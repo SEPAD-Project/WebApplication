@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='icons/icon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/downloads.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Downloads</title>
+</head>
+<body>
+    <div id="particles-js"></div> 
+
+    <hero>
+        <h1>Downloads of SEPAD Project</h1>
+        <p class="form-footer">Use this part if you are teacher or student. schools can manage from <a href="{{ url_for('auth_routes.login') }}">management panel</a></p>
+    </hero>
+
+
+     <div class="glass-container">
+        <div class="content-wrapper">
+            <h2>Student App</h2>
+            <a href="#">
+                <button class="download-btn">Download</button>
+            </a>
+        </div>
+        <div class="content-wrapper">
+            <h2>Teacher App</h2>
+            <a href="#">
+                <button class="download-btn">Download</button>
+            </a>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script>
+        // Particle.js configuration
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 50,
+                    "density": {
+                        "enable": true,
+                        "value_area": 800
+                    }
+                },
+                "color": {
+                    "value": "#4ECDC4"
+                },
+                "shape": {
+                    "type": "circle",
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000000"
+                    }
+                },
+                "opacity": {
+                    "value": 0.3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 1,
+                        "opacity_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 3,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 2,
+                        "size_min": 0.1,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#3aa8a1",
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "out",
+                    "bounce": false
+                }
+            }
+        });
+    </script>
+</body>
+</html>
