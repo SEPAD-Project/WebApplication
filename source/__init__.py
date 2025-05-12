@@ -10,6 +10,7 @@ from flask_compress import Compress
 
 # Internal Imports
 from source.config import Config
+from source.routes import main_routes
 
 # Initialize extensions
 db = SQLAlchemy()
@@ -37,10 +38,10 @@ def create_app():
 
     # Register blueprints
     from source.routes import (
-        home_routes, auth_routes, school_routes,
+        auth_routes, school_routes,
         class_routes, student_routes, teacher_routes, analytics_routes
     )
-    app.register_blueprint(home_routes.bp)
+    app.register_blueprint(main_routes.bp)
     app.register_blueprint(auth_routes.bp)
     app.register_blueprint(school_routes.bp)
     app.register_blueprint(class_routes.bp)

@@ -2,7 +2,7 @@
 from flask import render_template, Blueprint
 
 # Initialize the Blueprint for home-related routes
-bp = Blueprint('home_route', __name__)
+bp = Blueprint('main_routes', __name__)
 
 
 @bp.route('/')
