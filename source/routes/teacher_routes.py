@@ -79,7 +79,7 @@ def add_teacher():
         # Assign teacher to selected classes
         for class_id in selected_classes:
             class_ = Class.query.filter(Class.id == class_id).first()
-            if class_ and teacher not in class_.teachers:
+            if class_ and class_ in school.classes and teacher not in class_.teachers:
                 class_.teachers.append(teacher)
 
         db.session.commit()
@@ -154,7 +154,7 @@ def edit_teacher(teacher_national_code):
         new_class_codes = request.form.getlist('selected_classes')
         for class_code in new_class_codes:
             class_ = Class.query.filter_by(class_code=class_code).first()
-            if class_ and teacher not in class_.teachers:
+            if class_:
                 class_.teachers.append(teacher)
 
         db.session.commit()

@@ -85,23 +85,31 @@ def add_student():
             class_id=class_id,
             school_id=current_user.id
         )
+        
+        try:
+            # # Add and flush the new student to the database
+            db.session.add(new_student)
+            db.session.flush()
+            
+            # Save student image file
+            image_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.student_national_code)}.jpg"
+            student_image.save(image_path)
 
-        # Save student to database
-        db.session.add(new_student)
-        db.session.commit()
+            # Create files for the student
+            dm_create_student(
+                school_id=str(current_user.id),
+                class_id=str(class_id),
+                student_code=str(new_student.student_national_code)
+            )
+            
+            # Commit changes to database 
+            db.session.commit()
 
-        # Save student image file
-        image_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{str(class_id)}/{str(new_student.student_national_code)}.jpg"
-        student_image.save(image_path)
-
-        # Create directory for the student
-        dm_create_student(
-            school_id=str(current_user.id),
-            class_id=str(class_id),
-            student_code=str(new_student.student_national_code)
-        )
-
-        return redirect(url_for('student_routes.panel_students'))
+            return redirect(url_for('student_routes.panel_students'))
+        except:
+            # Error occurred
+            db.session.rollback()
+            return redirect(url_for('student_routes.duplicated_student_info'))
 
 
     # GET: Render form with available classes
@@ -216,7 +224,8 @@ def add_from_excel():
                 student_password=student['password'],
                 school_id=current_user.id
             )
-
+            
+            # Add and flush the new school to the database
             db.session.add(new_student)
             db.session.flush()
 
@@ -232,14 +241,16 @@ def add_from_excel():
                     f"Cannot find image for student with national code '{student['national_code']}' in your ZIP file."
                 ]
                 return redirect(url_for("student_routes.error_in_excel"))
-
-            db.session.commit()
-
+            
+            # Create files for the student
             dm_create_student(
                 school_id=str(current_user.id),
                 class_id=str(class_id),
                 student_code=str(new_student.student_national_code)
             )
+            
+            # Commit changes to database 
+            db.session.commit()
 
         # Clean up
         shutil.rmtree(extracted_files_path)
@@ -270,12 +281,12 @@ def edit_student(student_national_code):
         (Student.school_id == school.id) &
         (Student.student_national_code == student_national_code)
     ).first()
-
-    old_student_code = student.student_national_code
-
+    
     if not student:
         session["show_error_notif"] = True
         return redirect(url_for("student_routes.unknown_student_info"))
+    
+    old_student_code = student.student_national_code
 
     if request.method == "POST":
         # Update student fields with form data
@@ -285,13 +296,20 @@ def edit_student(student_national_code):
         student.student_password = request.form['student_password']
 
         try:
-            db.session.commit()
+            # Flush changes to database
+            db.session.flush()
+            
+            # Edit student files in server
             dm_edit_student(
                 school_id=str(current_user.id),
                 class_id=str(student.class_id),
                 old_student_code=str(old_student_code),
                 new_student_code=str(student.student_national_code)
             )
+            
+            # Commit changes on database
+            db.session.commit()
+
             return redirect(url_for('student_routes.panel_students'))
         except Exception:
             db.session.rollback()

@@ -69,10 +69,14 @@ def add_class():
         )
 
         try:
-            # Save the new class to the database and create its directory
+            # Add and flush the new class to the database and create its directory
             db.session.add(new_class)
-            db.session.commit()
+            db.session.flush(new_class)
+
             dm_create_class(school_id=str(school_id), class_id=str(new_class.id))
+           
+            # Commit changes to database 
+            db.session.commit()
         except Exception:
             # Handle possible database errors (e.g., duplicate entry)
             session["show_error_notif"] = True
@@ -158,6 +162,7 @@ def add_from_excel():
             )
             db.session.add(new_class)
             db.session.commit()
+            
             dm_create_class(str(current_user.id), str(new_class.id))
 
         return redirect(url_for('class_routes.panel_classes'))

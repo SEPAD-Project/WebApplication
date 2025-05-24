@@ -129,12 +129,15 @@ def verify_email():
                     session.pop('tmp_school_data')
 
                     try:
-                        # Add and commit the new school to the database
+                        # Add and flush the new school to the database
                         db.session.add(new_school)
-                        db.session.commit()
+                        db.session.flush(new_school)
 
                         # Create a corresponding directory for the school
                         dm_create_school(school_id=str(new_school.id))
+                        
+                        # Commit changes to database 
+                        db.session.commit()
 
                         # Notify user of successful registration
                         session['show_error_notif'] = True
@@ -142,6 +145,7 @@ def verify_email():
 
                     except Exception:
                         # Error occurred (e.g., duplicate school code)
+                        db.session.rollback()
                         session['show_error_notif'] = True
                         return redirect(url_for('auth_routes.duplicated_school_info'))
             else:
