@@ -3,15 +3,12 @@ import os
 import glob
 import datetime
 
-# Third-party Imports
-from flask_login import current_user
-
 # Internal Imports
 from source.models.models import Class, Teacher, School
 from source.utils.excel_reading import schedule_extraction
 
 
-def calculate_students_accuracy(class_id):
+def calculate_students_accuracy(school_id, class_id):
     """
     Calculate accuracy percentages for all students in a class based on their result files.
 
@@ -22,7 +19,7 @@ def calculate_students_accuracy(class_id):
         dict: Mapping of student full names to their accuracy percentage (0–100).
     """
     # Define base path to student result files
-    base_path = f"c:/sap-project/server/schools/{str(current_user.id)}/{class_id}"
+    base_path = f"c:/sap-project/server/schools/{school_id}/{class_id}"
     students_accuracy = {}
 
     # Fetch the class object
@@ -56,7 +53,7 @@ def calculate_students_accuracy(class_id):
     return students_accuracy
 
 
-def calculate_classes_accuracy():
+def calculate_classes_accuracy(school_id):
     """
     Calculate average accuracy percentage for each class in the current school.
 
@@ -66,7 +63,7 @@ def calculate_classes_accuracy():
     classes_accuracy = {}
 
     # Fetch all classes that belong to the current school
-    classes = Class.query.filter(Class.school_id == current_user.id).all()
+    classes = Class.query.filter(Class.school_id == school_id).all()
 
     for class_ in classes:
         # Get list of accuracy values for students in the class
@@ -86,18 +83,18 @@ def calculate_classes_accuracy():
     return classes_accuracy
 
 
-def calculate_teachers_performance():
+def calculate_teachers_performance(school_id):
     """
     Calculate performance metrics for each teacher based on student result files.
 
     Returns:
         dict: Mapping from teacher full name to accuracy percentage (0–100).
     """
-    school_dir = f"c:/sap-project/server/schools/{str(current_user.id)}"
+    school_dir = f"c:/sap-project/server/schools/{str(school_id)}"
     teachers_performance = {}
 
     # Fetch all teachers for current school
-    school = School.query.filter(School.id == current_user.id).first()
+    school = School.query.filter(School.id == school_id).first()
     teacher_codes = [t.teacher_national_code for t in school.teachers]
 
     # Initialize performance counter for each teacher
@@ -184,19 +181,19 @@ def calculate_teachers_performance():
     return final_performance
 
 
-def calculate_student_accuracy_by_lesson(class_id, student_id):
+def calculate_student_accuracy_by_lesson(school_id, class_id, student_national_code):
     """
     Calculate a student's answer accuracy by lesson, based on result timestamps.
 
     Args:
         class_id (str): ID of the class the student belongs to.
-        student_id (str): ID of the student.
+        student_national_code (str): ID of the student.
 
     Returns:
         dict: Mapping from lesson names to accuracy percentage (0–100).
     """
-    base_dir = f"c:/sap-project/server/schools/{str(current_user.id)}/{class_id}"
-    result_file = os.path.join(base_dir, f"{student_id}.txt")
+    base_dir = f"c:/sap-project/server/schools/{school_id}/{class_id}"
+    result_file = os.path.join(base_dir, f"{student_national_code}.txt")
     schedule_file = os.path.join(base_dir, "schedule.xlsx")
 
     lessons_performance = {}
@@ -208,7 +205,7 @@ def calculate_student_accuracy_by_lesson(class_id, student_id):
         return {}
 
     # Get teacher → lesson map
-    school = School.query.filter(School.id == current_user.id).first()
+    school = School.query.filter(School.id == school_id).first()
     teacher_codes = [t.teacher_national_code for t in school.teachers]
     teachers = Teacher.query.filter(
         Teacher.teacher_national_code.in_(teacher_codes)).all()
@@ -267,22 +264,22 @@ def calculate_student_accuracy_by_lesson(class_id, student_id):
     return lessons_performance
 
 
-def calculate_student_weekly_accuracy(class_id, student_id):
+def calculate_student_weekly_accuracy(school_id, class_id, student_national_code):
     """
     Calculate a student's answer accuracy for each day in the past week.
 
     Args:
         class_id (str): ID of the class the student belongs to.
-        student_id (str): ID of the student.
+        student_national_code (str): ID of the student.
 
     Returns:
         dict: Mapping from date (YYYY-MM-DD) to accuracy percentage (0–100).
     """
     # Build the path to the result file
     file_path = os.path.join(
-        f"c:/sap-project/server/schools/{str(current_user.id)}",
+        f"c:/sap-project/server/schools/{str(school_id)}",
         class_id,
-        f"{student_id}.txt"
+        f"{student_national_code}.txt"
     )
 
     # Generate past 7 days including today

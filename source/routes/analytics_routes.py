@@ -64,7 +64,7 @@ def compare_classes():
 
     - Generates a bar chart report and emails it to the school.
     """
-    start_process_compare_classes.delay(get_school_email())
+    start_process_compare_classes.delay(current_user.id, get_school_email())
 
     return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -78,7 +78,7 @@ def compare_teachers():
     - Generates a bar chart report and emails it to the school.
     """
 
-    start_process_compare_teachers.delay(get_school_email())
+    start_process_compare_teachers.delay(current_user.id, get_school_email())
 
     return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -103,7 +103,7 @@ def student_accuracy_week():
         ).first()
 
         if student:      
-            show_student_weekly_accuracy.delay(student.student_name, student.student_family, student.id, student.class_id, get_school_email())
+            show_student_weekly_accuracy.delay(current_user.id, student.student_name, student.student_family, student.national_code, student.class_id, get_school_email())
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -129,7 +129,7 @@ def student_accuracy_by_lesson():
         ).first()
 
         if student:
-            show_student_accuracy_by_lesson.delay(student.student_name, student.student_family, student.id, student.class_id, get_school_email())
+            show_student_accuracy_by_lesson.delay(current_user.id, student.student_name, student.student_family, student.national_code, student.class_id, get_school_email())
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 
