@@ -1,29 +1,11 @@
 # Flask imports
 from flask import Blueprint, redirect, render_template, request, url_for
 from flask_login import login_required, current_user
-from threading import Thread
 
-# Analytics logic
-from source.utils.analytics.Generator.analytics_Generator import (
-    calculate_students_accuracy,
-    calculate_classes_accuracy,
-    calculate_teachers_performance,
-    calculate_student_weekly_accuracy,
-    calculate_student_accuracy_by_lesson,
-)
-
-# Chart generation
-from source.utils.analytics.GUI.analytics_GUI import (
-    show_students_accuracy,
-    show_classes_accuracy,
-    show_teachers_performance,
-    show_student_weekly_accuracy,
-    show_student_accuracy_by_lesson,
-)
 
 # Models and utilities
 from source.models.models import School, Student, Class
-from source.server_side.Website.Email import analytics_sender
+from source.tasks.analytics import *
 
 # Initialize the Blueprint for analytics-related routes
 bp = Blueprint('analytics_routes', __name__)
@@ -65,16 +47,7 @@ def compare_students():
     if request.method == "POST":
         # Extract class ID from form
         class_id = request.form['selected_class']
-
-        # Generate accuracy data and save the chart
-        data = calculate_students_accuracy(str(class_id))
-        show_students_accuracy(data)
-
-        # Send the report via email in background
-        Thread(target=analytics_sender,
-               args=(get_school_email(), 'Compare Students',
-                     r"c:\sap-project\server\compare_students.pdf")
-               ).start()
+        start_process_compare_students.delay(current_user.id, class_id, get_school_email())
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -91,13 +64,7 @@ def compare_classes():
 
     - Generates a bar chart report and emails it to the school.
     """
-    data = calculate_classes_accuracy()
-    show_classes_accuracy(data)
-
-    Thread(target=analytics_sender,
-           args=(get_school_email(), 'Compare Classes',
-                 r"c:\sap-project\server\compare_classes.pdf")
-           ).start()
+    start_process_compare_classes.delay(get_school_email())
 
     return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -110,13 +77,8 @@ def compare_teachers():
 
     - Generates a bar chart report and emails it to the school.
     """
-    data = calculate_teachers_performance()
-    show_teachers_performance(data)
 
-    Thread(target=analytics_sender,
-           args=(get_school_email(), 'Compare Teachers',
-                 r"c:\sap-project\server\compare_teachers.pdf")
-           ).start()
+    start_process_compare_teachers.delay(get_school_email())
 
     return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -140,18 +102,8 @@ def student_accuracy_week():
             Student.student_national_code == request.form['student_national_code']
         ).first()
 
-        if student:
-            # Calculate accuracy and generate report
-            data = calculate_student_weekly_accuracy(
-                str(student.class_id), str(student.id)
-            )
-            show_student_weekly_accuracy(
-                f"{student.student_name} {student.student_family}", data)
-
-            Thread(target=analytics_sender,
-                   args=(get_school_email(), 'Weekly Accuracy',
-                         r"c:\sap-project\server\student_accuracy_week.pdf")
-                   ).start()
+        if student:      
+            show_student_weekly_accuracy.delay(student.student_name, student.student_family, student.id, student.class_id, get_school_email())
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 
@@ -177,17 +129,7 @@ def student_accuracy_by_lesson():
         ).first()
 
         if student:
-            # Calculate per-lesson accuracy and generate chart
-            data = calculate_student_accuracy_by_lesson(
-                str(student.class_id), str(student.id)
-            )
-            show_student_accuracy_by_lesson(
-                f"{student.student_name} {student.student_family}", data)
-
-            Thread(target=analytics_sender,
-                   args=(get_school_email(), 'Accuracy By Lesson',
-                         r"c:\sap-project\server\student_accuracy_by_lesson.pdf")
-                   ).start()
+            show_student_accuracy_by_lesson.delay(student.student_name, student.student_family, student.id, student.class_id, get_school_email())
 
         return redirect(url_for("analytics_routes.analytics_menu"))
 

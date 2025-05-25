@@ -1,5 +1,3 @@
-# Standard Library Imports
-
 # Third-party Imports
 from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
@@ -7,6 +5,7 @@ from flask_login import LoginManager
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_compress import Compress
+from celery import Celery
 
 # Internal Imports
 from source.config import Config
@@ -15,7 +14,7 @@ from source.routes import main_routes
 # Initialize extensions
 db = SQLAlchemy()
 login_manager = LoginManager()
-
+celery = Celery(__name__, broker=Config.CELERY_BROKER_URL, backend=Config.CELERY_RESULT_BACKEND)
 
 def create_app():
     """
@@ -35,6 +34,14 @@ def create_app():
     db.init_app(app)
     login_manager.init_app(app)
     Compress(app)
+    
+    celery.conf.update(app.config)
+    class ContextTask(celery.Task):
+        def __call__(self, *args, **kwargs):
+            with app.app_context():
+                return self.run(*args, **kwargs)
+    celery.Task = ContextTask
+    import source.tasks
 
     # Register blueprints
     from source.routes import (
@@ -72,3 +79,6 @@ def create_app():
         db.create_all()
 
     return app
+
+flask_app = create_app()
+import source.tasks.analytics
