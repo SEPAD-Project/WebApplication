@@ -12,4 +12,5 @@ start "Celery Worker" cmd /k ".venv\Scripts\activate && python -m celery -A sour
 
 echo Starting Flask app with Waitress...
 echo Serving on http://0.0.0.0:2568
-waitress-serve --listen=0.0.0.0:2568 source.app:app
+start "Flask Server" cmd /k ".venv\Scripts\activate && waitress-serve --listen=0.0.0.0:2568 source.app:app"
+
