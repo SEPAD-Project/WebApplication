@@ -27,7 +27,7 @@ def calculate_students_accuracy(school_id, class_id):
 
     # Iterate over students in the class
     for student in class_.students:
-        file_path = os.path.join(base_path, f"{student.id}.txt")
+        file_path = os.path.join(base_path, f"{student.student_national_code}.txt")
 
         try:
             with open(file_path, 'r') as file:
