@@ -73,6 +73,7 @@ def add_student():
         student_family = request.form['student_family']
         student_national_code = request.form['student_national_code']
         student_password = request.form['student_password']
+        student_phone_number = request.form['student_phone_number']
         class_id = request.form['selected_class']
         student_image = request.files['file_input']
 
@@ -82,6 +83,7 @@ def add_student():
             student_family=student_family,
             student_national_code=student_national_code,
             student_password=student_password,
+            student_phone_number=student_phone_number,
             class_id=class_id,
             school_id=current_user.id
         )
