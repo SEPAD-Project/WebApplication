@@ -13,7 +13,7 @@ def kill_celery_process():
     print_section("Stopping any existing Celery processes")
 
     # Small delay to ensure previous processes are fully initialized
-    time.sleep(2)
+    time.sleep(1)
 
     # Terminate cmd.exe processes running celery
     subprocess.run(
@@ -31,7 +31,7 @@ def kill_celery_process():
         stdout=subprocess.DEVNULL
     )
 
-    print("Celery shutdown complete.")
+    print("Celery processes shutdown complete.")
     time.sleep(1)
 
 def start_celery_worker():
@@ -47,7 +47,7 @@ def start_celery_worker():
         shell=True
     )
 
-    print("Celery worker launched.")
+    print("New Celery worker launched.")
 
 if __name__ == '__main__':
     # Kill processes immediately on startup (first run of reloader)
