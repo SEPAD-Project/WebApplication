@@ -296,6 +296,7 @@ def edit_student(student_national_code):
         student.student_family = request.form['student_family']
         student.student_national_code = request.form['student_national_code']
         student.student_password = request.form['student_password']
+        student.student_phone_number = request.form['student_phone_number']
 
         try:
             # Flush changes to database
