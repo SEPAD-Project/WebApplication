@@ -8,8 +8,8 @@ from source.utils.generate_class_code import generate_class_code
 
 def add_students(
     path_to_xlsx, sheet_name, name_letter, family_letter,
-    nc_letter, class_letter, pass_letter,
-    available_classes, registered_national_codes
+    nc_letter, class_letter, pass_letter, phone_letter,
+    available_classes, registered_national_codes, registered_phone_numbers
 ):
     """
     Parse and validate student data from an Excel file.
@@ -42,11 +42,13 @@ def add_students(
         nc_index = openpyxl.utils.column_index_from_string(nc_letter) - 1
         class_index = openpyxl.utils.column_index_from_string(class_letter) - 1
         pass_index = openpyxl.utils.column_index_from_string(pass_letter) - 1
+        phone_index = openpyxl.utils.column_index_from_string(phone_letter) - 1
     except ValueError:
         return 'bad_column_letter'
 
     problems = []
     nc_list = []
+    phone_list = []
 
     for row in sheet.iter_rows(min_row=2):
         # Fetch raw cell values
@@ -55,6 +57,7 @@ def add_students(
         nc = row[nc_index].value
         class_raw = row[class_index].value
         password = row[pass_index].value
+        phone = row[phone_index].value
 
         row_number = row[0].row
 
@@ -82,6 +85,14 @@ def add_students(
         if not isinstance(password, int):
             problems.append(['bad_format', row_number, pass_letter])
 
+        # Validate phone number
+        if not isinstance(phone, int):
+            problems.append(['bad_format', row_number, phone_letter])
+        elif str(phone) in registered_phone_numbers or str(phone) in phone_list:
+            problems.append(['duplicated_nc', row_number, phone_list])
+        else:
+            phone_list.append(str(phone))
+
     if problems:
         return problems
 
@@ -96,6 +107,7 @@ def add_students(
             'national_code': row[nc_index],
             'class': generate_class_code(school_code, str(row[class_index])),
             'password': row[pass_index],
+            'phone_number': row[phone_index]
         })
 
     return students
