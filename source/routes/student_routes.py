@@ -146,6 +146,7 @@ def add_from_excel():
         class_names = [c.class_name for c in classes]
         students = school.students
         existing_ncs = [s.student_national_code for s in students]
+        existing_phones = [s.student_phone_number for s in students]
 
         # Get form inputs and files
         excel_file = request.files["file_input"]
@@ -156,6 +157,7 @@ def add_from_excel():
         nc_letter = request.form["national_code"]
         class_letter = request.form["class"]
         pass_letter = request.form["password"]
+        phone_letter = request.form["phone_letter"]
 
         # Save Excel file to disk
         excel_path = f"c:/sap-project/server/schools/{str(current_user.id)}/students.xlsx"
@@ -169,8 +171,8 @@ def add_from_excel():
         result = add_students(
             excel_path, sheet_name,
             name_letter, family_letter, nc_letter,
-            class_letter, pass_letter,
-            class_names, existing_ncs
+            class_letter, pass_letter, phone_letter,
+            class_names, existing_ncs, existing_phones
         )
         os.remove(excel_path)
 
@@ -222,6 +224,7 @@ def add_from_excel():
                 student_name=student['name'],
                 student_family=student['family'],
                 student_national_code=student['national_code'],
+                student_phone_number=student['phone_number'],
                 class_id=class_id,
                 student_password=student['password'],
                 school_id=current_user.id
