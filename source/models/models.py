@@ -68,18 +68,20 @@ class Student(db.Model):
     student_family = db.Column(db.String(100), nullable=False)
     student_national_code = db.Column(db.String(100), nullable=False, unique=True)
     student_password = db.Column(db.String(100), nullable=False)
+    student_phone_number = db.Column(db.String(100), nullable=False, unique=True)
 
     class_id = db.Column(db.Integer, db.ForeignKey('classes.id'), nullable=False)
     class_ = db.relationship("Class", back_populates="students")
 
     school_id = db.Column(db.Integer, db.ForeignKey('schools.id'), nullable=False)
     school = db.relationship("School", back_populates="students")
-
-    def __init__(self, student_name, student_family, student_national_code, student_password, class_id, school_id):
+    
+    def __init__(self, student_name, student_family, student_national_code, student_password, student_phone_number, class_id, school_id):
         self.student_name = student_name
         self.student_family = student_family
         self.student_national_code = student_national_code
         self.student_password = student_password
+        self.student_phone_number = student_phone_number
         self.class_id = class_id
         self.school_id = school_id
 
