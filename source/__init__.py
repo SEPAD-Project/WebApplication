@@ -74,6 +74,10 @@ def create_app():
     # Set up rate limiting
     Limiter(app=app, key_func=get_remote_address, storage_uri="redis://localhost:6379/0", default_limits=["10/minute"])
 
+    @app.errorhandler(429)
+    def ratelimit_handler(e):
+        return render_template("429.html"), 429
+
     # Ensure database tables exist
     with app.app_context():
         db.create_all()
