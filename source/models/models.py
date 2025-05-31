@@ -23,7 +23,7 @@ class School(db.Model, UserMixin):
     manager_personal_code = db.Column(db.String(100), nullable=False, unique=True)
     province = db.Column(db.String(100), nullable=False)
     city = db.Column(db.String(100), nullable=False)
-    email = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False, unique=True)
 
     classes = db.relationship("Class", back_populates="school", cascade="all, delete")
     students = db.relationship("Student", back_populates="school", cascade="all, delete")
