@@ -131,7 +131,7 @@ def verify_email():
                     try:
                         # Add and flush the new school to the database
                         db.session.add(new_school)
-                        db.session.flush(new_school)
+                        db.session.flush()
 
                         # Create a corresponding directory for the school
                         dm_create_school(school_id=str(new_school.id))
