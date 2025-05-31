@@ -1,6 +1,5 @@
 # Standard Library Imports
 from random import randint
-from pathlib import Path
 
 # Third-party Imports
 from flask import Blueprint, redirect, render_template, request, url_for, session
@@ -10,7 +9,7 @@ from flask_login import login_user, current_user
 from source import db
 from source.models.models import School
 from source.server_side.Website.directory_manager import dm_create_school
-from source.server_side.Website.Email.signup_verify import verify_code_sender
+from source.tasks.signup_email import start_process_send_signup_email
 
 # Initialize the Blueprint for authentication-related routes
 bp = Blueprint('auth_routes', __name__)
@@ -100,14 +99,8 @@ def signup():
             'attempts_count' : 0
         }
 
-
-        template_path = Path(__file__).parent.parent / 'server_side' / 'Website' / 'Email' / 'templates' / 'signup_verify.html'
-
-        with open(template_path, 'r') as file:
-            html_content = file.read().replace('{{ verification_code }}', generated_code)
-
-        verify_code_sender(request.form['email'], 'Verify Email', html_content)
-
+        start_process_send_signup_email.delay(request.form['email'], generated_code)
+        
         return redirect(url_for('auth_routes.verify_email'))
 
     # Render signup page for GET request

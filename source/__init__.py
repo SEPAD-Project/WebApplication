@@ -86,3 +86,4 @@ def create_app():
 
 flask_app = create_app()
 import source.tasks.analytics
+import source.tasks.signup_email
