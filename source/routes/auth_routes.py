@@ -76,6 +76,16 @@ def signup():
         - If an error occurs (e.g., duplicate entry), redirect to an error page.
     '''
     if request.method == 'POST':
+        existing_school = School.query.filter(
+            (School.school_code == request.form['school_code']) |
+            (School.manager_personal_code == request.form['manager_personal_code']) |
+            (School.email == request.form['email'])
+        ).first()
+
+        if existing_school:
+            session['show_error_notif'] = True
+            return redirect(url_for('auth_routes.duplicated_school_info'))
+        
         generated_code = str(randint(1000000, 9999999))
 
         # Retrieve registration form data
