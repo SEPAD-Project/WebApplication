@@ -157,7 +157,7 @@ def add_from_excel():
         nc_letter = request.form["national_code"]
         class_letter = request.form["class"]
         pass_letter = request.form["password"]
-        phone_letter = request.form["phone_letter"]
+        phone_letter = request.form["phone_number"]
 
         # Save Excel file to disk
         excel_path = f"c:/sap-project/server/schools/{str(current_user.id)}/students.xlsx"
