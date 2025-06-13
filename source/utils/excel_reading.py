@@ -5,6 +5,8 @@ from flask_login import current_user
 # Internal Imports
 from source.utils.generate_class_code import generate_class_code
 
+import datetime
+
 
 def add_students(
     path_to_xlsx, sheet_name, name_letter, family_letter,
@@ -197,3 +199,28 @@ def schedule_extraction(path_to_xlsx, sheet_name):
             schedule[row_label][header] = value
 
     return schedule
+
+
+def schedule_checking(path_to_xlsx, sheet_name, class_teachers):
+    schedule = schedule_extraction(path_to_xlsx, sheet_name)
+
+    if schedule == 'sheet_not_found':
+        return [schedule]
+
+    problems = []
+    for weekday_str in schedule.keys():
+        if not (weekday_str.lower() in ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"]):
+            problems.append(f"{weekday_str} is not a weekday.")
+
+        for (time_range, teacher_nc) in schedule.get(weekday_str).items():
+            try:
+                start_str, end_str = time_range.split('-')
+                start_time = datetime.time.fromisoformat(start_str)
+                end_time = datetime.time.fromisoformat(end_str)
+            except ValueError:
+                problems.append(f"{time_range} is not formal.")
+
+            if not (str(teacher_nc) in class_teachers):
+                problems.append(f"teacher with code {teacher_nc} is not recognized.")
+
+    return problems
