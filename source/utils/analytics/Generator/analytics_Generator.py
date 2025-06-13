@@ -143,6 +143,8 @@ def calculate_teachers_performance(school_id):
 
                 # Find which teacher was responsible at that time
                 for time_range, teacher_code in class_schedule.get(result_weekday, {}).items():
+                    if not (teacher_code in teachers_performance.keys):
+                        continue
                     try:
                         start_str, end_str = time_range.split('-')
                         start_time = datetime.time.fromisoformat(start_str)
