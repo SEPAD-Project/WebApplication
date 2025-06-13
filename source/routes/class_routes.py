@@ -9,7 +9,7 @@ from flask_login import current_user, login_required
 from source import db
 from source.models.models import Student, Teacher, Class, School
 from source.utils.generate_class_code import generate_class_code
-from source.utils.excel_reading import add_classes
+from source.utils.excel_reading import add_classes, schedule_checking
 from source.server_side.Website.directory_manager import dm_create_class, dm_delete_class
 
 # Initialize Blueprint for class-related routes
@@ -204,6 +204,14 @@ def edit_class(class_name):
         if file:
             file_path = f'C:\\sap-project\\server\\schools\\{str(current_user.id)}\\{str(cls.id)}\\schedule.xlsx'
             file.save(file_path)
+        
+        problems = schedule_checking(file_path, 'Sheet1', [teacher.teacher_national_code for teacher in cls.teachers])
+        if not (problems == []):
+            print(problems)
+            os.remove(file_path)
+            session["show_error_notif"] = True
+            session["schedule_errors"] = problems
+            return redirect(url_for("class_routes.error_in_schedule")) 
 
         try:
             db.session.commit()
@@ -302,6 +310,21 @@ def error_in_excel():
     excel_errors = session.get("excel_errors", [])
 
     return render_template('class/error_in_excel.html', texts=excel_errors)
+
+
+@bp.route("/panel/classes/error_in_schedule", methods=['GET', 'POST'])
+@login_required
+def error_in_schedule():
+    """
+    Display detailed feedback for Schedule Excel file parsing errors.
+    """
+    if not session.pop('show_error_notif', False):
+        return redirect(url_for('class_routes.edit_class'))
+
+    # Retrieve error messages stored in session
+    schedule_errors = session.get("schedule_errors", [])
+
+    return render_template('class/error_in_excel.html', texts=schedule_errors)
 
 
 @bp.route('/panel/classes/file_permission_error')
