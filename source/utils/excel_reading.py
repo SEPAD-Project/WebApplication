@@ -210,7 +210,7 @@ def schedule_checking(path_to_xlsx, sheet_name, class_teachers):
     problems = []
     for weekday_str in schedule.keys():
         if not (weekday_str.lower() in ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"]):
-            problems.append(f"{weekday_str} is not a weekday.")
+            problems.append(f"Invalid weekday: '{weekday_str}'.")
 
         for (time_range, teacher_nc) in schedule.get(weekday_str).items():
             try:
@@ -218,9 +218,11 @@ def schedule_checking(path_to_xlsx, sheet_name, class_teachers):
                 start_time = datetime.time.fromisoformat(start_str)
                 end_time = datetime.time.fromisoformat(end_str)
             except ValueError:
-                problems.append(f"{time_range} is not formal.")
+                problems.append(f"Invalid time range format: '{time_range}'.")
 
             if not (str(teacher_nc) in class_teachers):
-                problems.append(f"teacher with code {teacher_nc} is not recognized.")
+                problems.append(f"Unrecognized teacher code: '{teacher_nc}'.")
+
+    problems = list(set(problems))
 
     return problems
