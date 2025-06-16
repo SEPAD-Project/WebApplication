@@ -14,7 +14,7 @@ if /i "%confirm%"=="y" (
     start "Celery Worker" cmd /k ".venv\Scripts\activate && python -m celery -A source.celery worker --loglevel=info -P threads"
 
     echo Starting Flask app with Waitress in new window...
-    start "Flask Server" cmd /k ".venv\Scripts\activate && waitress-serve --listen=0.0.0.0:2568 source.app:app"
+    start "Flask Server" cmd /k ".venv\Scripts\activate && waitress-serve --listen=0.0.0.0:85 source.app:app"
 ) else if /i "%confirm%"=="n" (
     exit
 ) else (

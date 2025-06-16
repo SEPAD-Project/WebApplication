@@ -3,7 +3,7 @@ This repository is a part of the SEPAD project and was developed by [Parsa Safai
 
 Click [here](https://github.com/SEPAD-Project) to visit the SEPAD organization.
 
-The application is currently deployed and accessible at http://185.4.28.110:2568 where you can view the live results.
+The application is currently deployed and accessible at http://185.4.28.110:85 where you can view the live results.
 
 >Note: This application has Windows-specific dependencies and is optimized for Windows environments.
 
@@ -39,5 +39,5 @@ For run project, you need to install redis app:
 To run the project, simply use `run.bat` file.
 You can then access the output at:
 ```
-http://0.0.0.0:2568
+http://0.0.0.0:85
 ```
