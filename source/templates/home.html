@@ -3,33 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEPAD</title>
+    <title>SEPAD - Student Engagement Platform</title>
     <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
 </head>
 <body>
-    <div id="top" aria-hidden="true"></div>
     <!-- Navigation Bar -->
     <nav class="navbar">
-        <div class="nav-links">
-            <a href="#top" class="nav-link"><i class="fas fa-home"></i> Home</a>           
-            <a href="{{ url_for('auth_routes.login') }}" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Panel</a>
-            <a href="{{ url_for('main_routes.downloads') }}" class="nav-link"><i class="fas fa-download"></i> Downloads</a>
-            <a href="{{ url_for('main_routes.coming_soon') }}" class="nav-link"><i class="fas fa-book"></i> Guide</a>
-            <a href="{{ url_for('main_routes.coming_soon') }}" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+        <div class="nav-container">
+            <div class="nav-logo">
+                <span class="logo-icon"><i class="fas fa-graduation-cap"></i></span>
+                <span class="logo-text">SEPAD</span>
+            </div>
+            <button class="hamburger" aria-label="Menu" aria-expanded="false">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            <div class="nav-menu">
+                <div class="nav-center">
+                    <div class="nav-links">
+                        <a href="#top" class="nav-link"><i class="fas fa-home"></i> Home</a>           
+                        <a href="{{ url_for('auth_routes.login') }}" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Panel</a>
+                        <a href="{{ url_for('main_routes.downloads') }}" class="nav-link"><i class="fas fa-download"></i> Downloads</a>
+                        <a href="{{ url_for('main_routes.coming_soon') }}" class="nav-link"><i class="fas fa-book"></i> Guide</a>
+                        <a href="{{ url_for('main_routes.coming_soon') }}" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+                    </div>
+                </div>
+                <div class="nav-right">
+                    <a href="{{ url_for('auth_routes.signup') }}" class="nav-button">Sign Up</a>
+                    <a href="{{ url_for('auth_routes.login') }}" class="nav-button outline">Login</a>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-particles" id="particles-js"></div>
         <div class="hero-content">
+            <div class="hero-badge">
+                <span>New</span> AI-Powered Analytics
+            </div>
             <h1 class="hero-title">Enhance Learning Engagement</h1>
             <p class="hero-subtitle">Advanced analytics for student attention in virtual classrooms</p>
+            <div class="hero-cta">
+                <a href="{{ url_for('auth_routes.signup') }}" class="cta-button primary">Start Free Trial</a>
+                <a href="#features" class="cta-button secondary">
+                    <i class="fas fa-play-circle"></i> Watch Demo
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="image-container">
+                <img src="https://via.placeholder.com/600x400" alt="Dashboard Preview" class="dashboard-preview">
+                <div class="image-highlight"></div>
+            </div>
         </div>
         <div class="scroll-indicator">
             <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Trusted By Section -->
+    <section class="trusted-by">
+        <p class="trusted-title">Trusted by leading educational institutions</p>
+        <div class="trusted-logos">
+            <div class="logo-item"><i class="fas fa-university"></i> Stanford</div>
+            <div class="logo-item"><i class="fas fa-university"></i> MIT</div>
+            <div class="logo-item"><i class="fas fa-university"></i> Harvard</div>
+            <div class="logo-item"><i class="fas fa-university"></i> Oxford</div>
+            <div class="logo-item"><i class="fas fa-university"></i> Cambridge</div>
         </div>
     </section>
 
@@ -37,20 +83,53 @@
     <main class="main-content">
         <!-- Introduction Section -->
         <section class="intro-section">
-            <h2 class="section-title centered-title">Optimize Your Virtual Classroom</h2>
-            <p class="intro-text">
-                The Student Attention Platform revolutionizes online education by providing real-time insights into student engagement. 
-                Our cutting-edge technology analyzes facial expressions and behavior patterns to deliver precise attention metrics, 
-                helping educators adapt their teaching methods for maximum effectiveness. 
-                With our platform, you'll gain unprecedented visibility into the learning process and 
-                discover new ways to improve educational outcomes.
-            </p>
-            <a href="{{ url_for('auth_routes.signup') }}" class="cta-button">Start Your Free Trial</a>
+            <div class="section-header">
+                <h2 class="section-title">Optimize Your Virtual Classroom</h2>
+                <p class="section-subtitle">Revolutionizing online education with real-time engagement analytics</p>
+            </div>
+            <div class="intro-content">
+                <div class="intro-text">
+                    <p>
+                        The Student Attention Platform revolutionizes online education by providing real-time insights into student engagement. 
+                        Our cutting-edge technology analyzes facial expressions and behavior patterns to deliver precise attention metrics, 
+                        helping educators adapt their teaching methods for maximum effectiveness.
+                    </p>
+                    <ul class="intro-list">
+                        <li><i class="fas fa-check-circle"></i> Real-time engagement tracking</li>
+                        <li><i class="fas fa-check-circle"></i> 95% accuracy in attention detection</li>
+                        <li><i class="fas fa-check-circle"></i> Comprehensive session analytics</li>
+                        <li><i class="fas fa-check-circle"></i> Customizable reporting</li>
+                    </ul>
+                </div>
+                <div class="intro-image">
+                    <div class="stats-card">
+                        <div class="stat-item">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">Accuracy</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">10K+</div>
+                            <div class="stat-label">Students</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label">Support</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="intro-actions">
+                <a href="{{ url_for('auth_routes.signup') }}" class="cta-button primary">Start Your Free Trial</a>
+                <a href="#" class="cta-link">Schedule a demo <i class="fas fa-arrow-right"></i></a>
+            </div>
         </section>
 
         <!-- Features Section -->
-        <section class="features-section">
-            <h2 class="section-title">Key Features</h2>
+        <section class="features-section" id="features">
+            <div class="section-header">
+                <h2 class="section-title">Key Features</h2>
+                <p class="section-subtitle">Powerful tools to enhance your teaching experience</p>
+            </div>
             <div class="features-grid">
                 <!-- Feature Card 1 -->
                 <div class="feature-card">
@@ -63,6 +142,7 @@
                         allowing for immediate adjustments to teaching approach.
                     </p>
                     <div class="card-wave"></div>
+                    <a href="#" class="card-link">Learn more <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- Feature Card 2 -->
@@ -76,6 +156,7 @@
                         detecting engagement levels and focus states.
                     </p>
                     <div class="card-wave"></div>
+                    <a href="#" class="card-link">Learn more <i class="fas fa-arrow-right"></i></a>
                 </div>
 
                 <!-- Feature Card 3 -->
@@ -89,6 +170,129 @@
                         and improve long-term teaching strategies.
                     </p>
                     <div class="card-wave"></div>
+                    <a href="#" class="card-link">Learn more <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="testimonials-section">
+            <div class="section-header">
+                <h2 class="section-title">What Educators Say</h2>
+                <p class="section-subtitle">Trusted by educators worldwide</p>
+            </div>
+            <div class="testimonials-slider">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p class="testimonial-text">
+                            SEPAD has transformed how I engage with my online students. The real-time feedback allows me to adjust my teaching style instantly.
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">Dr. Sarah Johnson</h4>
+                            <p class="author-title">Professor of Computer Science</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <div class="quote-icon"><i class="fas fa-quote-left"></i></div>
+                        <p class="testimonial-text">
+                            The analytics provided by SEPAD have helped us improve our online course completion rates by 35% in just one semester.
+                        </p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <div class="author-info">
+                            <h4 class="author-name">Michael Chen</h4>
+                            <p class="author-title">Director of Online Learning</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonials-cta">
+                <a href="#" class="cta-link">Read more testimonials <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="pricing-section">
+            <div class="section-header">
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-subtitle">Choose the plan that fits your needs</p>
+            </div>
+            <div class="pricing-tabs">
+                <button class="pricing-tab active">Monthly</button>
+                <button class="pricing-tab">Yearly <span class="tab-badge">Save 20%</span></button>
+            </div>
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3 class="pricing-title">Starter</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$29</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Up to 50 students</li>
+                        <li><i class="fas fa-check"></i> Basic analytics</li>
+                        <li><i class="fas fa-check"></i> Email support</li>
+                        <li><i class="fas fa-times"></i> Advanced reports</li>
+                        <li><i class="fas fa-times"></i> API access</li>
+                    </ul>
+                    <a href="{{ url_for('auth_routes.signup') }}" class="cta-button outline">Get Started</a>
+                </div>
+                <div class="pricing-card featured">
+                    <div class="featured-badge">Most Popular</div>
+                    <h3 class="pricing-title">Professional</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$79</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Up to 200 students</li>
+                        <li><i class="fas fa-check"></i> Advanced analytics</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                        <li><i class="fas fa-check"></i> Detailed reports</li>
+                        <li><i class="fas fa-times"></i> API access</li>
+                    </ul>
+                    <a href="{{ url_for('auth_routes.signup') }}" class="cta-button primary">Get Started</a>
+                </div>
+                <div class="pricing-card">
+                    <h3 class="pricing-title">Enterprise</h3>
+                    <div class="pricing-price">
+                        <span class="price-amount">$199</span>
+                        <span class="price-period">/month</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Unlimited students</li>
+                        <li><i class="fas fa-check"></i> Premium analytics</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
+                        <li><i class="fas fa-check"></i> Custom reports</li>
+                        <li><i class="fas fa-check"></i> API access</li>
+                    </ul>
+                    <a href="{{ url_for('auth_routes.signup') }}" class="cta-button outline">Get Started</a>
+                </div>
+            </div>
+            <div class="pricing-cta">
+                <p>Need a custom solution? <a href="#">Contact our sales team</a></p>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Transform Your Virtual Classroom?</h2>
+                <p class="cta-text">Join thousands of educators who are already improving student engagement with SEPAD.</p>
+                <div class="cta-actions">
+                    <a href="{{ url_for('auth_routes.signup') }}" class="cta-button primary">Start Free Trial</a>
+                    <a href="#" class="cta-button secondary">Contact Sales</a>
                 </div>
             </div>
         </section>
@@ -102,18 +306,72 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-links">
-                <a href="#" class="footer-link">Privacy Policy</a>
-                <a href="#" class="footer-link">Terms of Service</a>
-                <a href="#" class="footer-link">Contact Us</a>
+            <div class="footer-main">
+                <div class="footer-about">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i> SEPAD
+                    </div>
+                    <p class="footer-about-text">
+                        Advanced analytics for student attention in virtual classrooms. 
+                        Helping educators enhance learning engagement since 2023.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links-group">
+                    <h4 class="footer-links-title">Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Features</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Updates</a></li>
+                        <li><a href="#">Roadmap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-group">
+                    <h4 class="footer-links-title">Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Guides</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Webinars</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-group">
+                    <h4 class="footer-links-title">Company</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Contact</a></li>
+                        <li><a href="#">Press</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links-group">
+                    <h4 class="footer-links-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Security</a></li>
+                        <li><a href="#">Cookies</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="footer-copyright">
-                Copyleft 2025 SEPAD. All lefts reserved.<br>
-                This project is licensed under the MIT License.
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    Copyleft 2025 SEPAD. All lefts reserved.<br>
+                    This project is licensed under the MIT License.
+                </div>
+                <div class="footer-lang">
+                    <i class="fas fa-globe"></i> English
+                </div>
             </div>
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         // Back to top button functionality
         const backToTop = document.querySelector('.back-to-top');
@@ -143,7 +401,57 @@
                 navbar.classList.remove('scrolled');
             }
         });
+
+        // Hamburger menu functionality
+        const hamburger = document.querySelector('.hamburger');
+        const navCenter = document.querySelector('.nav-center');
+        const navRight = document.querySelector('.nav-right');
         
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('is-active');
+            navbar.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+            
+            // Update aria-expanded attribute
+            const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
+            hamburger.setAttribute('aria-expanded', !isExpanded);
+        });
+
+        // Close menu when clicking on a nav link
+        document.querySelectorAll('.nav-link, .nav-button').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 527) {
+                    hamburger.classList.remove('is-active');
+                    navbar.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+
+        // Particles.js initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('particles-js')) {
+                particlesJS('particles-js', {
+                    particles: {
+                        number: { value: 80, density: { enable: true, value_area: 800 } },
+                        color: { value: "#4ECDC4" },
+                        shape: { type: "circle" },
+                        opacity: { value: 0.5, random: true },
+                        size: { value: 3, random: true },
+                        line_linked: { enable: true, distance: 150, color: "#4ECDC4", opacity: 0.4, width: 1 },
+                        move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+                    },
+                    interactivity: {
+                        detect_on: "canvas",
+                        events: {
+                            onhover: { enable: true, mode: "grab" },
+                            onclick: { enable: true, mode: "push" }
+                        }
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
