@@ -45,7 +45,7 @@
         <div class="hero-particles" id="particles-js"></div>
         <div class="hero-content">
             <div class="hero-badge">
-                <span>New</span> MachineVision-Powered System
+                <span>New</span> ComputerVision-Powered System
             </div>
             <h1 class="hero-title">Enhance Learning Engagement</h1>
             <p class="hero-subtitle">Advanced analytics and Real-time feedback for student attention in virtual classrooms</p>
@@ -57,9 +57,6 @@
             </div>
         </div>
         <div class="hero-image">
-            <div class="image-container">
-                <img src="https://via.placeholder.com/600x400" alt="Dashboard Preview" class="dashboard-preview">
-                <div class="image-highlight"></div>
             </div>
         </div>
         <div class="scroll-indicator">
@@ -126,7 +123,7 @@
 
         <!-- Features Section -->
         <section class="features-section" id="features">
-            <div class="section-header">
+            <div class="section-header" id="features-header">
                 <h2 class="section-title">Key Features</h2>
                 <p class="section-subtitle">Powerful tools to enhance your teaching experience</p>
             </div>
@@ -225,7 +222,7 @@
         <!-- Pricing Section -->
         <section class="pricing-section">
             <div class="section-header">
-                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <h2 class="section-title" id="pricing-header">Simple, Transparent Pricing</h2>
                 <p class="section-subtitle">Choose the plan that fits your needs</p>
             </div>
             <div class="pricing-tabs">
@@ -325,8 +322,8 @@
                 <div class="footer-links-group">
                     <h4 class="footer-links-title">Product</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#features-header">Features</a></li>
+                        <li><a href="#pricing-header">Pricing</a></li>
                         <li><a href="#">Updates</a></li>
                         <li><a href="#">Roadmap</a></li>
                     </ul>
@@ -343,19 +340,19 @@
                 <div class="footer-links-group">
                     <h4 class="footer-links-title">Company</h4>
                     <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="http://sepad-project.ir/About">About Us</a></li>
                         <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="http://sepad-project.ir/contact">Contact</a></li>
                         <li><a href="#">Press</a></li>
                     </ul>
                 </div>
                 <div class="footer-links-group">
                     <h4 class="footer-links-title">Legal</h4>
                     <ul class="footer-links">
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Terms</a></li>
-                        <li><a href="#">Security</a></li>
-                        <li><a href="#">Cookies</a></li>
+                        <li><a href="http://sepad-project.ir/Privacy">Privacy</a></li>
+                        <li><a href="http://sepad-project.ir/Terms">Terms</a></li>
+                        <li><a href="http://sepad-project.ir/Security">Security</a></li>
+                        <li><a href="http://sepad-project.ir/Cookies">Cookies</a></li>
                     </ul>
                 </div>
             </div>
@@ -431,27 +428,28 @@
 
         // Particles.js initialization
         document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('particles-js')) {
-                particlesJS('particles-js', {
-                    particles: {
-                        number: { value: 80, density: { enable: true, value_area: 800 } },
-                        color: { value: "#4ECDC4" },
-                        shape: { type: "circle" },
-                        opacity: { value: 0.5, random: true },
-                        size: { value: 3, random: true },
-                        line_linked: { enable: true, distance: 150, color: "#4ECDC4", opacity: 0.4, width: 1 },
-                        move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
-                    },
-                    interactivity: {
-                        detect_on: "canvas",
-                        events: {
-                            onhover: { enable: true, mode: "grab" },
-                            onclick: { enable: true, mode: "push" }
-                        }
-                    }
-                });
+        if (document.getElementById('particles-js')) {
+            particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 } },
+                color: { value: "#4ECDC4" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: { enable: true, distance: 150, color: "#4ECDC4", opacity: 0.4, width: 1 },
+                move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                onhover: { enable: false },
+                onclick: { enable: false }
+                }
             }
+            });
+        }
         });
     </script>
+    
 </body>
 </html>
