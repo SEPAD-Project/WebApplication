@@ -93,7 +93,7 @@
                     </p>
                     <ul class="intro-list">
                         <li><i class="fas fa-check-circle"></i> Real-time engagement tracking</li>
-                        <li><i class="fas fa-check-circle"></i> High% accuracy in attention detection</li>
+                        <li><i class="fas fa-check-circle"></i> High accuracy in attention detection</li>
                         <li><i class="fas fa-check-circle"></i> Comprehensive session analytics</li>
                         <li><i class="fas fa-check-circle"></i> Customizable reporting</li>
                     </ul>
@@ -101,7 +101,7 @@
                 <div class="intro-image">
                     <div class="stats-card">
                         <div class="stat-item">
-                            <div class="stat-value">High%</div>
+                            <div class="stat-value">High</div>
                             <div class="stat-label">Accuracy</div>
                         </div>
                         <div class="stat-item">
@@ -400,30 +400,60 @@
         });
 
         // Hamburger menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
         const hamburger = document.querySelector('.hamburger');
-        const navCenter = document.querySelector('.nav-center');
-        const navRight = document.querySelector('.nav-right');
-        
-        hamburger.addEventListener('click', () => {
+        const navbar = document.querySelector('.navbar');
+        const navLinks = document.querySelectorAll('.nav-link, .nav-button');
+        const breakpoint = 950;
+
+        const toggleMenu = () => {
             hamburger.classList.toggle('is-active');
             navbar.classList.toggle('active');
             document.body.classList.toggle('menu-open');
             
-            // Update aria-expanded attribute
             const isExpanded = hamburger.getAttribute('aria-expanded') === 'true';
             hamburger.setAttribute('aria-expanded', !isExpanded);
+        };
+        const closeMenu = () => {
+            hamburger.classList.remove('is-active');
+            navbar.classList.remove('active');
+            document.body.classList.remove('menu-open');
+            hamburger.setAttribute('aria-expanded', 'false');
+        };
+
+        const checkScreenSize = () => {
+            if (window.innerWidth > breakpoint) {
+            closeMenu();
+            }
+        };
+        hamburger.addEventListener('click', function(e) {
+            e.stopPropagation(); 
+            toggleMenu();
+        });
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+            if (window.innerWidth <= breakpoint) {
+                closeMenu();
+            }
+            });
+        });
+        document.addEventListener('click', function(e) {
+            if (navbar.classList.contains('active') && 
+                !e.target.closest('.navbar') && 
+                !e.target.closest('.hamburger')) {
+            closeMenu();
+            }
         });
 
-        // Close menu when clicking on a nav link
-        document.querySelectorAll('.nav-link, .nav-button').forEach(link => {
-            link.addEventListener('click', () => {
-                if (window.innerWidth <= 527) {
-                    hamburger.classList.remove('is-active');
-                    navbar.classList.remove('active');
-                    document.body.classList.remove('menu-open');
-                    hamburger.setAttribute('aria-expanded', 'false');
-                }
-            });
+        window.addEventListener('resize', function() {
+            checkScreenSize();
+            
+            if (window.innerWidth <= 480) {
+            }
+        });
+
+        hamburger.setAttribute('aria-expanded', 'false');
+        hamburger.setAttribute('aria-label', 'main menu');
         });
 
         // Particles.js initialization

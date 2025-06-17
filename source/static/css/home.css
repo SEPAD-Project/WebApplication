@@ -194,6 +194,7 @@ body.menu-open::after {
 }
 
 
+/* Hamburger Menu Styles - Rewritten */
 .hamburger {
   display: none;
   padding: 0;
@@ -202,12 +203,10 @@ body.menu-open::after {
   background-color: transparent;
   border: none;
   margin: 0;
-  overflow: visible;
-  outline: none;
-  z-index: 1001;
   width: 30px;
   height: 24px;
   position: relative;
+  z-index: 1001;
 }
 
 .hamburger-box {
@@ -220,13 +219,13 @@ body.menu-open::after {
 .hamburger-inner {
   display: block;
   top: 50%;
-  margin-top: -1px;
+  margin-top: -2px;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background-color: var(--primary-color);
   border-radius: 4px;
   position: absolute;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease 0.15s;
 }
 
 .hamburger-inner::before,
@@ -234,7 +233,7 @@ body.menu-open::after {
   content: "";
   display: block;
   width: 100%;
-  height: 2px;
+  height: 3px;
   background-color: var(--primary-color);
   border-radius: 4px;
   position: absolute;
@@ -242,33 +241,31 @@ body.menu-open::after {
 }
 
 .hamburger-inner::before {
-  top: -8px;
-  transition: top 0.1s 0.14s ease, opacity 0.1s ease;
+  top: -10px;
+  transition: top 0.15s ease 0.15s, transform 0.15s ease;
 }
 
 .hamburger-inner::after {
-  bottom: -7px; 
-  transition: bottom 0.1s 0.14s ease, transform 0.15s ease;
+  bottom: -10px;
+  transition: bottom 0.15s ease 0.15s, transform 0.15s ease;
 }
 
-
-
+/* Active State */
 .hamburger.is-active .hamburger-inner {
-  transform: translateY(6px) rotate(45deg);
-  transition-delay: 0.14s;
+  transform: translateY(0) rotate(45deg);
+  transition-delay: 0.15s;
 }
-
 
 .hamburger.is-active .hamburger-inner::before {
   top: 0;
-  opacity: 0;
-  transition: top 0.1s ease, opacity 0.1s 0.14s ease;
+  transform: rotate(90deg);
+  transition: top 0.15s ease, transform 0.15s ease 0.15s;
 }
 
 .hamburger.is-active .hamburger-inner::after {
   bottom: 0;
-  transform: translateY(-6px) rotate(-90deg);
-  transition: bottom 0.1s ease, transform 0.15s 0.14s ease;
+  transform: rotate(-90deg);
+  transition: bottom 0.15s ease, transform 0.15s ease 0.15s;
 }
 
 
@@ -365,26 +362,6 @@ body.menu-open::after {
     right: 0.25rem;
   }
   
-  .hamburger {
-    width: 26px;
-    height: 20px;
-  }
-  
-  .hamburger-inner::before {
-    top: -6px;
-  }
-  
-  .hamburger-inner::after {
-    bottom: -6px;
-  }
-  
-  .hamburger.is-active .hamburger-inner {
-    transform: translateY(5px) rotate(45deg);
-  }
-  
-  .hamburger.is-active .hamburger-inner::after {
-    transform: translateY(-5px) rotate(-90deg);
-  }
 }
 
 /* Hero Section */
