@@ -19,35 +19,60 @@
         </div>
     </div>
 
-    <div class="glass-container">
-        <div class="download-card">
-            <div class="card-icon">
-                <i class="fas fa-user-graduate"></i>
+    <div class="download-grid">
+        <!-- Student Section -->
+        <div class="download-section student">
+            <h2 class="section-title">Student</h2>
+            <div class="download-card">
+                <div class="card-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="version-selector">
+                    <button class="version-btn active">
+                        <i class="fab fa-windows"></i> Windows
+                    </button>
+                </div>
+                <h3 class="version-title">Windows Version</h3>
+                <p class="card-description version-description">Desktop version for Windows</p>
+                <a href="https://github.com/SEPAD-Project/Student-Desktop-App/releases" class="download-btn" target="_blank">
+                    <span>Download</span>
+                    <i class="fas fa-download"></i>
+                </a>
             </div>
-            <h2>Student App</h2>
-            <p class="card-description">Version for students</p>
-            <a href="#" class="download-btn">
-                <span>Download</span>
-                <i class="fas fa-download"></i>
-            </a>
         </div>
 
-        <div class="download-card">
-            <div class="card-icon">
-                <i class="fas fa-chalkboard-teacher"></i>
+        <!-- Teacher Section -->
+        <div class="download-section teacher">
+            <h2 class="section-title">Teacher</h2>
+            <div class="download-card">
+                <div class="card-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div class="version-selector">
+                    <button class="version-btn active" data-version="windows">
+                        <i class="fab fa-windows"></i> Windows
+                    </button>
+                    <button class="version-btn" data-version="android">
+                        <i class="fab fa-android"></i> Android
+                    </button>
+                </div>
+                <h3 class="version-title">Windows Version</h3>
+                <p class="card-description version-description">Desktop version for Windows</p>
+                <a href="https://github.com/SEPAD-Project/teacher-Desktop-App/releases" class="download-btn windows-download" target="_blank">
+                    <span>Download</span>
+                    <i class="fas fa-download"></i>
+                </a>
+                <a href="https://github.com/SEPAD-Project/Teacher-Android-App/releases" class="download-btn android-download" style="display: none;" target="_blank">
+                    <span>Download</span>
+                    <i class="fas fa-download"></i>
+                </a>
             </div>
-            <h2>Teacher App</h2>
-            <p class="card-description">Version for teachers</p>
-            <a href="#" class="download-btn">
-                <span>Download</span>
-                <i class="fas fa-download"></i>
-            </a>
         </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
     <script>
-        // Particle.js configuration - minimal and elegant
+        // Particle.js configuration
         particlesJS('particles-js', {
             "particles": {
                 "number": {
@@ -98,6 +123,30 @@
                     }
                 }
             }
+        });
+
+        // Version selector functionality for Teacher section
+        document.querySelectorAll('.teacher .version-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const card = this.closest('.download-card');
+                const version = this.dataset.version;
+                
+                // Update active button
+                card.querySelectorAll('.version-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Update version display
+                card.querySelector('.version-title').textContent = 
+                    version === 'windows' ? 'Windows Version' : 'Android Version';
+                card.querySelector('.version-description').textContent = 
+                    version === 'windows' ? 'Desktop version for Windows' : 'Mobile version for Android';
+                
+                // Show correct download button
+                card.querySelector('.windows-download').style.display = 
+                    version === 'windows' ? 'inline-flex' : 'none';
+                card.querySelector('.android-download').style.display = 
+                    version === 'android' ? 'inline-flex' : 'none';
+            });
         });
     </script>
 </body>
