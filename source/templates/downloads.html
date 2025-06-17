@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,39 +7,51 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/downloads.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>Downloads</title>
+    <title>Downloads | SEPAD</title>
 </head>
 <body>
-    <div id="particles-js"></div> 
+    <div id="particles-js"></div>
 
-    <hero>
-        <h1>Downloads of SEPAD Project</h1>
-        <p class="form-footer">Use this part if you are teacher or student. schools can manage from <a href="{{ url_for('auth_routes.login') }}">management panel</a></p>
-    </hero>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>SEPAD Application Downloads</h1>
+            <p class="hero-description">Teachers and students can download applications from this section. Schools can manage from the <a href="{{ url_for('auth_routes.login') }}">management panel</a>.</p>
+        </div>
+    </div>
 
-
-     <div class="glass-container">
-        <div class="content-wrapper">
+    <div class="glass-container">
+        <div class="download-card">
+            <div class="card-icon">
+                <i class="fas fa-user-graduate"></i>
+            </div>
             <h2>Student App</h2>
-            <a href="#">
-                <button class="download-btn">Download</button>
+            <p class="card-description">Version for students</p>
+            <a href="#" class="download-btn">
+                <span>Download</span>
+                <i class="fas fa-download"></i>
             </a>
         </div>
-        <div class="content-wrapper">
+
+        <div class="download-card">
+            <div class="card-icon">
+                <i class="fas fa-chalkboard-teacher"></i>
+            </div>
             <h2>Teacher App</h2>
-            <a href="#">
-                <button class="download-btn">Download</button>
+            <p class="card-description">Version for teachers</p>
+            <a href="#" class="download-btn">
+                <span>Download</span>
+                <i class="fas fa-download"></i>
             </a>
         </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
     <script>
-        // Particle.js configuration
+        // Particle.js configuration - minimal and elegant
         particlesJS('particles-js', {
             "particles": {
                 "number": {
-                    "value": 50,
+                    "value": 40,
                     "density": {
                         "enable": true,
                         "value_area": 800
@@ -49,47 +61,41 @@
                     "value": "#4ECDC4"
                 },
                 "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    }
+                    "type": "circle"
                 },
                 "opacity": {
-                    "value": 0.3,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
+                    "value": 0.2,
+                    "random": true
                 },
                 "size": {
-                    "value": 3,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 2,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
+                    "value": 2.5,
+                    "random": true
                 },
                 "line_linked": {
                     "enable": true,
                     "distance": 150,
                     "color": "#3aa8a1",
-                    "opacity": 0.2,
+                    "opacity": 0.1,
                     "width": 1
                 },
                 "move": {
                     "enable": true,
-                    "speed": 1,
+                    "speed": 0.5,
                     "direction": "none",
                     "random": true,
                     "straight": false,
-                    "out_mode": "out",
-                    "bounce": false
+                    "out_mode": "out"
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": false
+                    },
+                    "onclick": {
+                        "enable": false
+                    }
                 }
             }
         });
