@@ -41,10 +41,20 @@ def contact():
 @bp.route('/downloads')
 def downloads():
     """
-    Render the contact page.
+    Render the downloads page.
 
     Returns:
-        Rendered HTML for 'contact.html'.
+        Rendered HTML for 'downloads.html'.
     """
     return render_template('downloads.html')
+
+@bp.route('/about')
+def about():
+    """
+    Render the about page.
+
+    Returns:
+        Rendered HTML for 'about.html'.
+    """
+    return render_template('about.html')
 

@@ -1,0 +1,352 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(135deg, #121212, #1E1E1E);
+    color: #E0E0E0;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.back-button {
+    background: rgba(255, 107, 107, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    border-radius: 8px;
+    color: #E0E0E0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    left: 15px;
+    padding: 10px 12px;
+    position: absolute; 
+    text-decoration: none;
+    top: 15px;
+    transition: all 0.3s ease;
+    z-index: 1000; 
+}
+
+.back-button:hover {
+    background: rgba(255, 107, 107, 0.2);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+}
+
+.about-container {
+    max-width: 1000px;
+    margin: 60px auto 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-header h1 {
+    color: #4ECDC4;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.subtitle {
+    color: #B0B0B0;
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.contribution-info {
+    background: rgba(78, 205, 196, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid rgba(78, 205, 196, 0.2);
+}
+
+.equal-contribution {
+    color: #E0E0E0;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.contribution-bar {
+    background: rgba(44, 44, 44, 0.7);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+    display: flex;
+}
+
+.bar-fill {
+    height: 100%;
+}
+
+.bar-fill.abolfazl {
+    background: linear-gradient(90deg, #4ECDC4, #3aa8a1);
+}
+
+.bar-fill.parsa {
+    background: linear-gradient(90deg, #FF6B6B, #FF8E8E);
+}
+
+.contribution-names {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #E0E0E0;
+}
+
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.member-card {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    padding: 25px;
+    width: calc(50% - 15px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.abolfazl-card {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(78, 205, 196, 0.15);
+}
+
+.parsa-card {
+    background: rgba(30, 30, 30, 0.7);
+    border: 1px solid rgba(255, 107, 107, 0.15);
+}
+
+.member-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+.member-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 20px;
+}
+
+.abolfazl-card .member-image {
+    border: 3px solid rgba(78, 205, 196, 0.3);
+}
+
+.parsa-card .member-image {
+    border: 3px solid rgba(255, 107, 107, 0.3);
+}
+
+.member-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.member-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.member-info h2 {
+    color: #4ECDC4;
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.parsa-card h2 {
+    color: #FF6B6B;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    color: #B0B0B0;
+}
+
+.social-link a {
+    color: #B0B0B0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.social-link a:hover {
+    color: #4ECDC4;
+}
+
+.parsa-card .social-link a:hover {
+    color: #FF6B6B;
+}
+
+.member-bio {
+    color: #E0E0E0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: center;
+    flex: 1;
+}
+
+.contributions {
+    background: rgba(44, 44, 44, 0.5);
+    border-radius: 10px;
+    padding: 15px;
+    min-height: 220px;
+}
+
+.contributions h3 {
+    color: #4ECDC4;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.parsa-card .contributions h3 {
+    color: #FF6B6B;
+}
+
+.contributions ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.contributions li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.abolfazl-card .contributions li::before {
+    color: #4ECDC4;
+}
+
+.parsa-card .contributions li::before {
+    color: #FF6B6B;
+}
+
+.contributions li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+}
+
+.project-info {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(78, 205, 196, 0.15);
+    padding: 25px;
+    margin-top: 30px;
+}
+
+.project-info h2 {
+    color: #4ECDC4;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.project-info p {
+    color: #E0E0E0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .about-container {
+        padding: 0 15px;
+    }
+    
+    .about-header h1 {
+        font-size: 2rem;
+    }
+    
+    .member-card {
+        width: 100%;
+        padding: 20px;
+    }
+    
+    .member-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .contributions {
+        min-height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-header h1 {
+        font-size: 1.8rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .member-card {
+        padding: 15px;
+    }
+    
+    .member-info h2 {
+        font-size: 1.3rem;
+    }
+    
+    .contributions h3 {
+        font-size: 1rem;
+    }
+    
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+}

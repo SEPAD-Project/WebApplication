@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - SEPAD</title>
+    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <a href="{{ url_for('main_routes.home') }}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back to Home
+    </a>
+
+    <div class="about-container">
+        <header class="about-header">
+            <h1>About The Team</h1>
+            <p class="subtitle">Meet the developers behind SEPAD</p>
+            <div class="contribution-info">
+                <p class="equal-contribution">Equal Contribution:</p>
+                <div class="contribution-bar">
+                    <div class="bar-fill abolfazl" style="width: 50%;"></div>
+                    <div class="bar-fill parsa" style="width: 50%;"></div>
+                </div>
+                <div class="contribution-names">
+                    <span>Abolfazl Rashidian</span>
+                    <span>Parsa Safaei</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="team-members">
+            <div class="member-card abolfazl-card">
+                <div class="member-image">
+                    <img src="https://github.com/abolfazlrashidian.png" alt="Abolfazl Rashidian">
+                </div>
+                <div class="member-info">
+                    <h2>Abolfazl Rashidian</h2>
+                    <div class="social-link">
+                        <i class="fab fa-github"></i>
+                        <a href="https://github.com/abolfazlrashidian" target="_blank">github.com/abolfazlrashidian</a>
+                    </div>
+                    <p class="member-bio">
+                        Full-stack developer with expertise in web development and system design. Passionate about creating efficient and user-friendly applications.
+                    </p>
+                    <div class="contributions">
+                        <h3>Key Contributions:</h3>
+                        <ul>
+                            <li>Student Management System</li>
+                            <li>Teacher Management System</li>
+                            <li>Website Update System</li>
+                            <li>Backend API Development</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="member-card parsa-card">
+                <div class="member-image">
+                    <img src="https://github.com/parsasafaie.png" alt="Parsa Safaei">
+                </div>
+                <div class="member-info">
+                    <h2>Parsa Safaei</h2>
+                    <div class="social-link">
+                        <i class="fab fa-github"></i>
+                        <a href="https://github.com/parsasafaie" target="_blank">github.com/parsasafaie</a>
+                    </div>
+                    <p class="member-bio">
+                        Developer specializing in image processing and data analysis. Focused on creating robust solutions for complex problems.
+                    </p>
+                    <div class="contributions">
+                        <h3>Key Contributions:</h3>
+                        <ul>
+                            <li>Image Processing Module</li>
+                            <li>Website Frontend Development</li>
+                            <li>Statistics and Analytics System</li>
+                            <li>Data Visualization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-info">
+            <h2>About SEPAD Project</h2>
+            <p>
+                SEPAD is a comprehensive school management system designed to streamline educational processes. 
+                Our goal was to create an intuitive platform that combines powerful features with an elegant interface.
+            </p>
+            <p>
+                This project represents a collaborative effort between two passionate developers, each bringing unique skills 
+                to create a product that's greater than the sum of its parts.
+            </p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
+</body>
+</html>
