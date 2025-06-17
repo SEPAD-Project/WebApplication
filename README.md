@@ -1,20 +1,22 @@
-# WEB
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/SEPAD-Project/WebApplication/blob/main/README.md)
+[![fa](https://img.shields.io/badge/lang-fa-blue.svg)](https://github.com/SEPAD-Project/WebApplication/blob/main/README.fa.md)
+# WebApplication
 This repository is a part of the SEPAD project and was developed by [Parsa Safaie](https://github.com/parsasafaie) to serve schools within the larger SEPAD system.
 
 Click [here](https://github.com/SEPAD-Project) to visit the SEPAD organization.
 
-The application is currently deployed and accessible at http://185.4.28.110:85 where you can view the live results.
+The application is currently deployed and accessible at http://sepad-project.ir/ where you can view the live results.
 
 >Note: This application has Windows-specific dependencies and is optimized for Windows environments.
 
 ## Repository Cloning
 To clone this repository, open your terminal in the desired directory and run:
 ```bash
-git clone --recurse-submodules https://github.com/SEPAD-Project/WEB.git
+git clone --recurse-submodules https://github.com/SEPAD-Project/WebApplication.git
 ```
 Then, navigate to the repository directory:
 ```bash
-cd Web
+cd WebApplication
 ```
 
 ## Installing Dependencies
