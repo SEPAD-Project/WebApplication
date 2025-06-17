@@ -9,22 +9,23 @@ body {
     background: linear-gradient(135deg, #121212, #1E1E1E);
     display: flex;
     font-family: 'Inter', sans-serif;
-    height: 100vh;
+    min-height: 100vh;
     justify-content: center;
     margin: 0;
+    padding: 20px;
     text-align: center;
-    overflow: hidden;
     position: relative;
 }
 
 #particles-js {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
-    opacity: 0.5;
+    opacity: 0.3;
+    pointer-events: none;
 }
   
 .back-button {
@@ -41,18 +42,17 @@ body {
     font-size: 14px;
     font-weight: 500;
     left: 15px;
-    padding: 12px;
-    position: absolute;
+    padding: 10px 12px;
+    position: fixed;
     text-decoration: none;
     top: 15px;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
     z-index: 10;
 }
   
 .back-button:hover {
     background: rgba(255, 107, 107, 0.2);
     border: 1px solid rgba(255, 107, 107, 0.3);
-    box-shadow: 0 0 15px rgba(255, 107, 107, 0.2);
 }
   
 .back-button svg {
@@ -65,16 +65,17 @@ body {
 
 .signup-form {
     align-items: center;
-    background: rgba(30, 30, 30, 0.5);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border-radius: 16px;
-    border: 1px solid rgba(78, 205, 196, 0.2);
+    border: 1px solid rgba(78, 205, 196, 0.15);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     padding: 40px;
-    width: fit-content;
+    width: 100%;
+    max-width: 450px;
     z-index: 1;
     position: relative;
     overflow: hidden;
@@ -87,9 +88,9 @@ body {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(78, 205, 196, 0.1) 0%, rgba(78, 205, 196, 0) 70%);
+    background: radial-gradient(circle, rgba(78, 205, 196, 0.08) 0%, rgba(78, 205, 196, 0) 70%);
     z-index: -1;
-    animation: rotate 15s linear infinite;
+    animation: rotate 20s linear infinite;
 }
 
 @keyframes rotate {
@@ -103,10 +104,10 @@ body {
 
 .form-title {
     color: #4ECDC4;
-    font-size: 40px;
-    font-weight: bold;
-    margin-bottom: 35px;
-    text-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    letter-spacing: -0.5px;
 }
 
 .inputs-part {
@@ -129,7 +130,7 @@ body {
     width: 0;
     height: 2px;
     background: #4ECDC4;
-    transition: width 0.3s ease;
+    transition: width 0.4s ease;
 }
 
 .input-container:focus-within::after {
@@ -143,44 +144,41 @@ input {
     border: 1px solid rgba(78, 205, 196, 0.1);
     border-radius: 8px;
     color: #E0E0E0;
-    font-size: 17px;
-    height: 50px;
-    padding: 15px;
-    transition: all 0.3s ease-in-out;
+    font-size: 15px;
+    height: 48px;
+    padding: 0 15px;
+    transition: all 0.3s ease;
     width: 100%;
 }
   
 input::placeholder {
     color: #B0B0B0;
     font-size: 14px;
-    transition: color 0.3s ease-in-out;
+    transition: color 0.3s ease;
 }
   
 input:hover,
 input:focus {
     background: rgba(44, 44, 44, 0.9);
     border: 1px solid rgba(78, 205, 196, 0.3);
-    box-shadow: 0 0 10px rgba(78, 205, 196, 0.2);
     outline: none;
 }
   
 .submit-button {
-    background: linear-gradient(135deg, rgba(78, 205, 196, 0.8), rgba(58, 168, 161, 0.8));
+    background: linear-gradient(135deg, rgba(78, 205, 196, 0.9), rgba(58, 168, 161, 0.9));
     border: none;
     border-radius: 8px;
     color: #ffffff;
     cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    height: 50px;
-    margin-top: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    height: 48px;
+    margin-top: 20px;
     padding: 0;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
     width: 100%;
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
     z-index: 1;
 }
   
@@ -191,8 +189,8 @@ input:focus {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.7s ease-in-out;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.7s ease;
     z-index: -1;
 }
   
@@ -201,21 +199,22 @@ input:focus {
 }
   
 .submit-button:hover {
-    background: linear-gradient(135deg, rgba(78, 205, 196, 1), rgba(58, 168, 161, 1));
-    box-shadow: 0 0 20px rgba(78, 205, 196, 0.4);
+    box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+    transform: translateY(-2px);
 }
   
 .form-footer {
     color: #E0E0E0;
     font-size: 14px;
-    margin-top: 15px;
+    margin-top: 20px;
+    font-weight: 400;
 }
   
 .form-footer a {
     color: #4ECDC4;
     text-decoration: none;
     font-weight: 500;
-    transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease;
     position: relative;
 }
   
@@ -230,21 +229,57 @@ input:focus {
     transition: width 0.3s ease;
 }
   
-.form-footer a:hover {
-    color: #3aa8a1;
-}
-  
 .form-footer a:hover::after {
     width: 100%;
 }
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    .signup-form {
+        padding: 30px;
+        border-radius: 12px;
+    }
+    
+    .form-title {
+        font-size: 24px;
+        margin-bottom: 25px;
+    }
+    
+    input {
+        height: 46px;
+        font-size: 14px;
+    }
+    
+    .submit-button {
+        height: 46px;
+        font-size: 14px;
+    }
+}
+
 @media (max-width: 480px) {
     .signup-form {
-        width: 80%;
-        padding: 25px;
+        padding: 25px 20px;
     }
-
+    
+    .form-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+    
+    .inputs-part {
+        gap: 12px;
+    }
+    
     .form-footer {
-        font-size: 12px;
+        font-size: 13px;
+    }
+    
+    .back-button {
+        font-size: 13px;
+        padding: 8px 10px;
     }
 }
