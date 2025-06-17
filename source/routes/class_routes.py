@@ -71,7 +71,7 @@ def add_class():
         try:
             # Add and flush the new class to the database and create its directory
             db.session.add(new_class)
-            db.session.flush(new_class)
+            db.session.flush()
 
             dm_create_class(school_id=str(school_id), class_id=str(new_class.id))
            
