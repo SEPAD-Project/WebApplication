@@ -12,3 +12,4 @@ pandas>=1.5,<3.0
 redis>=3.0
 celery
 cryptography
+waitress
