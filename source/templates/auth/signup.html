@@ -22,29 +22,36 @@
 
     <!-- Signup Form -->
     <form method="POST" action="{{ url_for('auth_routes.signup') }}" class="signup-form">
-        <h1 class="form-title">Create Account</h1>
+        <h1 class="form-title">Signup</h1>
         <div class="inputs-part">
             <div class="input-container">
                 <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, space, and dash">
             </div>
-            <div class="input-container">
-                <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
+            
+            <div class="row-wrapper">
+                <div class="input-container">
+                    <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" pattern="[0-9]+" title="Should only contain numbers" required>
+                </div>
             </div>
-            <div class="input-container">
-                <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" pattern="[0-9]+" title="Should only contain numbers" required>
+            
+            <div class="row-wrapper">
+                <div class="input-container">
+                    <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+                </div>
+                <div class="input-container">
+                    <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+                </div>
             </div>
-            <div class="input-container">
-                <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
-            </div>
-            <div class="input-container">
-                <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
-            </div>
+            
             <div class="input-container">
                 <input type="email" id="email" name="email" placeholder="Email" required>
             </div>
         </div>
 
-        <button type="submit" class="submit-button">Register Now</button>
+        <button type="submit" class="submit-button">Signup</button>
         <p class="form-footer">
             Already have an account? 
             <a href="{{ url_for('auth_routes.login') }}">Login here</a>
