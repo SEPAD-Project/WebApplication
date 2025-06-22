@@ -1,5 +1,5 @@
 # Third-party Imports
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, send_from_directory
 
 # Initialize the Blueprint for home-related routes
 bp = Blueprint('main_routes', __name__)
@@ -48,6 +48,7 @@ def downloads():
     """
     return render_template('downloads.html')
 
+
 @bp.route('/about')
 def about():
     """
@@ -58,3 +59,11 @@ def about():
     """
     return render_template('about.html')
 
+
+@bp.route('/download_documentation/<document>')
+def download_documentation(document):
+    return send_from_directory(
+        r'C:\Users\Administrator\Documents\mostanadat',
+        document,
+        as_attachment=False
+    )

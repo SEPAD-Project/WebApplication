@@ -60,7 +60,7 @@
                         <span class="file-size"><i class="fas fa-database"></i> 2.4 MB</span>
                         <span class="file-format"><i class="fas fa-file-pdf"></i> PDF</span>
                     </div>
-                    <a href="../static/docs/SEPAD_Final_Report.pdf" class="download-button" download>
+                    <a href="{{ url_for('main_routes.download_documentation',document='gozareshkar.pdf') }}" class="download-button" download>
                         <i class="fas fa-download"></i> Download
                     </a>
                 </div>
@@ -83,7 +83,7 @@
                         <span class="file-size"><i class="fas fa-database"></i> 3.1 MB</span>
                         <span class="file-format"><i class="fas fa-file-word"></i> DOCX</span>
                     </div>
-                    <a href="../static/docs/SEPAD_Final_Report.docx" class="download-button" download>
+                    <a href="{{ url_for('main_routes.download_documentation',document='gozareshkar.docx') }}" class="download-button" download>
                         <i class="fas fa-download"></i> Download
                     </a>
                 </div>
@@ -106,7 +106,7 @@
                         <span class="file-size"><i class="fas fa-database"></i> 45.2 MB</span>
                         <span class="file-format"><i class="fas fa-file-video"></i> MP4</span>
                     </div>
-                    <a href="../static/videos/SEPAD_10min_Intro.mp4" class="download-button" download>
+                    <a href="{{ url_for('main_routes.download_documentation',document='10minute.mp4') }}" class="download-button" download>
                         <i class="fas fa-download"></i> Download
                     </a>
                 </div>
@@ -129,7 +129,7 @@
                         <span class="file-size"><i class="fas fa-database"></i> 15.7 MB</span>
                         <span class="file-format"><i class="fas fa-file-video"></i> MP4</span>
                     </div>
-                    <a href="../static/videos/SEPAD_3min_Pitch.mp4" class="download-button" download>
+                    <a href="{{ url_for('main_routes.download_documentation',document=('3minute.mp4')) }}" class="download-button" download>
                         <i class="fas fa-download"></i> Download
                     </a>
                 </div>
@@ -152,7 +152,7 @@
                         <span class="file-size"><i class="fas fa-database"></i> 8.5 MB</span>
                         <span class="file-format"><i class="fas fa-file-powerpoint"></i> PPTX</span>
                     </div>
-                    <a href="../static/presentations/SEPAD_Presentation.pptx" class="download-button" download>
+                    <a href="{{ url_for('main_routes.download_documentation',document='gozareshkar.docx') }}" class="download-button" download>
                         <i class="fas fa-download"></i> Download
                     </a>
                 </div>
@@ -175,7 +175,7 @@
                         <span class="file-size"><i class="fas fa-database"></i> 12.3 MB</span>
                         <span class="file-format"><i class="fas fa-file-archive"></i> ZIP</span>
                     </div>
-                    <a href="../static/source/SEPAD_Source_Code.zip" class="download-button" download>
+                    <a href="{{ url_for('main_routes.download_documentation',document='gozareshkar.docx') }}" class="download-button" download>
                         <i class="fas fa-download"></i> Download
                     </a>
                 </div>
