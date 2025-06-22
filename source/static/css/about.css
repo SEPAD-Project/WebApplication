@@ -1,3 +1,19 @@
+:root {
+    --primary-color: #4ECDC4;
+    --primary-dark: #3aa8a1;
+    --secondary-color: #FF6B6B;
+    --dark-bg: #121212;
+    --dark-gray: #1E1E1E;
+    --medium-gray: #2C2C2C;
+    --light-gray: #E0E0E0;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s ease-in-out;
+    --border-radius: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-sm: 8px;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -5,8 +21,8 @@
 }
 
 body {
-    background: linear-gradient(135deg, #121212, #1E1E1E);
-    color: #E0E0E0;
+    background: linear-gradient(135deg, var(--dark-bg), var(--dark-gray));
+    color: var(--light-gray);
     font-family: 'Inter', sans-serif;
     min-height: 100vh;
     padding: 20px;
@@ -52,29 +68,182 @@ body {
     border: 1px solid rgba(255, 107, 107, 0.3);
 }
 
-.about-container {
+.main-container {
     max-width: 1000px;
     margin: 60px auto 40px;
     position: relative;
     z-index: 1;
 }
 
-.about-header {
-    text-align: center;
-    margin-bottom: 40px;
+/* About SEPAD Section */
+.about-sepad {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--border-radius-lg);
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(78, 205, 196, 0.15);
+    box-shadow: var(--shadow);
 }
 
-.about-header h1 {
-    color: #4ECDC4;
-    font-size: 2.5rem;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.subtitle {
-    color: #B0B0B0;
-    font-size: 1.1rem;
+.about-sepad h1 {
+    color: var(--primary-color);
+    font-size: 2.2rem;
     margin-bottom: 20px;
+    text-align: center;
+}
+
+.about-sepad p {
+    color: var(--light-gray);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+/* Downloads Section */
+.downloads-section {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--border-radius-lg);
+    padding: 30px;
+    margin-bottom: 30px;
+    border: 1px solid rgba(78, 205, 196, 0.15);
+    box-shadow: var(--shadow);
+}
+
+.downloads-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.download-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.download-card {
+    background: rgba(44, 44, 44, 0.5);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    transition: var(--transition);
+    border: 1px solid rgba(78, 205, 196, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.download-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+}
+
+.download-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.download-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.pdf-icon { background: #FF6B6B; }
+.word-icon { background: #2B579A; }
+.video-icon { background: #FFBE0B; }
+.ppt-icon { background: #D24726; }
+.zip-icon { background: var(--primary-color); }
+
+.download-info {
+    flex: 1;
+}
+
+.download-info h3 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+
+.download-info p {
+    color: var(--light-gray);
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+.download-description {
+    color: var(--light-gray);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    flex: 1;
+}
+
+.download-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--light-gray);
+    font-size: 0.85rem;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.download-button {
+    display: inline-block;
+    background: var(--primary-color);
+    color: var(--dark-bg);
+    padding: 0.7rem;
+    border-radius: var(--border-radius-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+    margin-top: 15px;
+    text-align: center;
+    width: 100%;
+}
+
+.download-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+.file-size, .file-format {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Team Section */
+.team-section {
+    background: rgba(30, 30, 30, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--border-radius-lg);
+    padding: 30px;
+    border: 1px solid rgba(78, 205, 196, 0.15);
+    box-shadow: var(--shadow);
+}
+
+.team-section h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
 .contribution-info {
@@ -84,7 +253,7 @@ body {
     border-radius: 12px;
     padding: 15px;
     max-width: 500px;
-    margin: 0 auto;
+    margin: 0 auto 30px;
     border: 1px solid rgba(78, 205, 196, 0.2);
 }
 
@@ -92,6 +261,7 @@ body {
     color: #E0E0E0;
     font-size: 0.9rem;
     margin-bottom: 8px;
+    text-align: center;
 }
 
 .contribution-bar {
@@ -109,10 +279,12 @@ body {
 
 .bar-fill.abolfazl {
     background: linear-gradient(90deg, #4ECDC4, #3aa8a1);
+    width: 50%;
 }
 
 .bar-fill.parsa {
     background: linear-gradient(90deg, #FF6B6B, #FF8E8E);
+    width: 50%;
 }
 
 .contribution-names {
@@ -127,7 +299,6 @@ body {
     flex-wrap: wrap;
     gap: 30px;
     justify-content: center;
-    margin-bottom: 40px;
 }
 
 .member-card {
@@ -186,14 +357,14 @@ body {
     flex-direction: column;
 }
 
-.member-info h2 {
+.member-info h3 {
     color: #4ECDC4;
     font-size: 1.5rem;
     margin-bottom: 10px;
     text-align: center;
 }
 
-.parsa-card h2 {
+.parsa-card h3 {
     color: #FF6B6B;
 }
 
@@ -233,17 +404,16 @@ body {
     background: rgba(44, 44, 44, 0.5);
     border-radius: 10px;
     padding: 15px;
-    min-height: 220px;
 }
 
-.contributions h3 {
+.contributions h4 {
     color: #4ECDC4;
     font-size: 1.1rem;
     margin-bottom: 10px;
     text-align: center;
 }
 
-.parsa-card .contributions h3 {
+.parsa-card .contributions h4 {
     color: #FF6B6B;
 }
 
@@ -273,38 +443,19 @@ body {
     left: 0;
 }
 
-.project-info {
-    background: rgba(30, 30, 30, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 16px;
-    border: 1px solid rgba(78, 205, 196, 0.15);
-    padding: 25px;
-    margin-top: 30px;
-}
-
-.project-info h2 {
-    color: #4ECDC4;
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.project-info p {
-    color: #E0E0E0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
 @media (max-width: 768px) {
-    .about-container {
+    .main-container {
         padding: 0 15px;
     }
     
-    .about-header h1 {
-        font-size: 2rem;
+    .about-sepad h1,
+    .downloads-section h2,
+    .team-section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .download-grid {
+        grid-template-columns: 1fr;
     }
     
     .member-card {
@@ -316,31 +467,27 @@ body {
         width: 100px;
         height: 100px;
     }
-    
-    .contributions {
-        min-height: auto;
-    }
 }
 
 @media (max-width: 480px) {
-    .about-header h1 {
-        font-size: 1.8rem;
+    .about-sepad h1,
+    .downloads-section h2,
+    .team-section h2 {
+        font-size: 1.6rem;
     }
     
-    .subtitle {
-        font-size: 1rem;
+    .about-sepad,
+    .downloads-section,
+    .team-section {
+        padding: 20px;
     }
     
     .member-card {
         padding: 15px;
     }
     
-    .member-info h2 {
+    .member-info h3 {
         font-size: 1.3rem;
-    }
-    
-    .contributions h3 {
-        font-size: 1rem;
     }
     
     .back-button {
