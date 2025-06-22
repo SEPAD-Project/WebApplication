@@ -12,17 +12,13 @@
 <body>
     <div id="particles-js"></div>
     
-
-    <div class="menu-toggle">
-        <span></span>
-        <span></span>
-        <span></span>
+    <!-- Hamburger Menu -->
+    <div class="hamburger" id="hamburger">
+        <i class="fas fa-bars" id="hamburger-icon"></i>
     </div>
     
-    <div class="overlay"></div>
-    
-    <div class="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item">
+    <div class="sidebar" id="sidebar">
+        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item"> 
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
@@ -87,36 +83,31 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            const menuToggle = document.querySelector('.menu-toggle');
-            const sidebar = document.querySelector('.sidebar');
-            const overlay = document.querySelector('.overlay');
+            // Hamburger menu functionality
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('hamburger-icon');
             
-            menuToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                overlay.classList.toggle('active');
-                document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-            });
-            
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-            
-            document.querySelectorAll('.sidebar-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    if (window.innerWidth <= 640) {
-                        sidebar.classList.remove('active');
-                        overlay.classList.remove('active');
-                        document.body.style.overflow = '';
+            if (hamburger && sidebar) {
+                hamburger.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                        sidebar.classList.remove('open');
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
                     }
                 });
-            });
+            }
             
+            // Initialize particles.js
             particlesJS('particles-js', {
                 "particles": {
-                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 }},
                     "color": { "value": "#4ECDC4" },
                     "shape": { "type": "circle" },
                     "opacity": { "value": 0.5, "random": true },
