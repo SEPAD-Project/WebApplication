@@ -31,6 +31,11 @@ cd WebApplication
       .venv\Scripts\activate.bat
       ```
 
+      1. نیازمندی ها را نصب کنید:
+      ```bash
+      pip install -r requirements.txt
+      ```
+
 ## نیازمندی های Flask limiter
 برای اجرای پروژه شما نیاز دارید برنامه redis را نصب کنید:
    1. فایل msi را از این ادرس دانلود کنید [Microsoft's Redis releases](https://github.com/microsoftarchive/redis/releases)
