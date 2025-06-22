@@ -30,7 +30,7 @@ cd WebApplication
       .venv\Scripts\activate.bat
       ```
 
-   3. Install Dependencies:
+   3. Install the dependencies:
       ```bash
       pip install -r requirements.txt
       ```
