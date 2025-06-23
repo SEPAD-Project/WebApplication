@@ -39,7 +39,6 @@ body {
   scroll-behavior: smooth;
 }
 
-/* Navigation Bar */
 .navbar {
   background: rgba(30, 30, 30, 0.95);
   backdrop-filter: blur(10px);
@@ -193,8 +192,6 @@ body.menu-open::after {
   background: rgba(78, 205, 196, 0.1);
 }
 
-
-/* Hamburger Menu Styles - Rewritten */
 .hamburger {
   display: none;
   padding: 0;
@@ -250,7 +247,6 @@ body.menu-open::after {
   transition: bottom 0.15s ease 0.15s, transform 0.15s ease;
 }
 
-/* Active State */
 .hamburger.is-active .hamburger-inner {
   transform: translateY(0) rotate(45deg);
   transition-delay: 0.15s;
@@ -364,7 +360,6 @@ body.menu-open::after {
   
 }
 
-/* Hero Section */
 .hero {
   min-height: 100vh;
   display: flex;
@@ -492,7 +487,6 @@ body.menu-open::after {
   }
 }
 
-/* Trusted By Section */
 .trusted-by {
   background: var(--dark-gray);
   padding: 2rem 1rem;
@@ -537,7 +531,6 @@ body.menu-open::after {
   font-size: 1.5rem;
 }
 
-/* Main Content */
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -577,7 +570,6 @@ body.menu-open::after {
   margin: 0 auto;
 }
 
-/* Intro Section */
 .intro-section {
   margin-bottom: 5rem;
 }
@@ -655,7 +647,6 @@ body.menu-open::after {
   align-items: center;
 }
 
-/* Features Section */
 .features-section {
   margin: 6rem 0;
 }
@@ -760,7 +751,6 @@ body.menu-open::after {
   gap: 0.8rem;
 }
 
-/* Testimonials Section */
 .testimonials-section {
   margin: 6rem 0;
 }
@@ -855,7 +845,6 @@ body.menu-open::after {
   margin-top: 3rem;
 }
 
-/* Pricing Section */
 .pricing-section {
   margin: 6rem 0;
 }
@@ -994,7 +983,6 @@ body.menu-open::after {
   text-decoration: underline;
 }
 
-/* CTA Section */
 .cta-section {
   background: linear-gradient(135deg, var(--dark-gray), var(--medium-gray));
   border-radius: var(--border-radius-lg);
@@ -1043,7 +1031,6 @@ body.menu-open::after {
   justify-content: center;
 }
 
-/* Buttons */
 .cta-button {
   display: inline-block;
   padding: 0.9rem 2rem;
@@ -1111,7 +1098,6 @@ body.menu-open::after {
   gap: 0.8rem;
 }
 
-/* Back to Top */
 .back-to-top {
   position: fixed;
   bottom: 30px;
@@ -1143,7 +1129,6 @@ body.menu-open::after {
   transform: translateY(-3px);
 }
 
-/* Footer */
 .footer {
   background: var(--dark-gray);
   padding: 4rem 2rem 2rem;
@@ -1258,7 +1243,6 @@ body.menu-open::after {
   gap: 0.5rem;
 }
 
-/* Responsive Styles */
 @media (max-width: 1024px) {
   .hero-title {
     font-size: 3rem;
@@ -1343,8 +1327,6 @@ body.menu-open::after {
     scroll-padding-top: 6rem;
   }
 }
-
-/* updates */
 
 .nav-container {
   max-width: 1400px !important;

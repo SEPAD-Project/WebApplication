@@ -213,7 +213,6 @@ body {
     transform: translateY(-2px);
 }
 
-/* Responsive Design */
 @media (max-width: 480px) {
     .notification-container {
         padding: 25px 20px;

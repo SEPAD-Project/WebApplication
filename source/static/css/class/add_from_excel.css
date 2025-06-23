@@ -203,7 +203,6 @@ input:focus {
     width: 100%;
 }
 
-/* Responsive Styles */
 @media (max-width: 480px) {
     .glass-card {
         padding: 25px;

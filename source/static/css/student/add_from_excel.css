@@ -218,7 +218,6 @@ input:focus,
     color: var(--dark-bg);
 }
 
-/* Responsive */
 @media (max-width: 480px) {
     .glass-card {
         width: fit-content;

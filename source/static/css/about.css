@@ -75,7 +75,6 @@ body {
     z-index: 1;
 }
 
-/* About SEPAD Section */
 .about-sepad {
     background: rgba(30, 30, 30, 0.7);
     backdrop-filter: blur(12px);
@@ -102,7 +101,6 @@ body {
     text-align: justify;
 }
 
-/* Downloads Section */
 .downloads-section {
     background: rgba(30, 30, 30, 0.7);
     backdrop-filter: blur(12px);
@@ -228,7 +226,6 @@ body {
     gap: 5px;
 }
 
-/* Team Section */
 .team-section {
     background: rgba(30, 30, 30, 0.7);
     backdrop-filter: blur(12px);

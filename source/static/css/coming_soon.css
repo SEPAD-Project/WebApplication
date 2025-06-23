@@ -115,7 +115,6 @@ body {
     transform: translateY(-3px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .glass-container {
         padding: 40px 25px;

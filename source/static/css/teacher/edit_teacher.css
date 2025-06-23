@@ -173,7 +173,6 @@ body::after {
     color: var(--dark-bg);
 }
 
-/* Scrollbar Styling */
 .multi-select-dropdown::-webkit-scrollbar {
     width: 6px;
 }

@@ -78,7 +78,6 @@ body {
     width: 100%;
 }
 
-/* Download Grid Layout */
 .download-grid {
     width: 90%;
     max-width: 1000px;
@@ -97,7 +96,6 @@ body {
     height: 100%;
 }
 
-/* Download Cards */
 .download-card {
     width: 100%;
     padding: 30px;
@@ -175,7 +173,6 @@ body {
     font-size: 0.95rem;
 }
 
-/* Version Selector */
 .version-selector {
     display: flex;
     justify-content: center;
@@ -211,7 +208,6 @@ body {
     background: rgba(78, 205, 196, 0.2);
 }
 
-/* Student section - static version selector */
 .student .version-selector .version-btn {
     cursor: default;
     background: rgba(78, 205, 196, 0.3);
@@ -222,7 +218,6 @@ body {
     background: rgba(78, 205, 196, 0.3);
 }
 
-/* Download Buttons */
 .download-btn {
     display: inline-flex;
     align-items: center;
@@ -274,7 +269,6 @@ body {
     left: 100%;
 }
 
-/* Responsive Design */
 @media (max-width: 900px) {
     .download-grid {
         grid-template-columns: 1fr;

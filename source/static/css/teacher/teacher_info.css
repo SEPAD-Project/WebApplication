@@ -121,7 +121,6 @@ body::after {
   text-align: left;
 }
 
-/* Sidebar styles (if needed) */
 .sidebar {
   background: var(--dark-gray);
   border-radius: 8px;
@@ -164,7 +163,6 @@ body::after {
   font-weight: 500;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .content-area {
       padding: 20px;

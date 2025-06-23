@@ -33,7 +33,6 @@ body {
   z-index: -1;
 }
 
-/* Hamburger Menu Styles */
 .hamburger {
   position: fixed;
   top: 20px;
@@ -58,7 +57,6 @@ body {
   font-size: 1.5rem;
 }
 
-/* Sidebar Styles */
 .sidebar {
   background: var(--dark-gray);
   border-radius: 0 8px 8px 0;
@@ -140,7 +138,6 @@ body {
   transform: scale(1.1);
 }
 
-/* Content Area */
 .content-area {
   margin-left: 70px;
   padding: 40px;
@@ -153,7 +150,6 @@ body {
   width: calc(100% - 220px);
 }
 
-/* Glass Card Styles */
 .glass-card {
   background: rgba(30, 30, 30, 0.5);
   backdrop-filter: blur(12px);
@@ -216,7 +212,6 @@ body {
   transform: translateY(-2px);
 }
 
-/* Search Section */
 .search-form {
   display: flex;
   width: 100%;
@@ -256,7 +251,6 @@ body {
   color: var(--dark-bg);
 }
 
-/* Class List */
 .class-list-container {
   display: flex;
   flex-direction: column;
@@ -338,23 +332,22 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .hamburger {
       display: block;
   }
-  
+
   .sidebar {
       left: -250px;
       width: 250px;
       padding: 60px 20px 20px;
       align-items: flex-start;
   }
-  
+
   .sidebar.open {
       left: 0;
   }
-  
+
   .sidebar .sidebar-text {
       opacity: 1;
       transform: translateX(0);
@@ -396,7 +389,6 @@ body {
       text-align: center;
   }
   
-  /* تغییرات برای دکمه‌ها */
   .button-group {
       flex-direction: row !important;
       justify-content: center !important;
@@ -411,7 +403,6 @@ body {
       width: auto;
   }
   
-  /* تغییرات برای بخش جستجو */
   .search-form {
       flex-direction: row !important;
       gap: 5px;

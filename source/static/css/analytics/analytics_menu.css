@@ -33,7 +33,6 @@ body {
     z-index: -1;
 }
 
-/* Hamburger Menu Styles */
 .hamburger {
     position: fixed;
     top: 20px;
@@ -58,7 +57,6 @@ body {
     font-size: 1.5rem;
 }
 
-/* Sidebar Styles */
 .sidebar {
     background: var(--dark-gray);
     border-radius: 0 8px 8px 0;
@@ -140,7 +138,6 @@ body {
     transform: scale(1.1);
 }
 
-/* Content Area */
 .content-area {
     margin-left: 70px;
     padding: 40px;
@@ -153,7 +150,6 @@ body {
     width: calc(100% - 220px);
 }
 
-/* Glass Card Styles */
 .glass-card {
     background: rgba(30, 30, 30, 0.5);
     backdrop-filter: blur(12px);
@@ -190,7 +186,6 @@ body {
     text-shadow: 2px 2px 8px rgba(78, 205, 196, 0.5);
 }
 
-/* Analytics Container */
 .analytics-container {
     display: flex;
     justify-content: center;
@@ -242,7 +237,6 @@ body {
     box-shadow: 0 8px 16px rgba(78, 205, 196, 0.4);
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
     .hamburger {
         display: block;
@@ -277,9 +271,7 @@ body {
     }
 }
 
-/* Mobile-specific optimizations */
 @media (max-width: 480px) {
-    /* Header adjustments */
     .header {
         flex-direction: column;
         align-items: center !important;
@@ -290,8 +282,7 @@ body {
         font-size: 1.8rem;
         width: 100%;
     }
-    
-    /* Button group adjustments */
+
     .button-group {
         gap: 15px;
     }
@@ -301,12 +292,10 @@ body {
         font-size: 0.9rem;
     }
     
-    /* Card padding */
     .glass-card {
         padding: 20px !important;
     }
     
-    /* Hamburger icon size */
     .hamburger i {
         font-size: 1.3rem;
     }

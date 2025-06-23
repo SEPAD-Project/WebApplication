@@ -133,9 +133,6 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-
-
-/* Responsive Design */
 @media (max-width: 768px) {
     .glass-container {
         padding: 40px 25px;

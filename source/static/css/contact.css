@@ -266,7 +266,6 @@ body {
     transform: translateY(-3px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     body {
         padding: 0;
