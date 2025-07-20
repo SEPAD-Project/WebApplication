@@ -16,4 +16,5 @@ urlpatterns = [
     path('unknown_school_info/', views.unknown_school_info, name='unknown_school_info'),
     path('panel/', views.panel_entry, name='panel_entry'),
     path('panel/school_info', views.school_info, name='school_info'),
+    path('panel/classes', views.classes, name='classes'),
 ]
