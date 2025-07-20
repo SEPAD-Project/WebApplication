@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duplicate Information - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth/duplicated_school_info.css') }}">
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/duplicated_school_info.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -34,16 +35,16 @@
         </div>
         
         <div class="action-buttons">
-            <a href="{{ url_for('auth_routes.signup') }}" class="secondary-button">
+            <a href="{% url 'signup' %}" class="secondary-button">
                 <i class="fas fa-edit"></i> Try Again
             </a>
-            <a href="{{ url_for('auth_routes.login') }}" class="primary-button">
+            <a href="{% url 'login' %}" class="primary-button">
                 <i class="fas fa-sign-in-alt"></i> Login Instead
             </a>
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/particles.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/particles_config.js') }}"></script>
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/particles_config.js' %}"></script>
 </body>
 </html>
