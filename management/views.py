@@ -1,11 +1,14 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.contrib import messages
 from django.db.models import Q
 
-from .models import School
+from .models import School, Class
+
+generate_class_code = lambda school_code, class_name, key="crax6ix" : f"{hex(int(school_code))[2:]}#{'-'.join(hex(ord(char) ^ ord(key[i % len(key)]))[2:] for i, char in enumerate(class_name))}"
+
+reverse_class_code = lambda code, key="crax6ix": (str(int(code.split('#')[0], 16)), ''.join(chr(int(h, 16) ^ ord(key[i % len(key)])) for i, h in enumerate(code.split('#')[1].split('-'))))
 
 def home(request):
     return render(request, 'home.html')
@@ -99,6 +102,22 @@ def classes(request):
     return render(request, 'classes.html', {'classes':classes})
 
 @login_required
-def add_class(request):                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+def add_class(request):
+    if request.method == 'POST':
+        class_name = request.POST.get('class_name')
+
+        current_user = request.user
+        school_code = current_user.school_code
+
+        class_code=generate_class_code(school_code, class_name)
+        if Class.objects.filter(class_code=class_code):
+            return redirect('add_class')
+        
+        Class.objects.create(class_name=class_name, 
+                            class_code=class_code,
+                            school=current_user)
+        
+        return redirect('classes')
+
     return render(request, 'add_class.html')
 
