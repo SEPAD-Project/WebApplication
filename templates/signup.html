@@ -23,6 +23,7 @@
 
     <!-- Signup Form -->
     <form method="POST" action="{% url 'signup' %}" class="signup-form">
+        {% csrf_token %}
         <h1 class="form-title">Signup</h1>
         <div class="inputs-part">
             <div class="input-container">

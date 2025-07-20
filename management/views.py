@@ -1,6 +1,5 @@
-from django.shortcuts import render
-
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
+from .models import School
 
 def home(request):
     return render(request, 'home.html')
@@ -27,4 +26,24 @@ def login(request):
     return render(request, 'login.html')
 
 def signup(request):
+    if request.method == 'POST':
+        school_name = request.POST.get('school_name')
+        school_code = request.POST.get('school_code')
+        manager_personal_code = request.POST.get('manager_personal_code')
+        province = request.POST.get('province')
+        city = request.POST.get('city')
+        email = request.POST.get('email')
+
+        School.objects.create(
+            school_name=school_name,
+            school_code=school_code,
+            manager_personal_code=manager_personal_code,
+            province=province,
+            city=city,
+            email=email
+        )
+
+        print('pk')
+        return HttpResponse("Form submitted successfully.")
+    
     return render(request, 'signup.html')
