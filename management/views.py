@@ -155,6 +155,16 @@ def add_classes_from_excel(request):
 
     return render(request, 'add_classes_from_excel.html')
 
+@login_required
+def class_info(request, class_name):
+    current_user  = request.user
+    data = Class.objects.filter(Q(class_name=class_name) & Q(school=current_user.id)).first()
+
+    if data is None:
+        return redirect(unknown_class_info)
+
+    return render(request, 'class_info.html', {'data':data, 'teachers':data.teachers.all(), 'students':data.students.all()})
+
 def duplicated_class_info(request):
     return render(request, 'duplicated_class_info.html')
 
