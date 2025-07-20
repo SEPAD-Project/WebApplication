@@ -19,4 +19,9 @@ urlpatterns = [
     path('panel/classes', views.classes, name='classes'),
     path('panel/classes/add_class', views.add_class, name='add_class'),
     path('panel/classes/add_classes_from_excel', views.add_classes_from_excel, name='add_classes_from_excel'),
+    path('panel/classes/class_file_permission_error', views.class_file_permission_error, name='class_file_permission_error'),
+    path('panel/classes/duplicated_class_info', views.duplicated_class_info, name='duplicated_class_info'),
+    path('panel/classes/error_in_class_excel', views.error_in_class_excel, name='error_in_class_excel'),
+    path('panel/classes/unknown_class_info', views.unknown_class_info, name='unknown_class_info'),
+    path('panel/classes/error_in_schedule', views.error_in_schedule, name='error_in_schedule'),
 ]

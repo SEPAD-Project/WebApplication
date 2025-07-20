@@ -157,3 +157,17 @@ def add_classes_from_excel(request):
 
     return render(request, 'add_classes_from_excel.html')
 
+def duplicated_class_info(request):
+    return render(request, 'duplicated_class_info.html')
+
+def error_in_class_excel(request):
+    return render(request, 'error_in_class_excel.html')
+
+def class_file_permission_error(request):
+    return render(request, 'class_file_permission_error.html')
+
+def unknown_class_info(request):
+    return render(request, 'unknown_class_info.html')
+
+def error_in_schedule(request):
+    return render(request, 'error_in_schedule.html')

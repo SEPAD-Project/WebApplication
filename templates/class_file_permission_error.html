@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error In Excel - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/class/error_in_excel.css') }}">
+    <title>File Permission Error - SEPAD</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/class_file_permission_error.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -16,24 +17,19 @@
     <div class="content-area">
         <div class="glass-card notification-container">
             <div class="notification-icon">
-                <i class="fas fa-file-excel"></i>
+                <i class="fas fa-file-shield"></i>
             </div>
-            <h1 class="notification-title">EXCEL IMPORT ERROR</h1>
-            <p class="notification-text">
-                We encountered issues with your Excel file data
-            </p>
-            
-            <div class="problems-area">
-                {% for text in texts %}
-                <div class="error-item">
-                    <i class="fas fa-exclamation-circle"></i>
-                    <span>{{ text }}</span>
-                </div>
-                {% endfor %}
+            <h1 class="notification-title">FILE ACCESS DENIED</h1>
+            <div class="notification-content">
+                <p class="notification-text">
+                    We couldn't access your file due to permission restrictions.
+                </p>
+                <p class="notification-text">
+                    Please check file permissions and try again.
+                </p>
             </div>
-            
-            <a href="{{ url_for('class_routes.add_from_excel') }}" class="notification-action">
-                <i class="fas fa-redo"></i> Try Again
+            <a href="{% url 'add_classes_from_excel' %}" class="notification-action">
+                <i class="fas fa-redo"></i> Retry
             </a>
         </div>
     </div>
