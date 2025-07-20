@@ -3,7 +3,7 @@ import openpyxl
 from flask_login import current_user
 
 # Internal Imports
-from source.utils.generate_class_code import generate_class_code
+from utils.generate_class_code import generate_class_code
 
 import datetime
 
@@ -115,7 +115,7 @@ def add_students(
     return students
 
 
-def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
+def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes, school_code):
     """
     Parse and validate class names from Excel input.
 
@@ -124,6 +124,7 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
         sheet_name (str): Sheet to read.
         name_letter (str): Column letter for class names.
         available_classes (list): Existing class names to avoid duplication.
+        school_code (str): School code.
 
     Returns:
         list[dict] or list[list] or str: Parsed class list, or errors, or a string error code.
@@ -158,7 +159,6 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes):
         return problems
 
     # Build valid class data
-    school_code = current_user.school_code
     classes = []
 
     for row in sheet.iter_rows(values_only=True, min_row=2):
