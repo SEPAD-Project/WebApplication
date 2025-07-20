@@ -110,7 +110,7 @@ def add_class(request):
 
         class_code=generate_class_code(school_code, class_name)
         if Class.objects.filter(class_code=class_code):
-            return redirect('add_class')
+            return redirect('duplicated_class_info')
         
         Class.objects.create(class_name=class_name, 
                             class_code=class_code,
@@ -136,15 +136,13 @@ def add_classes_from_excel(request):
         result = add_classes(filename, sheet_name, name_letter, [cls.class_name for cls in classes], school_user.school_code)
         
         if result == 'sheet_not_found':
-            return redirect('classes')
+            return redirect('error_in_class_excel')
 
         if result == 'bad_column_letter':
-            return redirect('classes')
+            return redirect('error_in_class_excel')
 
         if isinstance(result[0], list):
-            return redirect('classes')
-        
-        print(result)
+            return redirect('error_in_class_excel')
         
         for cls in result:
             Class.objects.create(
