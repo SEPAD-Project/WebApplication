@@ -9,6 +9,6 @@ urlpatterns = [
     path('comings_soon/', views.comings_soon, name='comings_soon'),
     path('page_404/', views.page_404, name='page_404'),
     path('page_429/', views.page_429, name='page_429'),
-    path('login/', views.login, name='login'),
+    path('login/', views.login_view, name='login'),
     path('signup/', views.signup, name='signup'),
 ]

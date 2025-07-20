@@ -22,13 +22,14 @@
 
     <!-- Login Form -->
     <form method="POST" action="{% url 'login' %}" class="login-form">
+        {% csrf_token %}
         <h1 class="form-title">Login</h1>
         <div class="inputs-part">
             <div class="input-container">
-                <input type="text" name="username" placeholder="Username" pattern="[0-9]+" title="Should only contain numbers" required>
+                <input type="text" name="school_code" placeholder="Username" pattern="[0-9]+" title="Should only contain numbers" required>
             </div>
             <div class="input-container">
-                <input type="password" name="password" placeholder="Password" pattern="[0-9]+" title="Should only contain numbers" required>
+                <input type="password" name="manager_personal_code" placeholder="Password" pattern="[0-9]+" title="Should only contain numbers" required>
             </div>
         </div>
 

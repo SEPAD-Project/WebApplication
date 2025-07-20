@@ -26,7 +26,22 @@ def page_404(request):
 def page_429(request):
     return render(request, '429.html')
 
-def login(request):
+def login_view(request):
+    if request.method == 'POST':
+        print('yes')
+        school_code = request.POST.get('school_code')
+        manager_personal_code = request.POST.get('manager_personal_code')
+
+        print(school_code, manager_personal_code)
+
+        user = authenticate(request, username=school_code, password=manager_personal_code)
+
+        if user is not None:
+            login(request, user)
+            print('ok')
+        else:
+            print('no')
+            
     return render(request, 'login.html')
 
 def signup(request):
