@@ -2,6 +2,7 @@ from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.db.models import Q
 
 from .models import School
 
@@ -28,21 +29,16 @@ def page_429(request):
 
 def login_view(request):
     if request.method == 'POST':
-        print('yes')
         school_code = request.POST.get('school_code')
         manager_personal_code = request.POST.get('manager_personal_code')
 
-        print(school_code, manager_personal_code)
-
         user = authenticate(request, username=school_code, password=manager_personal_code)
-        print(user)
 
         if user is not None:
             login(request, user)
-            print('ok')
-            messages.success(request, "ثبت‌نام با موفقیت انجام شد.")
+            return redirect('notify_username_password')
         else:
-            print('no')
+            return redirect('unknown_school_info')
             
     return render(request, 'login.html')
 
@@ -55,6 +51,9 @@ def signup(request):
         city = request.POST.get('city')
         email = request.POST.get('email')
 
+        if School.objects.filter(Q(school_code=school_code) | Q(manager_personal_code=manager_personal_code)):
+            return redirect('duplicated_school_info')
+
         School.objects.create_user(
             school_name=school_name,
             school_code=school_code,
@@ -64,8 +63,7 @@ def signup(request):
             email=email
         )
 
-        print('pk')
-        return HttpResponse("Form submitted successfully.")
+        return redirect('notify_username_password')
     
     return render(request, 'signup.html')
 
