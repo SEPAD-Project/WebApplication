@@ -90,6 +90,7 @@ DATABASES = {
     }
 }
 
+AUTH_USER_MODEL = 'management.School'
 
 
 # Password validation
