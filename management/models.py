@@ -22,6 +22,9 @@ class SchoolManager(BaseUserManager):
 # ---------------------- School (Custom User) ----------------------
 
 class School(AbstractBaseUser):
+    class Meta:
+        db_table = 'schools'
+
     school_code = models.CharField(max_length=100, unique=True)
     manager_personal_code = models.CharField(max_length=100, unique=True)
     school_name = models.CharField(max_length=100)
@@ -40,6 +43,9 @@ class School(AbstractBaseUser):
 # ---------------------- Class ----------------------
 
 class Class(models.Model):
+    class Meta:
+        db_table = 'classes'
+
     class_name = models.CharField(max_length=100)
     class_code = models.CharField(max_length=100, unique=True)
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='classes')
@@ -50,6 +56,9 @@ class Class(models.Model):
 # ---------------------- Teacher ----------------------
 
 class Teacher(models.Model):
+    class Meta:
+        db_table = 'teachers'
+
     teacher_name = models.CharField(max_length=100)
     teacher_family = models.CharField(max_length=100)
     teacher_national_code = models.CharField(max_length=100, unique=True)
@@ -65,6 +74,9 @@ class Teacher(models.Model):
 # ---------------------- Student ----------------------
 
 class Student(models.Model):
+    class Meta:
+        db_table = 'students'
+
     student_name = models.CharField(max_length=100)
     student_family = models.CharField(max_length=100)
     student_national_code = models.CharField(max_length=100, unique=True)
