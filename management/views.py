@@ -22,3 +22,9 @@ def page_404(request):
 
 def page_429(request):
     return render(request, '429.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def signup(request):
+    return render(request, 'signup.html')
