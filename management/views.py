@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Q
@@ -75,3 +76,11 @@ def notify_username_password(request):
 
 def unknown_school_info(request):
     return render(request, 'unknown_school_info.html')
+
+@login_required
+def panel_entry(request):
+    return render(request, 'panel_entry.html')
+
+@login_required
+def school_info(request):
+    return render(request, 'school_info.html')
