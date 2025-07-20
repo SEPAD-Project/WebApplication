@@ -10,5 +10,5 @@ urlpatterns = [
     path('page_404/', views.page_404, name='page_404'),
     path('page_429/', views.page_429, name='page_429'),
     path('login/', views.login, name='login'),
-    path('singup/', views.signup, name='signup'),
+    path('signup/', views.signup, name='signup'),
 ]
