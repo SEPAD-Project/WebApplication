@@ -35,10 +35,12 @@ def login_view(request):
         print(school_code, manager_personal_code)
 
         user = authenticate(request, username=school_code, password=manager_personal_code)
+        print(user)
 
         if user is not None:
             login(request, user)
             print('ok')
+            messages.success(request, "ثبت‌نام با موفقیت انجام شد.")
         else:
             print('no')
             
@@ -66,3 +68,12 @@ def signup(request):
         return HttpResponse("Form submitted successfully.")
     
     return render(request, 'signup.html')
+
+def duplicated_school_info(request):
+    return render(request, 'duplicated_school_info.html')
+
+def notify_username_password(request):
+    return render(request, 'notify_username_password.html')
+
+def unknown_school_info(request):
+    return render(request, 'unknown_school_info.html')
