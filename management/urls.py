@@ -18,4 +18,5 @@ urlpatterns = [
     path('panel/school_info', views.school_info, name='school_info'),
     path('panel/classes', views.classes, name='classes'),
     path('panel/classes/add_class', views.add_class, name='add_class'),
+    path('panel/classes/add_classes_from_excel', views.add_classes_from_excel, name='add_classes_from_excel'),
 ]

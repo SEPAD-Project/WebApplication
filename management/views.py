@@ -3,12 +3,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.core.files.storage import FileSystemStorage
 
 from .models import School, Class
-
-generate_class_code = lambda school_code, class_name, key="crax6ix" : f"{hex(int(school_code))[2:]}#{'-'.join(hex(ord(char) ^ ord(key[i % len(key)]))[2:] for i, char in enumerate(class_name))}"
-
-reverse_class_code = lambda code, key="crax6ix": (str(int(code.split('#')[0], 16)), ''.join(chr(int(h, 16) ^ ord(key[i % len(key)])) for i, h in enumerate(code.split('#')[1].split('-'))))
+from utils.excel_reading import add_classes
+from utils.generate_class_code import generate_class_code
 
 def home(request):
     return render(request, 'home.html')
@@ -120,4 +119,41 @@ def add_class(request):
         return redirect('classes')
 
     return render(request, 'add_class.html')
+
+@login_required
+def add_classes_from_excel(request):
+    if request.method == 'POST':
+        uploaded_file = request.FILES['file_input']
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+
+        sheet_name = request.POST.get('sheet')
+        name_letter = request.POST.get('name')
+
+        classes = Class.objects.all()
+        school_user = request.user
+
+        result = add_classes(filename, sheet_name, name_letter, [cls.class_name for cls in classes], school_user.school_code)
+        
+        if result == 'sheet_not_found':
+            return redirect('classes')
+
+        if result == 'bad_column_letter':
+            return redirect('classes')
+
+        if isinstance(result[0], list):
+            return redirect('classes')
+        
+        print(result)
+        
+        for cls in result:
+            Class.objects.create(
+                class_name=cls['name'],
+                class_code=cls['code'],
+                school_id=school_user.id,
+            )
+
+        return redirect('classes')
+
+    return render(request, 'add_classes_from_excel.html')
 
