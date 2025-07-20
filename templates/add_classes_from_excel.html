@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Classes From Excel - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/class/add_from_excel.css') }}">
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/add_classes_from_excel.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -14,7 +15,8 @@
     <div id="particles-js"></div>
 
     <div class="glass-card">
-        <form method="POST" action="{{ url_for('class_routes.add_from_excel') }}" class="add-excel-form" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'add_classes_from_excel' %}" class="add-excel-form" enctype="multipart/form-data">
+            {% csrf_token %}
             <h1 class="form-title">Add From Excel</h1>
             <div class="inputs-part">
                 <input type="text" placeholder="Sheet Name" name="sheet" required>
@@ -29,7 +31,7 @@
 
             <div class="button-group">
                 <button type="submit" class="action-button">Add</button>
-                <a href='{{ url_for("class_routes.panel_classes") }}'>
+                <a href="{% url 'classes' %}">
                     <button type="button" class="cancel-button">Cancel</button>
                 </a>
             </div>
