@@ -1,4 +1,8 @@
 from django.shortcuts import render, HttpResponse
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from django.contrib import messages
+
 from .models import School
 
 def home(request):
@@ -34,7 +38,7 @@ def signup(request):
         city = request.POST.get('city')
         email = request.POST.get('email')
 
-        School.objects.create(
+        School.objects.create_user(
             school_name=school_name,
             school_code=school_code,
             manager_personal_code=manager_personal_code,
