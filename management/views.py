@@ -165,6 +165,34 @@ def class_info(request, class_name):
 
     return render(request, 'class_info.html', {'data':data, 'teachers':data.teachers.all(), 'students':data.students.all()})
 
+@login_required
+def edit_class(request, class_name):
+    current_user  = request.user
+    data = Class.objects.filter(Q(class_name=class_name) & Q(school=current_user.id)).first()
+
+    if data is None:
+        return redirect(unknown_class_info)
+    
+    if request.method == 'POST':
+        new_name = request.POST.get("class_name")
+
+        if new_name==class_name:
+            return redirect('classes')
+        
+        if Class.objects.filter(Q(class_name=new_name) & Q(school=current_user.id)):
+            return redirect('duplicated_class_info')
+
+        new_code = generate_class_code(current_user.school_code, new_name)
+
+        data.class_name = new_name
+        data.class_code = new_code
+        data.save()
+
+        return redirect('classes')
+
+
+    return render(request, 'edit_class.html', {'name':data.class_name})
+
 def duplicated_class_info(request):
     return render(request, 'duplicated_class_info.html')
 
