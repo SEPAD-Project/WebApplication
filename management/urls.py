@@ -31,4 +31,5 @@ urlpatterns = [
     path('panel/teachers/teacher_info/<str:national_code>', views.teacher_info, name='teacher_info'),
     path('panel/teachers/wrong_teacher_info', views.wrong_teacher_info, name='wrong_teacher_info'),
     path('panel/teachers/edit_teacher/<str:national_code>', views.edit_teacher, name='edit_teacher'),
+        path('panel/teachers/remove_teacher/<str:national_code>', views.remove_teacher, name='remove_teacher'),
 ]

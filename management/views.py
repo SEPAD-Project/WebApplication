@@ -287,3 +287,25 @@ def edit_teacher(request, national_code):
         return redirect('wrong_teacher_info')
     
     return render(request, 'edit_teacher.html', {'teacher':teacher, 'classes':school_classes})
+
+def remove_teacher(request, national_code):
+    teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
+    if teacher is None:
+        return redirect('wrong_teacher_info')
+    
+    current_user = request.user
+    school_teachers = current_user.teachers.all()
+
+    if not (teacher in school_teachers):
+        return redirect('wrong_teacher_info')
+    
+    teacher_classes = teacher.classes.all()
+    for cls in teacher_classes:
+        class_code = cls.class_code
+        class_school_code = reverse_class_code(class_code)[0]
+        if class_school_code == current_user.school_code:
+            teacher.classes.remove(cls)
+
+    current_user.teachers.remove(teacher)
+
+    return redirect(request, 'teachers.html')
