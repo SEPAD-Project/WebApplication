@@ -15,7 +15,7 @@
     <div id="particles-js"></div>
     
     <div class="content-area">
-        <form method="POST" action="{% url 'teachers' %}" class="glass-card">
+        <form method="POST" action="{% url 'edit_teacher' teacher.teacher_national_code %}" class="glass-card">
             {% csrf_token %}
             <h1 class="form-title">Edit {{ teacher.teacher_name }} {{ teacher.teacher_family }}</h1>
    

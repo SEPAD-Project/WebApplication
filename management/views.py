@@ -7,7 +7,7 @@ from django.core.files.storage import FileSystemStorage
 
 from .models import School, Class, Teacher
 from utils.excel_reading import add_classes
-from utils.generate_class_code import generate_class_code
+from utils.generate_class_code import generate_class_code, reverse_class_code
 
 def home(request):
     return render(request, 'home.html')
@@ -252,14 +252,38 @@ def wrong_teacher_info(request):
     return render(request, 'wrong_teacher_info.html')
 
 def edit_teacher(request, national_code):
+    current_user = request.user
+    if request.method == 'POST':
+        new_classes = request.POST.getlist('selected_classes')
+        if new_classes == []:
+            return redirect('teachers')
+
+        teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
+        if teacher is None:
+            return redirect('wrong_teacher_info')
+        
+        teacher_classes = teacher.classes.all()
+        for cls in teacher_classes:
+            class_code = cls.class_code
+            class_school_code = reverse_class_code(class_code)[0]
+            if class_school_code == current_user.school_code:
+                teacher.classes.remove(cls)
+        
+        for cls_code in new_classes:
+            cls = Class.objects.filter(class_code=cls_code).first()
+            teacher.classes.add(cls)
+        
+        return redirect('teachers')
+
+
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
         return redirect('wrong_teacher_info')
-    
-    current_user = request.user
+
     school_teachers = current_user.teachers.all()
+    school_classes = current_user.classes.all()
 
     if not (teacher in school_teachers):
         return redirect('wrong_teacher_info')
     
-    return render(request, 'edit_teacher.html', {'teacher':teacher, 'classes':teacher.classes.all()})
+    return render(request, 'edit_teacher.html', {'teacher':teacher, 'classes':school_classes})
