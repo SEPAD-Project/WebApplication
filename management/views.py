@@ -234,3 +234,16 @@ def add_teacher(request):
     
     school_classes = current_user.classes.all()
     return render(request, 'add_teacher.html', {'classes':school_classes})
+
+def teacher_info(request, national_code):
+    teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
+    if teacher is None:
+        return redirect('teachers')
+    
+    current_user = request.user
+    school_teachers = current_user.teachers.all()
+
+    if not (teacher in school_teachers):
+        return redirect('teachers')
+
+    return render(request, 'teacher_info.html', {'data':teacher})

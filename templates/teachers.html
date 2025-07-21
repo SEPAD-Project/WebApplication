@@ -67,7 +67,7 @@
                         <p class="teacher-code">{{ teacher.teacher_national_code }}</p>
                     </div>
                     <div class="action-buttons">
-                        <a href="{% url 'teachers' %}" class="action-button see">See</a>
+                        <a href="{% url 'teacher_info' teacher.teacher_national_code%}" class="action-button see">See</a>
                         <a href="{% url 'teachers' %}" class="action-button edit">Edit</a>
                         <a href="{% url 'teachers' %}" class="action-button remove">Remove</a>
                     </div>

@@ -1,11 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teacher Info - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/teacher/teacher_info.css') }}">
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/teacher_info.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
