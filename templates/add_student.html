@@ -15,7 +15,7 @@
     <div id="particles-js"></div>
     
     <div class="glass-card">
-        <form method="POST" action="{% url 'add_teacher' %}"  class="add-student-form" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'add_student' %}"  class="add-student-form" enctype="multipart/form-data">
             {% csrf_token %}
             <h1 class="form-title">Add Student</h1>
             

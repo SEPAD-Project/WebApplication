@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 
-from .models import School, Class, Teacher
+from .models import School, Class, Teacher, Student
 from utils.excel_reading import add_classes
 from utils.generate_class_code import generate_class_code, reverse_class_code
 
@@ -316,6 +316,28 @@ def students(request):
     return render(request, 'students.html', {'students':students})
 
 def add_student(request):
+    current_user = request.user
+    if request.method == 'POST':
+        student_name = request.POST.get('student_name')
+        student_family = request.POST.get('student_family')
+        student_national_code = request.POST.get('student_national_code')
+        student_password = request.POST.get('student_password')
+        student_phone_number = request.POST.get('student_phone_number')
 
-    return render(request, 'add_student.html')
+        selected_class_code = request.POST.get('selected_class')
+
+        if Student.objects.filter(Q(student_national_code=student_national_code) | Q(student_phone_number=student_phone_number)):
+            return redirect('add_student')
+
+        Student.objects.create(student_name=student_name,
+                               student_family=student_family,
+                               student_national_code=student_national_code,
+                               student_password=student_password,
+                               student_phone_number=student_phone_number,
+                               student_class=Class.objects.get(id=int(selected_class_code)),
+                               school=current_user)
+        
+        return redirect('students')
+
+    return render(request, 'add_student.html', {'classes':current_user.classes.all()})
     

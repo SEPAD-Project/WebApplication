@@ -83,7 +83,7 @@ class Student(models.Model):
     student_password = models.CharField(max_length=100)
     student_phone_number = models.CharField(max_length=100, unique=True)
 
-    class_room = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='students')
+    student_class = models.ForeignKey(Class, on_delete=models.CASCADE, related_name='students')
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='students')
 
     def __str__(self):
