@@ -314,3 +314,8 @@ def students(request):
     currect_user = request.user
     students = currect_user.students.all()
     return render(request, 'students.html', {'students':students})
+
+def add_student(request):
+
+    return render(request, 'add_student.html')
+    
