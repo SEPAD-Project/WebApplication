@@ -309,3 +309,8 @@ def remove_teacher(request, national_code):
     current_user.teachers.remove(teacher)
 
     return redirect(request, 'teachers.html')
+
+def students(request):
+    currect_user = request.user
+    students = currect_user.students.all()
+    return render(request, 'students.html', {'students':students})
