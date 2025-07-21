@@ -221,7 +221,7 @@ def add_teacher(request):
 
         teacher = Teacher.objects.filter(Q(teacher_national_code=national_code)  & Q(teacher_password=password)).first()
         if teacher is None:
-            return redirect('add_teacher')
+            return redirect('wrong_teacher_info')
         
         classes = request.POST.getlist('selected_classes')
         for class_id in classes:
@@ -238,12 +238,15 @@ def add_teacher(request):
 def teacher_info(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
-        return redirect('teachers')
+        return redirect('wrong_teacher_info')
     
     current_user = request.user
     school_teachers = current_user.teachers.all()
 
     if not (teacher in school_teachers):
-        return redirect('teachers')
+        return redirect('wrong_teacher_info')
 
     return render(request, 'teacher_info.html', {'data':teacher})
+
+def wrong_teacher_info(request):
+    return render(request, 'wrong_teacher_info.html')
