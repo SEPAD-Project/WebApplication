@@ -250,3 +250,16 @@ def teacher_info(request, national_code):
 
 def wrong_teacher_info(request):
     return render(request, 'wrong_teacher_info.html')
+
+def edit_teacher(request, national_code):
+    teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
+    if teacher is None:
+        return redirect('wrong_teacher_info')
+    
+    current_user = request.user
+    school_teachers = current_user.teachers.all()
+
+    if not (teacher in school_teachers):
+        return redirect('wrong_teacher_info')
+    
+    return render(request, 'edit_teacher.html', {'teacher':teacher, 'classes':teacher.classes.all()})
