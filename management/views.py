@@ -207,3 +207,6 @@ def unknown_class_info(request):
 
 def error_in_schedule(request):
     return render(request, 'error_in_schedule.html')
+
+def teachers(request):
+    return render(request, 'teachers.html')
