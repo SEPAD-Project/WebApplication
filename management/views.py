@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 
-from .models import School, Class
+from .models import School, Class, Teacher
 from utils.excel_reading import add_classes
 from utils.generate_class_code import generate_class_code
 
@@ -212,3 +212,25 @@ def teachers(request):
     currect_user = request.user
     teachers = currect_user.teachers.all()
     return render(request, 'teachers.html', {'teachers':teachers})
+
+def add_teacher(request):
+    current_user = request.user
+    if request.method == 'POST':
+        national_code = request.POST.get('teacher_national_code')
+        password = request.POST.get('teacher_password')
+
+        teacher = Teacher.objects.filter(Q(teacher_national_code=national_code)  & Q(teacher_password=password)).first()
+        if teacher is None:
+            return redirect('add_teacher')
+        
+        classes = request.POST.getlist('selected_classes')
+        for class_id in classes:
+            cls = Class.objects.filter(id=int(class_id)).first()
+            cls.teachers.add(teacher)
+
+        current_user.teachers.add(teacher)
+        
+        return redirect('teachers')
+    
+    school_classes = current_user.classes.all()
+    return render(request, 'add_teacher.html', {'classes':school_classes})
