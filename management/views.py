@@ -209,4 +209,6 @@ def error_in_schedule(request):
     return render(request, 'error_in_schedule.html')
 
 def teachers(request):
-    return render(request, 'teachers.html')
+    currect_user = request.user
+    teachers = currect_user.teachers.all()
+    return render(request, 'teachers.html', {'teachers':teachers})
