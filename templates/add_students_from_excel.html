@@ -16,6 +16,7 @@
 
         <div class="glass-card">
             <form method="POST" action="{% url 'add_students_from_excel' %}" class="add-student-form" enctype="multipart/form-data">
+                {% csrf_token %}
                 <h1 class="form-title">Add From Excel</h1>
                 
             <div class="form-grid">

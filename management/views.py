@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
 
 from .models import School, Class, Teacher, Student
-from utils.excel_reading import add_classes
+from utils.excel_reading import add_classes, add_students
 from utils.generate_class_code import generate_class_code, reverse_class_code
 
 def home(request):
@@ -362,28 +362,57 @@ def add_students_from_excel(request):
 
         sheet_name = request.POST.get('sheet')
         name_letter = request.POST.get('name')
+        family_letter = request.POST.get('family')
+        nc_letter = request.POST.get('national_code')
+        class_letter = request.POST.get('class')
+        pass_letter = request.POST.get('password')
+        phone_letter = request.POST.get('phone_number')
 
         classes = Class.objects.all()
+        students = Student.objects.all()
         school_user = request.user
 
-        result = add_classes(filename, sheet_name, name_letter, [cls.class_name for cls in classes], school_user.school_code)
+        result = add_students(filename, sheet_name, name_letter, family_letter, nc_letter, class_letter, pass_letter, phone_letter,
+                              [cls.class_name for cls in classes],
+                              [student.student_national_code for student in students],
+                              [student.student_phone_number for student in students],
+                              school_user.school_code)
         
         if result == 'sheet_not_found':
-            return redirect('error_in_class_excel')
+            return redirect('error_in_student_excel')
 
         if result == 'bad_column_letter':
-            return redirect('error_in_class_excel')
-
-        if isinstance(result[0], list):
-            return redirect('error_in_class_excel')
+            return redirect('error_in_student_excel')
         
-        for cls in result:
-            Class.objects.create(
-                class_name=cls['name'],
-                class_code=cls['code'],
-                school_id=school_user.id,
-            )
+        if isinstance(result[0], list):
+            excel_errors = []
+            for problem in result:
+                cell = f"{problem[2]}{problem[1]}"
+                if problem[0] == "bad_format":
+                    excel_errors.append(f"Bad data format in cell {cell}.")
+                elif problem[0] == "duplicated_nc":
+                    excel_errors.append(
+                        f"Duplicated national code in cell {cell}.")
+                elif problem[0] == 'unknown_class':
+                    excel_errors.append(f"Unknown class name in cell {cell}.")
+                else:
+                    excel_errors.append(f"Unknown issue in cell {cell}.")
 
-        return redirect('classes')
+            print(excel_errors)
+            return redirect('error_in_student_excel')
+        
+        for student in result:
+            cls = Class.objects.filter(class_code=student['class']).first()
+            Student.objects.create(
+                student_name=student['name'],
+                student_family=student['family'],
+                student_national_code=student['national_code'],
+                student_phone_number=student['phone_number'],
+                student_class=cls,
+                student_password=student['password'],
+                school_id=school_user.id
+            )
+            
+        return redirect('students')
 
     return render(request, 'add_students_from_excel.html')

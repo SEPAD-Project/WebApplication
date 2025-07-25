@@ -11,7 +11,8 @@ import datetime
 def add_students(
     path_to_xlsx, sheet_name, name_letter, family_letter,
     nc_letter, class_letter, pass_letter, phone_letter,
-    available_classes, registered_national_codes, registered_phone_numbers
+    available_classes, registered_national_codes, registered_phone_numbers,
+    school_code
 ):
     """
     Parse and validate student data from an Excel file.
@@ -100,7 +101,6 @@ def add_students(
 
     # Build clean data
     students = []
-    school_code = current_user.school_code
 
     for row in sheet.iter_rows(values_only=True, min_row=2):
         students.append({
