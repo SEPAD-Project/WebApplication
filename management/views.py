@@ -416,3 +416,15 @@ def add_students_from_excel(request):
         return redirect('students')
 
     return render(request, 'add_students_from_excel.html')
+
+def edit_student(request, national_code):
+    current_user = request.user
+
+    student = Student.objects.filter(student_national_code=national_code).first()
+    if student is None:
+        return redirect('unknown_student_info')
+
+    if not (student.school==current_user):
+        return redirect('wrong_teacher_info')
+    
+    return render(request, 'edit_student.html', {'student': student})
