@@ -34,4 +34,8 @@ urlpatterns = [
     path('panel/teachers/remove_teacher/<str:national_code>', views.remove_teacher, name='remove_teacher'),
     path('panel/students', views.students, name='students'),
     path('panel/students/add_student', views.add_student, name='add_student'),
+    path('panel/students/student_file_permission_error', views.student_file_permission_error, name='student_file_permission_error'),
+    path('panel/students/duplicated_student_info', views.duplicated_student_info, name='duplicated_student_info'),
+    path('panel/students/error_in_student_excel', views.error_in_student_excel, name='error_in_student_excel'),
+    path('panel/students/unknown_student_info', views.unknown_student_info, name='unknown_student_info'),
 ]

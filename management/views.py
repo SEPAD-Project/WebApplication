@@ -340,4 +340,15 @@ def add_student(request):
         return redirect('students')
 
     return render(request, 'add_student.html', {'classes':current_user.classes.all()})
-    
+
+def duplicated_student_info(request):
+    return render(request, 'duplicated_student_info.html')
+
+def error_in_student_excel(request):
+    return render(request, 'error_in_student_excel.html')
+
+def student_file_permission_error(request):
+    return render(request, 'student_file_permission_error.html')
+
+def unknown_student_info(request):
+    return render(request, 'unknown_student_info.html')

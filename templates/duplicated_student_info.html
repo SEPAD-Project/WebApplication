@@ -1,12 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Permission Error - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/student/file_permission_error.css') }}">
+    <title>Duplicated Student Info - SEPAD</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/dupolicated_student_info.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
@@ -16,18 +17,14 @@
     <div class="content-area">
         <div class="glass-card notification-container">
             <div class="notification-icon">
-                <i class="fas fa-file-exclamation"></i>
+                <i class="fas fa-exclamation-triangle"></i>
             </div>
-            <h1 class="notification-title">FILE ERROR</h1>
+            <h1 class="notification-title">DUPLICATE ENTRY</h1>
             <div class="notification-content">
-                <p class="notification-text">
-                    There was a problem opening your file.
-                </p>
-                <p class="notification-text">
-                    Please check file permissions and try again!
-                </p>
+                <p class="notification-text">Some of these values are already registered in the system.</p>
+                <p class="notification-text">Please review your entries carefully!</p>
             </div>
-            <a href="{{ url_for('student_routes.add_from_excel') }}" class="notification-action">
+            <a href="{% url 'add_student' %}" class="notification-action">
                 <i class="fas fa-redo"></i> Try Again
             </a>
         </div>
