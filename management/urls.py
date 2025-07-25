@@ -38,4 +38,5 @@ urlpatterns = [
     path('panel/students/duplicated_student_info', views.duplicated_student_info, name='duplicated_student_info'),
     path('panel/students/error_in_student_excel', views.error_in_student_excel, name='error_in_student_excel'),
     path('panel/students/unknown_student_info', views.unknown_student_info, name='unknown_student_info'),
+    path('panel/students/add_students_from_excel', views.add_students_from_excel, name='add_students_from_excel'),
 ]

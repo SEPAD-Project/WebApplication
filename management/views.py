@@ -352,3 +352,38 @@ def student_file_permission_error(request):
 
 def unknown_student_info(request):
     return render(request, 'unknown_student_info.html')
+
+@login_required
+def add_students_from_excel(request):
+    if request.method == 'POST':
+        uploaded_file = request.FILES['file_input']
+        fs = FileSystemStorage()
+        filename = fs.save(uploaded_file.name, uploaded_file)
+
+        sheet_name = request.POST.get('sheet')
+        name_letter = request.POST.get('name')
+
+        classes = Class.objects.all()
+        school_user = request.user
+
+        result = add_classes(filename, sheet_name, name_letter, [cls.class_name for cls in classes], school_user.school_code)
+        
+        if result == 'sheet_not_found':
+            return redirect('error_in_class_excel')
+
+        if result == 'bad_column_letter':
+            return redirect('error_in_class_excel')
+
+        if isinstance(result[0], list):
+            return redirect('error_in_class_excel')
+        
+        for cls in result:
+            Class.objects.create(
+                class_name=cls['name'],
+                class_code=cls['code'],
+                school_id=school_user.id,
+            )
+
+        return redirect('classes')
+
+    return render(request, 'add_students_from_excel.html')
