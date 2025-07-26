@@ -421,11 +421,31 @@ def add_students_from_excel(request):
 def edit_student(request, national_code):
     current_user = request.user
 
-    student = Student.objects.filter(student_national_code=national_code).first()
+    student = Student.objects.filter(Q(student_national_code=national_code)&Q(school_id=current_user.id)).first()
     if student is None:
         return redirect('unknown_student_info')
 
     if not (student.school==current_user):
         return redirect('wrong_teacher_info')
+    
+    if request.method == 'POST':
+        student_name = request.POST.get("student_name")
+        student_family = request.POST.get("student_family")
+        student_national_code = request.POST.get("student_national_code")
+        student_password = request.POST.get("student_password")
+        student_phone_number = request.POST.get("student_phone_number")
+
+        if Student.objects.filter(Q(student_national_code=student_national_code) & Q(student_phone_number=student_phone_number)):
+            return redirect('duplicated_student_info')
+
+        student.name = student_name
+        student.student_family = student_family
+        student.student_national_code = student_national_code
+        student.student_password = student_password
+        student.student_phone_number = student_phone_number
+
+        student.save()
+        
+        return redirect('students')
     
     return render(request, 'edit_student.html', {'student': student})
