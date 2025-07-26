@@ -26,6 +26,7 @@ urlpatterns = [
     path('panel/classes/error_in_schedule', views.error_in_schedule, name='error_in_schedule'),
     path('panel/classes/class_info/<str:class_name>', views.class_info, name='class_info'),
     path('panel/classes/edit_class/<str:class_name>', views.edit_class, name='edit_class'),
+    path('panel/classes/remove_class/<str:class_name>', views.remove_class, name='remove_class'),
     path('panel/teachers', views.teachers, name='teachers'),
     path('panel/teachers/add_teacher', views.add_teacher, name='add_teacher'),
     path('panel/teachers/teacher_info/<str:national_code>', views.teacher_info, name='teacher_info'),

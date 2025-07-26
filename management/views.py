@@ -194,6 +194,18 @@ def edit_class(request, class_name):
 
     return render(request, 'edit_class.html', {'name':data.class_name})
 
+def remove_class(request, class_name):
+    current_user = request.user
+
+    cls = Class.objects.filter(Q(class_name=class_name)&Q(school=current_user.id)).first()
+    if cls is None:
+        return redirect('unknown_student_info')
+
+    Class.delete(cls)
+        
+    return redirect('classes')
+
+
 def duplicated_class_info(request):
     return render(request, 'duplicated_class_info.html')
 
