@@ -449,3 +449,18 @@ def edit_student(request, national_code):
         return redirect('students')
     
     return render(request, 'edit_student.html', {'student': student})
+
+def remove_student(request, national_code):
+    current_user = request.user
+
+    student = Student.objects.filter(Q(student_national_code=national_code)&Q(school_id=current_user.id)).first()
+    if student is None:
+        return redirect('unknown_student_info')
+
+    if not (student.school==current_user):
+        return redirect('wrong_teacher_info')
+
+    Student.delete(student)
+        
+    return redirect('students')
+    

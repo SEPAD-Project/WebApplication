@@ -40,4 +40,5 @@ urlpatterns = [
     path('panel/students/unknown_student_info', views.unknown_student_info, name='unknown_student_info'),
     path('panel/students/add_students_from_excel', views.add_students_from_excel, name='add_students_from_excel'),
     path('panel/students/edit_student/<str:national_code>', views.edit_student, name='edit_student'),
+    path('panel/students/remove_student/<str:national_code>', views.remove_student, name='remove_student'),
 ]

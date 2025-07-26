@@ -74,7 +74,7 @@
                     <div class="action-buttons">
                         <a href="{% url 'students' %}" class="action-button see">See</a>
                         <a href="{% url 'edit_student' student.student_national_code%}" class="action-button edit">Edit</a>
-                        <a href="{% url 'students' %}" class="action-button remove">Remove</a>
+                        <a href="{% url 'remove_student' student.student_national_code%}"class="action-button remove">Remove</a>
                     </div>
                 </div>
                 {% endfor %}
