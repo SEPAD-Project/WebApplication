@@ -1,6 +1,5 @@
 # Third-party Imports
 import openpyxl
-from flask_login import current_user
 
 # Internal Imports
 from utils.generate_class_code import generate_class_code
