@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -35,11 +35,12 @@ def login_view(request):
         school_code = request.POST.get('school_code')
         manager_personal_code = request.POST.get('manager_personal_code')
 
-        user = authenticate(request, username=school_code, password=manager_personal_code)
+        user = School.objects.filter(Q(school_code=school_code)&Q(manager_personal_code=manager_personal_code)).first()
+        print(user)
 
         if user is not None:
             login(request, user)
-            return redirect('notify_username_password')
+            return redirect('panel_entry')
         else:
             return redirect('unknown_school_info')
             
