@@ -424,9 +424,6 @@ def edit_student(request, national_code):
     student = Student.objects.filter(Q(student_national_code=national_code)&Q(school_id=current_user.id)).first()
     if student is None:
         return redirect('unknown_student_info')
-
-    if not (student.school==current_user):
-        return redirect('wrong_teacher_info')
     
     if request.method == 'POST':
         student_name = request.POST.get("student_name")
@@ -457,10 +454,16 @@ def remove_student(request, national_code):
     if student is None:
         return redirect('unknown_student_info')
 
-    if not (student.school==current_user):
-        return redirect('wrong_teacher_info')
-
     Student.delete(student)
         
     return redirect('students')
+
+def student_info(request, national_code):
+    current_user = request.user
+
+    student = Student.objects.filter(Q(student_national_code=national_code)&Q(school_id=current_user.id)).first()
+    if student is None:
+        return redirect('unknown_student_info')
+
+    return redirect('student_info', {'data':student})
     
