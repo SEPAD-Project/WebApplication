@@ -2,13 +2,28 @@
 import os
 import glob
 import datetime
+import platform
 
-# Internal Imports
-from source.models.models import Class, Teacher, School
-from source.utils.excel_reading import schedule_extraction
+from classes.models import Class
+from teachers.models import Teacher
+from schools.models import School
+
+from utils.excel_reading import schedule_extraction
 
 
-def calculate_students_accuracy(school_id, class_id):
+
+def get_base_path():
+    """Return appropriate paths based on the operating system"""
+    system = platform.system().lower()
+    
+    if system == 'windows':
+        return r"C:\sap-project\server\schools"
+    else:
+        home_dir = os.path.expanduser("~")
+        return os.path.join(home_dir, "sap-project", "server", "schools")
+    
+
+def compute_class_students_accuracy(school_id, class_id):
     """
     Calculate accuracy percentages for all students in a class based on their result files.
 
@@ -19,14 +34,14 @@ def calculate_students_accuracy(school_id, class_id):
         dict: Mapping of student full names to their accuracy percentage (0–100).
     """
     # Define base path to student result files
-    base_path = f"c:/sap-project/server/schools/{school_id}/{class_id}"
+    base_path = os.path.join(get_base_path(), str(school_id), str(class_id))
     students_accuracy = {}
 
     # Fetch the class object
-    class_ = Class.query.filter(Class.id == int(class_id)).first()
+    class_ = Class.objects.get(id=class_id)
 
     # Iterate over students in the class
-    for student in class_.students:
+    for student in class_.students.all():
         file_path = os.path.join(base_path, f"{student.student_national_code}.txt")
 
         try:
@@ -53,7 +68,7 @@ def calculate_students_accuracy(school_id, class_id):
     return students_accuracy
 
 
-def calculate_classes_accuracy(school_id):
+def compute_school_classes_accuracy(school_id):
     """
     Calculate average accuracy percentage for each class in the current school.
 
@@ -63,12 +78,12 @@ def calculate_classes_accuracy(school_id):
     classes_accuracy = {}
 
     # Fetch all classes that belong to the current school
-    classes = Class.query.filter(Class.school_id == school_id).all()
+    classes = School.objects.get(id=school_id).classes.all()
 
     for class_ in classes:
         # Get list of accuracy values for students in the class
         student_accuracies = list(
-            calculate_students_accuracy(str(class_.id)).values()
+            compute_class_students_accuracy(class_.id).values()
         )
 
         if not student_accuracies:
@@ -83,19 +98,19 @@ def calculate_classes_accuracy(school_id):
     return classes_accuracy
 
 
-def calculate_teachers_performance(school_id):
+def compute_school_teachers_performance(school_id):
     """
     Calculate performance metrics for each teacher based on student result files.
 
     Returns:
         dict: Mapping from teacher full name to accuracy percentage (0–100).
     """
-    school_dir = f"c:/sap-project/server/schools/{str(school_id)}"
+    school_dir = os.path.join(get_base_path(), str(school_id))
     teachers_performance = {}
 
     # Fetch all teachers for current school
-    school = School.query.filter(School.id == school_id).first()
-    teacher_codes = [t.teacher_national_code for t in school.teachers]
+    school = School.objects.get(id=school_id)
+    teacher_codes = [t.teacher_national_code for t in school.teachers.all()]
 
     # Initialize performance counter for each teacher
     for teacher_code in teacher_codes:
@@ -163,12 +178,9 @@ def calculate_teachers_performance(school_id):
 
     # Map teacher codes to their full names
     teacher_name_map = {}
-    for teacher_nc in teacher_codes:
-        teacher = Teacher.query.filter(
-            Teacher.teacher_national_code == teacher_nc
-        ).first()
+    for teacher in school.teachers.all():
         if teacher:
-            teacher_name_map[teacher_nc] = f"{teacher.teacher_name} {teacher.teacher_family}"
+            teacher_name_map[teacher.teacher_national_code] = f"{teacher.teacher_name} {teacher.teacher_family}"
 
     # Compute final percentage performance
     final_performance = {}
@@ -183,7 +195,7 @@ def calculate_teachers_performance(school_id):
     return final_performance
 
 
-def calculate_student_accuracy_by_lesson(school_id, class_id, student_national_code):
+def compute_student_accuracy_by_lesson(school_id, class_id, student_national_code):
     """
     Calculate a student's answer accuracy by lesson, based on result timestamps.
 
@@ -194,7 +206,7 @@ def calculate_student_accuracy_by_lesson(school_id, class_id, student_national_c
     Returns:
         dict: Mapping from lesson names to accuracy percentage (0–100).
     """
-    base_dir = f"c:/sap-project/server/schools/{school_id}/{class_id}"
+    base_dir = os.path.join(get_base_path(), str(school_id), str(class_id))
     result_file = os.path.join(base_dir, f"{student_national_code}.txt")
     schedule_file = os.path.join(base_dir, "schedule.xlsx")
 
@@ -207,10 +219,8 @@ def calculate_student_accuracy_by_lesson(school_id, class_id, student_national_c
         return {}
 
     # Get teacher → lesson map
-    school = School.query.filter(School.id == school_id).first()
-    teacher_codes = [t.teacher_national_code for t in school.teachers]
-    teachers = Teacher.query.filter(
-        Teacher.teacher_national_code.in_(teacher_codes)).all()
+    school = School.objects.get(id=school_id)
+    teachers = school.teachers.all()
     teacher_lesson_map = {t.teacher_national_code: t.lesson for t in teachers}
 
     # Read result file
@@ -266,7 +276,7 @@ def calculate_student_accuracy_by_lesson(school_id, class_id, student_national_c
     return lessons_performance
 
 
-def calculate_student_weekly_accuracy(school_id, class_id, student_national_code):
+def compute_student_accuracy_by_week(school_id, class_id, student_national_code):
     """
     Calculate a student's answer accuracy for each day in the past week.
 
@@ -278,11 +288,7 @@ def calculate_student_weekly_accuracy(school_id, class_id, student_national_code
         dict: Mapping from date (YYYY-MM-DD) to accuracy percentage (0–100).
     """
     # Build the path to the result file
-    file_path = os.path.join(
-        f"c:/sap-project/server/schools/{str(school_id)}",
-        class_id,
-        f"{student_national_code}.txt"
-    )
+    file_path = os.path.join(get_base_path(), str(school_id), str(class_id), f"{student_national_code}.txt"),
 
     # Generate past 7 days including today
     today = datetime.date.today()
