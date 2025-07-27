@@ -4,12 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from django.core.files.storage import FileSystemStorage
+import os
 
 from .models import Student
 from classes.models import Class
 
 from utils.excel_reading import add_students
 from utils.server.Website.directory_manager import dm_create_student, dm_edit_student, dm_delete_student
+from utils.base_path_finder import find_base_path
 
 
 def students(request):
@@ -25,11 +27,12 @@ def add_student(request):
         student_national_code = request.POST.get('student_national_code')
         student_password = request.POST.get('student_password')
         student_phone_number = request.POST.get('student_phone_number')
+        uploaded_file = request.FILES['file_input']
 
         selected_class_code = request.POST.get('selected_class')
 
         if Student.objects.filter(Q(student_national_code=student_national_code) | Q(student_phone_number=student_phone_number)):
-            return redirect('add_student')
+            return redirect('duplicated_student_info')
         
         student_class = Class.objects.get(id=int(selected_class_code))
         Student.objects.create(student_name=student_name,
@@ -40,6 +43,15 @@ def add_student(request):
                                student_class=student_class,
                                school=current_user)
         
+
+        save_path = os.path.join(find_base_path(), str(current_user.id), str(student_class.id))
+        filename = f"{student_national_code}.jpg"
+        file_path = os.path.join(save_path, filename)
+
+        with open(file_path, 'wb+') as dest:
+            for chunk in uploaded_file.chunks():
+                dest.write(chunk)
+
         dm_create_student(school_id=str(current_user.id), class_id=str(student_class.id), student_code=student_national_code)
         
         return redirect('students')
@@ -61,6 +73,7 @@ def unknown_student_info(request):
 @login_required
 def add_students_from_excel(request):
     if request.method == 'POST':
+        current_user = request.user
         uploaded_file = request.FILES['file_input']
         fs = FileSystemStorage()
         filename = fs.save(uploaded_file.name, uploaded_file)
@@ -116,6 +129,14 @@ def add_students_from_excel(request):
                 student_password=student['password'],
                 school_id=school_user.id
             )
+            
+            save_path = os.path.join(find_base_path(), str(current_user.id), str(cls.id))
+            filename = f"{student['national_code']}.jpg"
+            file_path = os.path.join(save_path, filename)
+
+            with open(file_path, 'wb+') as dest:
+                for chunk in uploaded_file.chunks():
+                    dest.write(chunk)
 
             dm_create_student(school_id=str(school_user.id), class_id=str(cls.id), student_code=student['national_code'])
         
