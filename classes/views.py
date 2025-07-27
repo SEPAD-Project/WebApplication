@@ -14,7 +14,7 @@ def classes(request):
     current_user = request.user
     classes = current_user.classes.all()
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
-    return render(request, 'classes.html', {'classes':classes})
+    return render(request, 'main/classes.html', {'classes':classes})
 
 @login_required
 def add_class(request):
@@ -34,7 +34,7 @@ def add_class(request):
         
         return redirect('classes')
 
-    return render(request, 'add_class.html')
+    return render(request, 'form/add_class.html')
 
 @login_required
 def add_classes_from_excel(request):
@@ -69,7 +69,7 @@ def add_classes_from_excel(request):
 
         return redirect('classes')
 
-    return render(request, 'add_classes_from_excel.html')
+    return render(request, 'form/add_classes_from_excel.html')
 
 @login_required
 def class_info(request, class_name):
@@ -79,7 +79,7 @@ def class_info(request, class_name):
     if data is None:
         return redirect(unknown_class_info)
 
-    return render(request, 'class_info.html', {'data':data, 'teachers':data.teachers.all(), 'students':data.students.all()})
+    return render(request, 'content/class_info.html', {'data':data, 'teachers':data.teachers.all(), 'students':data.students.all()})
 
 @login_required
 def edit_class(request, class_name):
@@ -107,7 +107,7 @@ def edit_class(request, class_name):
         return redirect('classes')
 
 
-    return render(request, 'edit_class.html', {'name':data.class_name})
+    return render(request, 'form/edit_class.html', {'name':data.class_name})
 
 def remove_class(request, class_name):
     current_user = request.user
@@ -121,16 +121,16 @@ def remove_class(request, class_name):
     return redirect('classes')
 
 def duplicated_class_info(request):
-    return render(request, 'duplicated_class_info.html')
+    return render(request, 'error/duplicated_class_info.html')
 
 def error_in_class_excel(request):
-    return render(request, 'error_in_class_excel.html')
+    return render(request, 'error/error_in_class_excel.html')
 
 def class_file_permission_error(request):
-    return render(request, 'class_file_permission_error.html')
+    return render(request, 'error/class_file_permission_error.html')
 
 def unknown_class_info(request):
-    return render(request, 'unknown_class_info.html')
+    return render(request, 'error/unknown_class_info.html')
 
 def error_in_schedule(request):
-    return render(request, 'error_in_schedule.html')
+    return render(request, 'error/error_in_schedule.html')

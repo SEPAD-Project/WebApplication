@@ -10,7 +10,7 @@ from utils.generate_class_code import reverse_class_code
 def teachers(request):
     currect_user = request.user
     teachers = currect_user.teachers.all()
-    return render(request, 'teachers.html', {'teachers':teachers})
+    return render(request, 'main/teachers.html', {'teachers':teachers})
 
 def add_teacher(request):
     current_user = request.user
@@ -32,7 +32,7 @@ def add_teacher(request):
         return redirect('teachers')
     
     school_classes = current_user.classes.all()
-    return render(request, 'add_teacher.html', {'classes':school_classes})
+    return render(request, 'form/add_teacher.html', {'classes':school_classes})
 
 def teacher_info(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
@@ -45,10 +45,10 @@ def teacher_info(request, national_code):
     if not (teacher in school_teachers):
         return redirect('wrong_teacher_info')
 
-    return render(request, 'teacher_info.html', {'data':teacher})
+    return render(request, 'content/teacher_info.html', {'data':teacher})
 
 def wrong_teacher_info(request):
-    return render(request, 'wrong_teacher_info.html')
+    return render(request, 'error/wrong_teacher_info.html')
 
 def edit_teacher(request, national_code):
     current_user = request.user
@@ -85,7 +85,7 @@ def edit_teacher(request, national_code):
     if not (teacher in school_teachers):
         return redirect('wrong_teacher_info')
     
-    return render(request, 'edit_teacher.html', {'teacher':teacher, 'classes':school_classes})
+    return render(request, 'form/edit_teacher.html', {'teacher':teacher, 'classes':school_classes})
 
 def remove_teacher(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()

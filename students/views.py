@@ -11,12 +11,10 @@ from classes.models import Class
 from utils.excel_reading import add_students
 
 
-
-
 def students(request):
     currect_user = request.user
     students = currect_user.students.all()
-    return render(request, 'students.html', {'students':students})
+    return render(request, 'main/students.html', {'students':students})
 
 def add_student(request):
     current_user = request.user
@@ -42,19 +40,19 @@ def add_student(request):
         
         return redirect('students')
 
-    return render(request, 'add_student.html', {'classes':current_user.classes.all()})
+    return render(request, 'form/add_student.html', {'classes':current_user.classes.all()})
 
 def duplicated_student_info(request):
-    return render(request, 'duplicated_student_info.html')
+    return render(request, 'error/duplicated_student_info.html')
 
 def error_in_student_excel(request):
-    return render(request, 'error_in_student_excel.html')
+    return render(request, 'error/error_in_student_excel.html')
 
 def student_file_permission_error(request):
-    return render(request, 'student_file_permission_error.html')
+    return render(request, 'error/student_file_permission_error.html')
 
 def unknown_student_info(request):
-    return render(request, 'unknown_student_info.html')
+    return render(request, 'error/unknown_student_info.html')
 
 @login_required
 def add_students_from_excel(request):
@@ -118,7 +116,7 @@ def add_students_from_excel(request):
             
         return redirect('students')
 
-    return render(request, 'add_students_from_excel.html')
+    return render(request, 'form/add_students_from_excel.html')
 
 def edit_student(request, national_code):
     current_user = request.user
@@ -147,7 +145,7 @@ def edit_student(request, national_code):
         
         return redirect('students')
     
-    return render(request, 'edit_student.html', {'student': student})
+    return render(request, 'form/edit_student.html', {'student': student})
 
 def remove_student(request, national_code):
     current_user = request.user
@@ -167,5 +165,5 @@ def student_info(request, national_code):
     if student is None:
         return redirect('unknown_student_info')
 
-    return redirect('student_info', {'data':student})
+    return redirect('content/student_info', {'data':student})
     

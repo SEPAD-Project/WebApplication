@@ -1,22 +1,22 @@
 from django.shortcuts import render
 
 def home(request):
-    return render(request, 'home.html')
+    return render(request, 'main/home.html')
 
 def about(request):
-    return render(request, 'about.html')
+    return render(request, 'content/about.html')
 
 def downloads(request):
-    return render(request, 'downloads.html')
+    return render(request, 'content/downloads.html')
 
 def contact(request):
-    return render(request, 'contact.html')
+    return render(request, 'content/contact.html')
 
 def comings_soon(request):
-    return render(request, 'coming_soon.html')
+    return render(request, 'content/coming_soon.html')
 
 def page_404(request):
-    return render(request, '404.html')
+    return render(request, 'error/404.html')
 
 def page_429(request):
-    return render(request, '429.html')
+    return render(request, 'error/429.html')

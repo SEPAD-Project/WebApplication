@@ -19,7 +19,7 @@ def login_view(request):
         else:
             return redirect('unknown_school_info')
             
-    return render(request, 'login.html')
+    return render(request, 'form/login.html')
 
 def signup(request):
     if request.method == 'POST':
@@ -44,13 +44,13 @@ def signup(request):
 
         return redirect('notify_username_password')
     
-    return render(request, 'signup.html')
+    return render(request, 'form/signup.html')
 
 def duplicated_school_info(request):
-    return render(request, 'duplicated_school_info.html')
+    return render(request, 'error/duplicated_school_info.html')
 
 def notify_username_password(request):
-    return render(request, 'notify_username_password.html')
+    return render(request, 'error/notify_username_password.html')
 
 def unknown_school_info(request):
-    return render(request, 'unknown_school_info.html')
+    return render(request, 'error/unknown_school_info.html')
