@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'management',
     'accounts',
     'schools',
     'classes',
@@ -97,7 +96,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'management.School'
+AUTH_USER_MODEL = 'schools.School'
 
 
 # Password validation
