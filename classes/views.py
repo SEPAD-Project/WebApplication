@@ -8,6 +8,9 @@ from .models import Class
 from utils.excel_reading import add_classes
 from utils.generate_class_code import generate_class_code
 from utils.server.Website.directory_manager import dm_create_class, dm_delete_class
+from utils.base_path_finder import find_base_path
+
+import os
 
 
 @login_required
@@ -94,18 +97,27 @@ def edit_class(request, class_name):
     
     if request.method == 'POST':
         new_name = request.POST.get("class_name")
+        uploaded_file = request.FILES.get('file-input')
 
-        if new_name==class_name:
-            return redirect('classes')
+        if new_name!=class_name:
         
-        if Class.objects.filter(Q(class_name=new_name) & Q(school=current_user.id)):
-            return redirect('duplicated_class_info')
+            if Class.objects.filter(Q(class_name=new_name) & Q(school=current_user.id)):
+                return redirect('duplicated_class_info')
 
-        new_code = generate_class_code(current_user.school_code, new_name)
+            new_code = generate_class_code(current_user.school_code, new_name)
 
-        data.class_name = new_name
-        data.class_code = new_code
-        data.save()
+            data.class_name = new_name
+            data.class_code = new_code
+            data.save()
+        
+        if uploaded_file:
+            save_path = os.path.join(find_base_path(), str(current_user.id), str(data.id))
+            filename = f"schedule.xlsx"
+            file_path = os.path.join(save_path, filename)
+
+            with open(file_path, 'wb+') as dest:
+                for chunk in uploaded_file.chunks():
+                    dest.write(chunk)
 
         return redirect('classes')
 
