@@ -44,7 +44,7 @@ def signup(request):
             email=email
         )
 
-        dm_create_school(str(School.objects.get(school_code=school_code)))
+        dm_create_school(str(School.objects.get(school_code=school_code).id))
 
         return redirect('notify_username_password')
     
