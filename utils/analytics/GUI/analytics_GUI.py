@@ -126,6 +126,7 @@ def visualize_student_accuracy_by_week(student_name: str, accuracy: dict) -> byt
 
 
 def visualize_student_accuracy_by_lesson(student_name: str, lessons: dict) -> bytes:
+    print(lessons)
     fig = px.bar(
         x=list(lessons.keys()),
         y=list(lessons.values()),

@@ -83,7 +83,7 @@ def compute_school_classes_accuracy(school_id):
     for class_ in classes:
         # Get list of accuracy values for students in the class
         student_accuracies = list(
-            compute_class_students_accuracy(class_.id).values()
+            compute_class_students_accuracy(school_id,class_.id).values()
         )
 
         if not student_accuracies:
@@ -151,14 +151,14 @@ def compute_school_teachers_performance(school_id):
                 try:
                     date_str, time_str = datetime_str.split()
                     date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
-                    result_weekday = date_obj.strftime("%A")
+                    result_weekday = date_obj.strftime("%A").lower()
                     result_time = datetime.time.fromisoformat(time_str)
                 except ValueError:
                     continue  # Skip malformed date/time
 
                 # Find which teacher was responsible at that time
                 for time_range, teacher_code in class_schedule.get(result_weekday, {}).items():
-                    if not (teacher_code in teachers_performance.keys):
+                    if not (str(teacher_code) in teachers_performance.keys()):
                         continue
                     try:
                         start_str, end_str = time_range.split('-')
@@ -240,7 +240,7 @@ def compute_student_accuracy_by_lesson(school_id, class_id, student_national_cod
         try:
             date_str, time_str = datetime_str.split()
             date_obj = datetime.datetime.strptime(date_str, "%Y-%m-%d")
-            result_weekday = date_obj.strftime("%A")
+            result_weekday = date_obj.strftime("%A").lower()
             result_time = datetime.time.fromisoformat(time_str)
         except ValueError:
             continue
@@ -288,7 +288,7 @@ def compute_student_accuracy_by_week(school_id, class_id, student_national_code)
         dict: Mapping from date (YYYY-MM-DD) to accuracy percentage (0–100).
     """
     # Build the path to the result file
-    file_path = os.path.join(get_base_path(), str(school_id), str(class_id), f"{student_national_code}.txt"),
+    file_path = os.path.join(get_base_path(), str(school_id), str(class_id), f"{student_national_code}.txt")
 
     # Generate past 7 days including today
     today = datetime.date.today()

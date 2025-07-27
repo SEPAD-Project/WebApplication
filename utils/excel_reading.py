@@ -196,7 +196,7 @@ def schedule_extraction(path_to_xlsx, sheet_name):
             header = str(column[0])
             value = column[row_index + 1]
             schedule[row_label][header] = value
-
+    
     return schedule
 
 

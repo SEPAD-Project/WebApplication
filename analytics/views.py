@@ -25,7 +25,7 @@ def select_student_for_lesson_accuracy(request):
         current_user = request.user   
         student_nc = request.POST.get('student_national_code')
 
-        student = Student.objects.filter(student_national_code=student).first()
+        student = Student.objects.filter(student_national_code=student_nc).first()
 
         task_generate_student_accuracy_by_lesson(school_id=current_user.id, name=student.student_name, family=student.student_family, national_code=student_nc, class_id=student.student_class.id, school_email=current_user.email) 
 
@@ -37,23 +37,21 @@ def select_student_for_week_accuracy(request):
         current_user = request.user   
         student_nc = request.POST.get('student_national_code')
 
-        student = Student.objects.filter(student_national_code=student).first()
+        student = Student.objects.filter(student_national_code=student_nc).first()
 
         task_generate_student_accuracy_by_week(school_id=current_user.id, name=student.student_name, family=student.student_family, national_code=student_nc, class_id=student.student_class.id, school_email=current_user.email)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
     return render(request, 'form/select_student_for_week_accuracy.html')
 
 @login_required
 def school_teachers_performance(request):      
-    if request.method == "POST":
-        current_user = request.user
-        task_generate_school_teachers_performance(school_id=current_user.id, school_email=current_user.email)
+    current_user = request.user
+    task_generate_school_teachers_performance(school_id=current_user.id, school_email=current_user.email)
 
-        return redirect('analytics_menu')
+    return redirect('analytics_menu')
     
 @login_required
 def school_classes_accuracy(request):      
-    if request.method == "POST":
-        current_user = request.user
-        task_generate_school_classes_accuracy(school_id=current_user.id, school_email=current_user.email)
+    current_user = request.user
+    task_generate_school_classes_accuracy(school_id=current_user.id, school_email=current_user.email)
 
-        return redirect('analytics_menu')
+    return redirect('analytics_menu')
