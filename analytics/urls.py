@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path('', views.analytics_menu, name='analytics_menu'),
-    path('/compare_student_accuracy_lesson', views.compare_student_accuracy_lesson, name='compare_student_accuracy_lesson'),
-    path('/compare_student_accuracy_week', views.compare_student_accuracy_week, name='compare_student_accuracy_week'),
-    path('/compare_students', views.compare_students, name='compare_students'),
+    path('/select_student_for_lesson_accuracy', views.select_student_for_lesson_accuracy, name='select_student_for_lesson_accuracy'),
+    path('/select_student_for_week_accuracy', views.select_student_for_week_accuracy, name='select_student_for_week_accuracy'),
+    path('/select_class_for_students_accuracy', views.select_class_for_students_accuracy, name='select_class_for_students_accuracy'),
 ]
