@@ -1,5 +1,17 @@
 import plotly.express as px
+import os
+import platform
 
+def get_base_path():
+    """Return appropriate paths based on the operating system"""
+    system = platform.system().lower()
+    
+    if system == 'windows':
+        return r"C:\sap-project\server\schools"
+    else:
+        home_dir = os.path.expanduser("~")
+        return os.path.join(home_dir, "sap-project", "server", "schools")
+    
 
 def bar_style(fig, title, x_title, y_title):
     """
@@ -98,7 +110,7 @@ def line_style(fig, title, x_title, y_title):
     return fig
 
 
-def show_classes_accuracy(classes: dict):
+def visualize_class_accuracy(classes: dict):
     """
     Create and save a bar chart comparing accuracy across classes.
 
@@ -110,11 +122,11 @@ def show_classes_accuracy(classes: dict):
         y=list(classes.values()),
         text=list(classes.values())
     )
-    fig = bar_style(fig, "Compare Classes", "Class Code", "Score")
-    fig.write_image(r"c:\sap-project\server\compare_classes.pdf", format="pdf", scale=2)
+    fig = bar_style(fig, "Class Accuracy Comparison" "Class Code", "Score")
+    fig.write_image(os.path.join(get_base_path(), 'class_accuracy.pdf'), format="pdf", scale=2)
 
 
-def show_students_accuracy(students: dict):
+def visualize_class_students_accuracy(students: dict):
     """
     Create and save a bar chart comparing accuracy across students.
 
@@ -126,13 +138,13 @@ def show_students_accuracy(students: dict):
         y=list(students.values()),
         text=list(students.values())
     )
-    fig = bar_style(fig, "Compare Students", "Student Name", "Score")
-    fig.write_image(r"c:\sap-project\server\compare_students.pdf", format="pdf")
+    fig = bar_style(fig, "Student Accuracy Comparison (by Class)", "Student Name", "Score")
+    fig.write_image(os.path.join(get_base_path(), 'class_students_accuracy.pdf'), format="pdf")
 
 
 
 
-def show_teachers_performance(teachers: dict):
+def visualize_teacher_performance(teachers: dict):
     """
     Generate and save a bar chart comparing teacher performance.
 
@@ -144,11 +156,11 @@ def show_teachers_performance(teachers: dict):
         y=list(teachers.values()),
         text=list(teachers.values())
     )
-    fig = bar_style(fig, "Compare Teachers", "Teacher Name", "Score")
-    fig.write_image(r"c:\sap-project\server\compare_teachers.pdf", format="pdf")
+    fig = bar_style(fig, 	"Teacher Performance Comparison", "Teacher Name", "Score")
+    fig.write_image(os.path.join(get_base_path(), 'teacher_performance.pdf'), format="pdf")
 
 
-def show_student_weekly_accuracy(student_name: str, accuracy: dict):
+def visualize_student_accuracy_by_week(student_name: str, accuracy: dict):
     """
     Generate and save a line chart of a student's daily accuracy over a week.
 
@@ -163,11 +175,11 @@ def show_student_weekly_accuracy(student_name: str, accuracy: dict):
         labels={'x': 'Day', 'y': 'Accuracy (%)'}
     )
     fig = line_style(
-        fig, f"{student_name}'s Weekly Accuracy", "Day", "Accuracy (%)")
-    fig.write_image(r"c:\sap-project\server\student_accuracy_week.pdf", format="pdf")
+        fig, f"Weekly Accuracy for {student_name}", "Day", "Accuracy (%)")
+    fig.write_image(os.path.join(get_base_path(), 'student_accuracy_by_week.pdf'), format="pdf")
 
 
-def show_student_accuracy_by_lesson(student_name: str, lessons: dict):
+def visualize_student_accuracy_by_lesson(student_name: str, lessons: dict):
     """
     Generate and save a bar chart showing student's accuracy by lesson.
 
@@ -181,37 +193,37 @@ def show_student_accuracy_by_lesson(student_name: str, lessons: dict):
         text=list(lessons.values())
     )
     fig = bar_style(
-        fig, f"{student_name}'s Lesson Accuracy", "Lesson", "Score")
-    fig.write_image(r"c:\sap-project\server\student_accuracy_by_lesson.pdf", format="pdf")
+        fig, 	f"Accuracy by Lesson for {student_name}", "Lesson", "Score")
+    fig.write_image(os.path.join(get_base_path(), 'student_accuracy_by_lesson.pdf'), format="pdf")
 
 
 # --- Example usage / standalone test ---
 if __name__ == "__main__":
     # Sample class performance
-    show_classes_accuracy({
+    visualize_class_accuracy({
         '1051': 25.5, '1052': 84.3, '1053': 56.7, '1054': 96.3
     })
 
     # Sample student performance
-    show_students_accuracy({
+    visualize_class_students_accuracy({
         'Alex': 82.5, 'John': 75.2, 'Emma': 91.8, 'Max': 68.4,
         'Liam': 85.0, 'Sophia': 88.6, 'Ryan': 79.3, 'Mia': 92.1
     })
 
     # Sample student weekly accuracy
-    show_student_weekly_accuracy("Parsa Safaie", {
+    visualize_student_accuracy_by_week("Parsa Safaie", {
         'Monday': 85.5, 'Tuesday': 87.2, 'Wednesday': 88.1,
         'Thursday': 90.4, 'Friday': 92.3, 'Saturday': 91.5, 'Sunday': 89.0
     })
 
     # Sample teacher performance
-    show_teachers_performance({
+    visualize_teacher_performance({
         'Mr. Lee': 92.5, 'Ms. Kim': 87.3, 'Mr. Ray': 78.4,
         'Mrs. Fox': 84.1, 'Mr. Jay': 90.2, 'Ms. Zoe': 76.9
     })
 
     # Sample lesson accuracy
-    show_student_accuracy_by_lesson("Parsa Safaie", {
+    visualize_student_accuracy_by_lesson("Parsa Safaie", {
         "Math": 88.5, "Physics": 92.3, "Chemistry": 85.7,
         "Biology": 79.6, "English": 90.1, "Computer": 95.4
     })
