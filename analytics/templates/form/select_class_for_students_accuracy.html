@@ -14,7 +14,8 @@
     
     <div class="container">
         <div class="glass-card">
-            <form method="POST" action="" class="compare-student-form" enctype="multipart/form-data">
+            <form method="POST" action="select_class_for_students_accuracy" class="compare-student-form" enctype="multipart/form-data">
+                {% csrf_token %}
                 <h1 class="form-title">Compare Students</h1>
                 <select name="selected_class" class="select-field">
                     {% for class in classes %}

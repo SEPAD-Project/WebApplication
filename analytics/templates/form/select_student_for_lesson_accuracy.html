@@ -14,7 +14,8 @@
     <div id="particles-js"></div>
     
     <div class="glass-card">
-                <form method="POST" action="" enctype="multipart/form-data">
+        <form method="POST" action="select_student_for_lesson_accuracy" enctype="multipart/form-data">
+            {% csrf_token %}
             <h1 class="form-title">Student By Lesson</h1>
             <input type="text" id="student_national_code" name="student_national_code" placeholder="Student National Code" pattern="[0-9]+" title="Should only contain numbers" required>
 
