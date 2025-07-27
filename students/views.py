@@ -13,6 +13,8 @@ from utils.excel_reading import add_students
 from utils.server.Website.directory_manager import dm_create_student, dm_edit_student, dm_delete_student
 from utils.base_path_finder import find_base_path
 
+import zipfile
+
 
 def students(request):
     currect_user = request.user
@@ -85,6 +87,7 @@ def add_students_from_excel(request):
         class_letter = request.POST.get('class')
         pass_letter = request.POST.get('password')
         phone_letter = request.POST.get('phone_number')
+        zip_file = request.FILES.get('zip_input')
 
         classes = Class.objects.all()
         students = Student.objects.all()
@@ -116,6 +119,7 @@ def add_students_from_excel(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
+            print(excel_errors)
             return redirect('error_in_student_excel')
         
         for student in result:
@@ -130,13 +134,18 @@ def add_students_from_excel(request):
                 school_id=school_user.id
             )
             
+
             save_path = os.path.join(find_base_path(), str(current_user.id), str(cls.id))
             filename = f"{student['national_code']}.jpg"
             file_path = os.path.join(save_path, filename)
 
-            with open(file_path, 'wb+') as dest:
-                for chunk in uploaded_file.chunks():
-                    dest.write(chunk)
+            zip_inner_path = f"{zip_file.name[:-4]}/{cls.class_name}/{student['national_code']}.jpg"
+
+            with zipfile.ZipFile(zip_file) as zf:
+                if zip_inner_path in zf.namelist():
+                    with zf.open(zip_inner_path) as photo:
+                        with open(file_path, 'wb') as dest:
+                            dest.write(photo.read())
 
             dm_create_student(school_id=str(school_user.id), class_id=str(cls.id), student_code=student['national_code'])
         
