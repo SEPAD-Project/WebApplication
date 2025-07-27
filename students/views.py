@@ -9,6 +9,7 @@ from .models import Student
 from classes.models import Class
 
 from utils.excel_reading import add_students
+from utils.server.Website.directory_manager import dm_create_student, dm_edit_student, dm_delete_student
 
 
 def students(request):
@@ -29,14 +30,17 @@ def add_student(request):
 
         if Student.objects.filter(Q(student_national_code=student_national_code) | Q(student_phone_number=student_phone_number)):
             return redirect('add_student')
-
+        
+        student_class = Class.objects.get(id=int(selected_class_code))
         Student.objects.create(student_name=student_name,
                                student_family=student_family,
                                student_national_code=student_national_code,
                                student_password=student_password,
                                student_phone_number=student_phone_number,
-                               student_class=Class.objects.get(id=int(selected_class_code)),
+                               student_class=student_class,
                                school=current_user)
+        
+        dm_create_student(school_id=str(current_user.id), class_id=str(student_class.id), student_code=student_national_code)
         
         return redirect('students')
 
@@ -99,7 +103,6 @@ def add_students_from_excel(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            print(excel_errors)
             return redirect('error_in_student_excel')
         
         for student in result:
@@ -113,7 +116,9 @@ def add_students_from_excel(request):
                 student_password=student['password'],
                 school_id=school_user.id
             )
-            
+
+            dm_create_student(school_id=str(school_user.id), class_id=str(cls.id), student_code=student['national_code'])
+        
         return redirect('students')
 
     return render(request, 'form/add_students_from_excel.html')
@@ -142,6 +147,8 @@ def edit_student(request, national_code):
         student.student_phone_number = student_phone_number
 
         student.save()
+
+        dm_edit_student(school_id=str(current_user.id), class_id=str(student.student_class.id), old_student_code=national_code, new_student_code=student_national_code)
         
         return redirect('students')
     
@@ -153,8 +160,10 @@ def remove_student(request, national_code):
     student = Student.objects.filter(Q(student_national_code=national_code)&Q(school_id=current_user.id)).first()
     if student is None:
         return redirect('unknown_student_info')
-
+    
     Student.delete(student)
+
+    dm_delete_student(school_id=str(current_user.id), class_id=str(student.student_class.id), student_code=student.student_national_code)
         
     return redirect('students')
 
