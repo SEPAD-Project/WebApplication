@@ -7,6 +7,7 @@ from django.core.files.storage import FileSystemStorage
 from .models import Class
 from utils.excel_reading import add_classes
 from utils.generate_class_code import generate_class_code
+from utils.server.Website.directory_manager import dm_create_class, dm_delete_class
 
 
 @login_required
@@ -31,6 +32,8 @@ def add_class(request):
         Class.objects.create(class_name=class_name, 
                             class_code=class_code,
                             school=current_user)
+        
+        dm_create_class(school_id=str(request.user.id), class_id=str(Class.objects.get(class_code=class_code).id))
         
         return redirect('classes')
 
@@ -115,6 +118,8 @@ def remove_class(request, class_name):
     cls = Class.objects.filter(Q(class_name=class_name)&Q(school=current_user.id)).first()
     if cls is None:
         return redirect('unknown_student_info')
+    
+    dm_delete_class(school_id=str(request.user.id), class_id=str(cls.id))
 
     Class.delete(cls)
         
