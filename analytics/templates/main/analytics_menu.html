@@ -1,44 +1,40 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Analytics Menu - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="../static/icons/icon.ico">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/analytics/analytics_menu.css') }}">
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/main/analytics_menu.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div id="particles-js"></div>
     
-    <!-- Hamburger Menu -->
-    <div class="hamburger" id="hamburger">
-        <i class="fas fa-bars" id="hamburger-icon"></i>
-    </div>
-    
     <div class="sidebar" id="sidebar">
-        <a href="{{ url_for('school_routes.panel_school_info') }}" class="sidebar-item"> 
+        <a href="{% url 'school_info' %}" class="sidebar-item"> 
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
-        <a href="{{ url_for('class_routes.panel_classes') }}" class="sidebar-item">
+        <a href="{% url 'classes' %}" class="sidebar-item">
             <i class="fa-solid fa-chalkboard"></i>
             <span class="sidebar-text">Classes</span>
         </a>
-        <a href="{{ url_for('teacher_routes.panel_teachers') }}" class="sidebar-item">
+        <a href="{% url 'teachers' %}" class="sidebar-item">
             <i class="fa-solid fa-user-tie"></i>
             <span class="sidebar-text">Teachers</span>
         </a>
-        <a href="{{ url_for('student_routes.panel_students') }}" class="sidebar-item">
+        <a href="{% url 'students' %}" class="sidebar-item">
             <i class="fa-solid fa-users"></i>
             <span class="sidebar-text">Students</span>
         </a>
-        <a href="{{ url_for('analytics_routes.analytics_menu') }}" class="sidebar-item" data-active="true">
+        <a href="{% url 'analytics_menu' %}" class="sidebar-item">
             <i class="fa-solid fa-chart-line"></i>
             <span class="sidebar-text">Analytics</span>
         </a>
-        <a href="{{ url_for('main_routes.home') }}" class="sidebar-item">
+        <a href="{% url 'home' %}" class="sidebar-item">
             <i class="fa-solid fa-house"></i>
             <span class="sidebar-text">Go to Home</span>
         </a>
@@ -53,11 +49,11 @@
 
         <div class="glass-card analytics-container">
             <div class="button-group">
-                <a href="{{ url_for('analytics_routes.compare_students') }}" class="analytics-button">Compare Students</a>
-                <a href="{{ url_for('analytics_routes.compare_classes') }}" class="analytics-button">Compare Classes</a>
-                <a href="{{ url_for('analytics_routes.compare_teachers') }}" class="analytics-button">Compare Teachers</a>
-                <a href="{{ url_for('analytics_routes.student_accuracy_week') }}" class="analytics-button">Student Accuracy Over Week</a>
-                <a href="{{ url_for('analytics_routes.student_accuracy_by_lesson') }}" class="analytics-button">Student Accuracy In Each Lesson</a>
+                <a href="" class="analytics-button">Compare Students</a>
+                <a href="" class="analytics-button">Compare Classes</a>
+                <a href="" class="analytics-button">Compare Teachers</a>
+                <a href="" class="analytics-button">Student Accuracy Over Week</a>
+                <a href="" class="analytics-button">Student Accuracy In Each Lesson</a>
             </div>
         </div>
     </div>
