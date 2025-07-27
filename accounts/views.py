@@ -5,6 +5,8 @@ from django.db.models import Q
 
 from schools.models import School
 
+from utils.server.Website.directory_manager import dm_create_school
+
 def login_view(request):
     if request.method == 'POST':
         school_code = request.POST.get('school_code')
@@ -41,6 +43,8 @@ def signup(request):
             city=city,
             email=email
         )
+
+        dm_create_school(str(School.objects.get(school_code=school_code)))
 
         return redirect('notify_username_password')
     
