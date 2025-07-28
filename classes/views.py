@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.db.models import Q
@@ -11,6 +12,7 @@ from utils.server.Website.directory_manager import dm_create_class, dm_delete_cl
 from utils.base_path_finder import find_base_path
 
 import os
+import json
 
 
 @login_required
@@ -57,15 +59,27 @@ def add_classes_from_excel(request):
 
         result = add_classes(filename, sheet_name, name_letter, [cls.class_name for cls in classes], school_user.school_code)
         
-        if result == 'sheet_not_found':
-            return redirect('error_in_class_excel')
-
-        if result == 'bad_column_letter':
-            return redirect('error_in_class_excel')
+        if result == 'sheet_not_found' or result == 'bad_column_letter':
+            excel_errors = [result]
+            response = HttpResponseRedirect(reverse('error_in_class_excel'))
+            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
+            return response
 
         if isinstance(result[0], list):
-            return redirect('error_in_class_excel')
-        
+            excel_errors = []
+            for problem in result:
+                cell = f"{problem[2]}{problem[1]}"
+                if problem[0] == "bad_format":
+                    excel_errors.append(f"Bad data format in cell {cell}.")
+                elif problem[0] == "duplicated_name":
+                    excel_errors.append(f"Duplicated value in cell {cell}.")
+                else:
+                    excel_errors.append(f"Unknown issue in cell {cell}.")
+
+            response = HttpResponseRedirect(reverse('error_in_class_excel'))
+            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
+            return response
+
         for cls in result:
             Class.objects.create(
                 class_name=cls['name'],
@@ -141,7 +155,8 @@ def duplicated_class_info(request):
     return render(request, 'error/duplicated_class_info.html')
 
 def error_in_class_excel(request):
-    return render(request, 'error/error_in_class_excel.html')
+    errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
+    return render(request, 'error/error_in_class_excel.html', {'texts':errors})
 
 def class_file_permission_error(request):
     return render(request, 'error/class_file_permission_error.html')
