@@ -5,7 +5,7 @@ cd ..
 source .venv/bin/activate
 
 echo "🟢 Starting Django server..."
-python3 manage.py runserver &
+python3 manage.py runserver 0.0.0.0:8000&
 
 sleep 2
 
