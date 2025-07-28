@@ -68,6 +68,10 @@ def error_in_student_excel(request):
     errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
     return render(request, 'error/error_in_student_excel.html', {'texts':errors})
 
+def error_in_student_zip(request):
+    errors = json.loads(request.COOKIES.get('zip_errors', '[]'))
+    return render(request, 'error/error_in_student_zip.html', {'texts':errors})
+
 def student_file_permission_error(request):
     return render(request, 'error/student_file_permission_error.html')
 
@@ -125,6 +129,20 @@ def add_students_from_excel(request):
             response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
             return response
         
+        zip_errors = []
+        for student in result:
+            cls = Class.objects.filter(class_code=student['class']).first()
+            zip_inner_path = f"{zip_file.name[:-4]}/{cls.class_name}/{student['national_code']}.jpg"
+
+            with zipfile.ZipFile(zip_file) as zf:
+                if not (zip_inner_path in zf.namelist()):
+                    zip_errors.append(zip_inner_path)
+
+        if zip_errors != []:
+            response = HttpResponseRedirect(reverse('error_in_student_zip'))
+            response.set_cookie('zip_errors', json.dumps(zip_errors), max_age=3600)
+            return response
+
         for student in result:
             cls = Class.objects.filter(class_code=student['class']).first()
             Student.objects.create(
@@ -136,7 +154,6 @@ def add_students_from_excel(request):
                 student_password=student['password'],
                 school_id=school_user.id
             )
-            
 
             save_path = os.path.join(find_base_path(), str(current_user.id), str(cls.id))
             filename = f"{student['national_code']}.jpg"

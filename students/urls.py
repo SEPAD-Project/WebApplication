@@ -7,6 +7,7 @@ urlpatterns = [
     path('/student_file_permission_error', views.student_file_permission_error, name='student_file_permission_error'),
     path('/duplicated_student_info', views.duplicated_student_info, name='duplicated_student_info'),
     path('/error_in_student_excel', views.error_in_student_excel, name='error_in_student_excel'),
+    path('/error_in_student_zip', views.error_in_student_zip, name='error_in_student_zip'),
     path('/unknown_student_info', views.unknown_student_info, name='unknown_student_info'),
     path('/add_students_from_excel', views.add_students_from_excel, name='add_students_from_excel'),
     path('/edit_student/<str:national_code>', views.edit_student, name='edit_student'),
