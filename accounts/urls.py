@@ -2,9 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('/login', views.login_view, name='login'),
-    path('/signup', views.signup, name='signup'),
-    path('/duplicated_school_info', views.duplicated_school_info, name='duplicated_school_info'),
-    path('/notify_username_password', views.notify_username_password, name='notify_username_password'),
-    path('/unknown_school_info', views.unknown_school_info, name='unknown_school_info'),
+    path('login/', views.school_login_view, name='login'),
+    path('signup/', views.school_signup_view, name='signup'),
+
+    path('error/duplicate-school/', views.duplicate_school_error_view, name='error_duplicate_school'),
+    path('error/unknown-school/', views.unknown_school_error_view, name='error_unknown_school'),
+    path('success/registration/', views.registration_success_view, name='success_registration'),
 ]

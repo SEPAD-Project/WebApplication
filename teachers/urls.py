@@ -2,10 +2,12 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.teachers, name='teachers'),
-    path('/add_teacher', views.add_teacher, name='add_teacher'),
-    path('/teacher_info/<str:national_code>', views.teacher_info, name='teacher_info'),
-    path('/wrong_teacher_info', views.wrong_teacher_info, name='wrong_teacher_info'),
-    path('/edit_teacher/<str:national_code>', views.edit_teacher, name='edit_teacher'),
-    path('/remove_teacher/<str:national_code>', views.remove_teacher, name='remove_teacher'),
+    path('', views.teacher_list_view, name='list'),
+    path('add/', views.teacher_add_view, name='add'),
+    path('<str:national_code>/', views.teacher_detail_view, name='detail'),
+    path('<str:national_code>/edit/', views.teacher_update_view, name='edit'),
+    path('<str:national_code>/remove/', views.teacher_remove_view, name='remove'),
+
+    # Errors
+    path('error/invalid/', views.invalid_teacher_error_view, name='error_invalid'),
 ]

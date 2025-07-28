@@ -2,15 +2,17 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.students, name='students'),
-    path('/add_student', views.add_student, name='add_student'),
-    path('/student_file_permission_error', views.student_file_permission_error, name='student_file_permission_error'),
-    path('/duplicated_student_info', views.duplicated_student_info, name='duplicated_student_info'),
-    path('/error_in_student_excel', views.error_in_student_excel, name='error_in_student_excel'),
-    path('/error_in_student_zip', views.error_in_student_zip, name='error_in_student_zip'),
-    path('/unknown_student_info', views.unknown_student_info, name='unknown_student_info'),
-    path('/add_students_from_excel', views.add_students_from_excel, name='add_students_from_excel'),
-    path('/edit_student/<str:national_code>', views.edit_student, name='edit_student'),
-    path('/remove_student/<str:national_code>', views.remove_student, name='remove_student'),
-    path('/student_info/<str:national_code>', views.student_info, name='student_info'),
+    path('', views.student_list_view, name='list'),
+    path('add/', views.student_create_view, name='create'),
+    path('import/', views.student_bulk_upload_view, name='import'),
+    path('<str:national_code>/', views.student_detail_view, name='detail'),
+    path('<str:national_code>/edit/', views.student_update_view, name='edit'),
+    path('<str:national_code>/delete/', views.student_delete_view, name='delete'),
+
+    # Errors
+    path('error/duplicate/', views.duplicate_student_error_view, name='error_duplicate'),
+    path('error/excel/', views.student_excel_error_view, name='error_excel'),
+    path('error/zip/', views.student_zip_error_view, name='error_zip'),
+    path('error/permission/', views.student_file_permission_error_view, name='error_permission'),
+    path('error/not-found/', views.unknown_student_error_view, name='error_not_found'),
 ]
