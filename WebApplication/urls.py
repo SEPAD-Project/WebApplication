@@ -2,7 +2,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include('pages.urls')),
-    path('auth/', include('accounts.urls')),
+    path('accounts/', include('accounts.urls')),
 
     path('panel/', include('schools.urls')),
     path('panel/classes/', include('classes.urls')),
