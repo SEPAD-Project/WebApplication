@@ -13,28 +13,28 @@
 <body>
     <div id="particles-js"></div>
     
-<div class="sidebar" id="sidebar">
-        <a href="{% url 'school_info' %}" class="sidebar-item"> 
+    <div class="sidebar" id="sidebar">
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item"> 
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
-        <a href="{% url 'classes' %}" class="sidebar-item">
+        <a href="{% url 'classes:list' %}" class="sidebar-item">
             <i class="fa-solid fa-chalkboard"></i>
             <span class="sidebar-text">Classes</span>
         </a>
-        <a href="{% url 'teachers' %}" class="sidebar-item">
+        <a href="{% url 'teachers:list' %}" class="sidebar-item">
             <i class="fa-solid fa-user-tie"></i>
             <span class="sidebar-text">Teachers</span>
         </a>
-        <a href="{% url 'students' %}" class="sidebar-item">
+        <a href="{% url 'students:list' %}" class="sidebar-item">
             <i class="fa-solid fa-users"></i>
             <span class="sidebar-text">Students</span>
         </a>
-        <a href="{% url 'analytics_menu' %}" class="sidebar-item">
+        <a href="{% url 'analytics:dashboard' %}" class="sidebar-item">
             <i class="fa-solid fa-chart-line"></i>
             <span class="sidebar-text">Analytics</span>
         </a>
-        <a href="{% url 'home' %}" class="sidebar-item">
+        <a href="{% url 'pages:home' %}" class="sidebar-item">
             <i class="fa-solid fa-house"></i>
             <span class="sidebar-text">Go to Home</span>
         </a>
@@ -46,12 +46,12 @@
             <div class="header">
                 <h1>Manage Teachers</h1>
                 <div class="button-group">
-                    <a href="{% url 'add_teacher' %}" class="add-teacher-button">Add Teacher</a>
+                    <a href="{% url 'teachers:add' %}" class="add-teacher-button">Add Teacher</a>
                 </div>
             </div>
 
             <div class="search-section">
-                <form class="search-form" method="GET" action="{% url 'teachers' %}">
+                <form class="search-form" method="GET" action="{% url 'teachers:list' %}">
                     <input type="search" class="search-input" name="q" placeholder="Search..." pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, space, and dash">
                     <button type="submit" class="search-button">Search</button>
                 </form>
@@ -67,9 +67,9 @@
                         <p class="teacher-code">{{ teacher.teacher_national_code }}</p>
                     </div>
                     <div class="action-buttons">
-                        <a href="{% url 'teacher_info' teacher.teacher_national_code %}" class="action-button see">See</a>
-                        <a href="{% url 'edit_teacher' teacher.teacher_national_code %}" class="action-button edit">Edit</a>
-                        <a href="{% url 'remove_teacher' teacher.teacher_national_code %}" class="action-button remove">Remove</a>
+                        <a href="{% url 'teachers:detail' teacher.teacher_national_code %}" class="action-button see">See</a>
+                        <a href="{% url 'teachers:edit' teacher.teacher_national_code %}" class="action-button edit">Edit</a>
+                        <a href="{% url 'teachers:remove' teacher.teacher_national_code %}" class="action-button remove">Remove</a>
                     </div>
                 </div>
                 {% endfor %}

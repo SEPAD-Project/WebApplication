@@ -15,7 +15,7 @@
     <div id="particles-js"></div>
 
     <div class="glass-card">
-        <form method="POST" action="{% url 'add_classes_from_excel' %}" class="add-excel-form" enctype="multipart/form-data">
+        <form method="POST" action="{% url 'classses:import' %}" class="add-excel-form" enctype="multipart/form-data">
             {% csrf_token %}
             <h1 class="form-title">Add From Excel</h1>
             <div class="inputs-part">
@@ -31,7 +31,7 @@
 
             <div class="button-group">
                 <button type="submit" class="action-button">Add</button>
-                <a href="{% url 'classes' %}">
+                <a href="{% url 'classes:list' %}">
                     <button type="button" class="cancel-button">Cancel</button>
                 </a>
             </div>

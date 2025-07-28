@@ -20,27 +20,27 @@
 
 
     <div class="sidebar" id="sidebar">
-        <a href="{% url 'school_info' %}" class="sidebar-item"> 
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item"> 
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
-        <a href="{% url 'classes' %}" class="sidebar-item">
+        <a href="{% url 'classes:list' %}" class="sidebar-item">
             <i class="fa-solid fa-chalkboard"></i>
             <span class="sidebar-text">Classes</span>
         </a>
-        <a href="{% url 'teachers' %}" class="sidebar-item">
+        <a href="{% url 'teachers:list' %}" class="sidebar-item">
             <i class="fa-solid fa-user-tie"></i>
             <span class="sidebar-text">Teachers</span>
         </a>
-        <a href="{% url 'students' %}" class="sidebar-item">
+        <a href="{% url 'students:list' %}" class="sidebar-item">
             <i class="fa-solid fa-users"></i>
             <span class="sidebar-text">Students</span>
         </a>
-        <a href="{% url 'analytics_menu' %}" class="sidebar-item">
+        <a href="{% url 'analytics:dashboard' %}" class="sidebar-item">
             <i class="fa-solid fa-chart-line"></i>
             <span class="sidebar-text">Analytics</span>
         </a>
-        <a href="{% url 'home' %}" class="sidebar-item">
+        <a href="{% url 'pages:home' %}" class="sidebar-item">
             <i class="fa-solid fa-house"></i>
             <span class="sidebar-text">Go to Home</span>
         </a>

@@ -13,33 +13,28 @@
 <body>
     <div id="particles-js"></div>
     
-    <!-- Hamburger Menu -->
-    <div class="hamburger" id="hamburger">
-        <i class="fas fa-bars" id="hamburger-icon"></i>
-    </div>
-    
     <div class="sidebar" id="sidebar">
-        <a href="{% url 'school_info' %}" class="sidebar-item"> 
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item"> 
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
-        <a href="{% url 'classes' %}" class="sidebar-item">
+        <a href="{% url 'classes:list' %}" class="sidebar-item">
             <i class="fa-solid fa-chalkboard"></i>
             <span class="sidebar-text">Classes</span>
         </a>
-        <a href="{% url 'teachers' %}" class="sidebar-item">
+        <a href="{% url 'teachers:list' %}" class="sidebar-item">
             <i class="fa-solid fa-user-tie"></i>
             <span class="sidebar-text">Teachers</span>
         </a>
-        <a href="{% url 'students' %}" class="sidebar-item">
+        <a href="{% url 'students:list' %}" class="sidebar-item">
             <i class="fa-solid fa-users"></i>
             <span class="sidebar-text">Students</span>
         </a>
-        <a href="{% url 'analytics_menu' %}" class="sidebar-item">
+        <a href="{% url 'analytics:dashboard' %}" class="sidebar-item">
             <i class="fa-solid fa-chart-line"></i>
             <span class="sidebar-text">Analytics</span>
         </a>
-        <a href="{% url 'home' %}" class="sidebar-item">
+        <a href="{% url 'pages:home' %}" class="sidebar-item">
             <i class="fa-solid fa-house"></i>
             <span class="sidebar-text">Go to Home</span>
         </a>
@@ -50,8 +45,8 @@
             <div class="header">
                 <h1>Manage Classes</h1>
                 <div class="button-group">
-                    <a class="add-excel" href="{% url 'add_classes_from_excel' %}">Add from Excel</a>
-                    <a href="{% url 'add_class' %}" class="add-class-button">Add Class</a>
+                    <a class="add-excel" href="{% url 'classes:import' %}">Add from Excel</a>
+                    <a href="{% url 'classes:create' %}" class="add-class-button">Add Class</a>
                 </div>
             </div>
 
@@ -72,9 +67,9 @@
                         <p class="class-code">{{ class.class_code }}</p>
                     </div>
                     <div class="action-buttons">
-                        <a href="{% url 'class_info' class.class_name %}" class="action-button see">See</a>
-                        <a href="{% url 'edit_class' class.class_name %}" class="action-button edit">Edit</a>
-                        <a href="{% url 'remove_class' class.class_name %}" class="action-button remove">Remove</a>
+                        <a href="{% url 'classes:detail' class.class_name %}" class="action-button see">See</a>
+                        <a href="{% url 'classes:edit' class.class_name %}" class="action-button edit">Edit</a>
+                        <a href="{% url 'classes:delete' class.class_name %}" class="action-button remove">Remove</a>
                     </div>
                 </div>
                 {% endfor %}

@@ -13,7 +13,7 @@
 <body>
     <div id="particles-js"></div>
     <!-- Go Back Home Button -->
-    <a href="{% url 'home' %}" class="back-button">
+    <a href="{% url 'pages:home' %}" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
         </svg>
@@ -21,7 +21,7 @@
     </a>
 
     <!-- Login Form -->
-    <form method="POST" action="{% url 'login' %}" class="login-form">
+    <form method="POST" action="{% url 'accounts:login' %}" class="login-form">
         {% csrf_token %}
         <h1 class="form-title">Login</h1>
         <div class="inputs-part">
@@ -36,7 +36,7 @@
         <button type="submit" class="submit-button">Login</button>
         <p class="form-footer">
             Don't have an account? 
-            <a href="{% url 'signup' %}">Click here to sign up!</a>
+            <a href="{% url 'accounts:signup' %}">Click here to sign up!</a>
         </p>
     </form>
     

@@ -37,16 +37,16 @@
         </div>
         
         <div class="action-buttons">
-            <a href="{% url 'login' %}" class="retry-button">
+            <a href="{% url 'accounts:login' %}" class="retry-button">
                 <i class="fas fa-redo"></i> Try Again
             </a>
-            <a href="{% url 'signup' %}" class="signup-button">
+            <a href="{% url 'accounts:signup' %}" class="signup-button">
                 <i class="fas fa-user-plus"></i> Sign Up
             </a>
         </div>
         
         <div class="support-link">
-            <p>Still having trouble? <a href="{% url 'contact' %}">Contact support</a></p>
+            <p>Still having trouble? <a href="{% url 'pages:contact' %}">Contact support</a></p>
         </div>
     </div>
 

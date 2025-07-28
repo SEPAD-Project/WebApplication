@@ -27,15 +27,15 @@
                 <div class="nav-center">
                     <div class="nav-links">
                         <a href="#top" class="nav-link"><i class="fas fa-home"></i> Home</a>           
-                        <a href="{% url 'home' %}" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Panel</a>
-                        <a href="{% url 'downloads' %}" class="nav-link"><i class="fas fa-download"></i> Downloads</a>
-                        <a href="{% url 'comings_soon' %}" class="nav-link"><i class="fas fa-book"></i> Guide</a>
-                        <a href="{% url 'about' %}" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+                        <a href="{% url 'pages:home' %}" class="nav-link"><i class="fas fa-chalkboard-teacher"></i> Panel</a>
+                        <a href="{% url 'pages:downloads' %}" class="nav-link"><i class="fas fa-download"></i> Downloads</a>
+                        <a href="{% url 'pages:coming_soon' %}" class="nav-link"><i class="fas fa-book"></i> Guide</a>
+                        <a href="{% url 'pages:about' %}" class="nav-link"><i class="fas fa-info-circle"></i> About</a>
                     </div>
                 </div>
                 <div class="nav-right">
-                    <a href="{% url 'home' %}" class="nav-button">Sign Up</a>
-                    <a href="{% url 'home' %}" class="nav-button outline">Login</a>
+                    <a href="{% url 'pages:home' %}" class="nav-button">Sign Up</a>
+                    <a href="{% url 'pages:home' %}" class="nav-button outline">Login</a>
                 </div>
             </div>
         </div>
@@ -51,7 +51,7 @@
             <h1 class="hero-title">Enhance Learning Engagement</h1>
             <p class="hero-subtitle">Advanced analytics and Real-time feedback for student attention in virtual classrooms</p>
             <div class="hero-cta">
-                <a href="{% url 'contact' %}" class="cta-button primary">Start Free Trial</a>
+                <a href="{% url 'pages:contact' %}" class="cta-button primary">Start Free Trial</a>
                 <a href="#features" class="cta-button secondary">
                     <i class="fas fa-play-circle"></i> Watch Demo
                 </a>
@@ -117,7 +117,7 @@
                 </div>
             </div>
             <div class="intro-actions">
-                <a href="{% url 'contact' %}" class="cta-button primary">Start Your Free Trial</a>
+                <a href="{% url 'pages:contact' %}" class="cta-button primary">Start Your Free Trial</a>
                 <a href="#" class="cta-link">Schedule a demo <i class="fas fa-arrow-right"></i></a>
             </div>
         </section>
@@ -244,7 +244,7 @@
                         <li><i class="fas fa-check"></i> Access to 2 analytics report type</li>
                         <li><i class="fas fa-check"></i> Email Support</li>
                     </ul>
-                    <a href="{% url 'contact' %}" class="cta-button outline">Get Started</a>
+                    <a href="{% url 'pages:contact' %}" class="cta-button outline">Get Started</a>
                 </div>
                 <div class="pricing-card featured">
                     <div class="featured-badge">Most Popular</div>
@@ -260,7 +260,7 @@
                         <li><i class="fas fa-check"></i> Access to 4 analytics report type</li>
                         <li><i class="fas fa-check"></i> Email Support </li>
                     </ul>
-                    <a href="{% url 'contact' %}" class="cta-button primary">Get Started</a>
+                    <a href="{% url 'pages:contact' %}" class="cta-button primary">Get Started</a>
                 </div>
                 <div class="pricing-card">
                     <h3 class="pricing-title">Enterprise</h3>
@@ -275,7 +275,7 @@
                         <li><i class="fas fa-check"></i> Access to all analytics report types</li>
                         <li><i class="fas fa-check"></i> 24/7 support</li>
                     </ul>
-                    <a href="{% url 'contact' %}" class="cta-button outline">Get Started</a>
+                    <a href="{% url 'pages:contact' %}" class="cta-button outline">Get Started</a>
                 </div>
             </div>
             <div class="pricing-cta">
@@ -289,7 +289,7 @@
                 <h2 class="cta-title">Ready to Transform Your Virtual Classroom?</h2>
                 <p class="cta-text">Join thousands of educators who are already improving student engagement with SEPAD.</p>
                 <div class="cta-actions">
-                    <a href="{% url 'contact' %}" class="cta-button primary">Start Free Trial</a>
+                    <a href="{% url 'pages:contact' %}" class="cta-button primary">Start Free Trial</a>
                     <a href="#" class="cta-button secondary">Contact Sales</a>
                 </div>
             </div>
