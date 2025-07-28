@@ -7,14 +7,14 @@ from utils.generate_class_code import reverse_class_code
 
 
 # View to list all teachers for the current school user
-def teachers(request):
+def teacher_list_view(request):
     current_user = request.user
     teacher_list = current_user.teachers.all()
     return render(request, 'main/teachers.html', {'teachers': teacher_list})
 
 
 # View to add an existing teacher to the school and assign classes
-def add_teacher(request):
+def teacher_add_view(request):
     current_user = request.user
 
     if request.method == 'POST':
@@ -43,7 +43,7 @@ def add_teacher(request):
 
 
 # View to display teacher information if they belong to current school
-def teacher_info(request, national_code):
+def teacher_detail_view(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
         return redirect('wrong_teacher_info')
@@ -56,12 +56,12 @@ def teacher_info(request, national_code):
 
 
 # View to render error page when teacher info is invalid
-def wrong_teacher_info(request):
+def invalid_teacher_error_view(request):
     return render(request, 'error/wrong_teacher_info.html')
 
 
 # View to edit teacher’s assigned classes
-def edit_teacher(request, national_code):
+def teacher_update_view(request, national_code):
     current_user = request.user
 
     if request.method == 'POST':
@@ -104,7 +104,7 @@ def edit_teacher(request, national_code):
 
 
 # View to remove a teacher from the current school and detach their classes
-def remove_teacher(request, national_code):
+def teacher_remove_view(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
         return redirect('wrong_teacher_info')

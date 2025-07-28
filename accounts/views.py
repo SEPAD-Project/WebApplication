@@ -7,7 +7,7 @@ from utils.server.Website.directory_manager import dm_create_school
 
 
 # View for school login using school code and manager personal code
-def login_view(request):
+def school_login_view(request):
     if request.method == 'POST':
         school_code = request.POST.get('school_code')
         manager_code = request.POST.get('manager_personal_code')
@@ -25,7 +25,7 @@ def login_view(request):
 
 
 # View to handle school signup and user creation
-def signup(request):
+def school_signup_view(request):
     if request.method == 'POST':
         school_name = request.POST.get('school_name')
         school_code = request.POST.get('school_code')
@@ -58,15 +58,15 @@ def signup(request):
 
 
 # View for duplicate school registration error
-def duplicated_school_info(request):
+def duplicate_school_error_view(request):
     return render(request, 'error/duplicated_school_info.html')
 
 
 # View to notify user of their username and password after registration
-def notify_username_password(request):
+def registration_success_view(request):
     return render(request, 'error/notify_username_password.html')
 
 
 # View for unknown school info error during login
-def unknown_school_info(request):
+def unknown_school_error_view(request):
     return render(request, 'error/unknown_school_info.html')

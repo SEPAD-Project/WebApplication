@@ -19,14 +19,14 @@ from utils.base_path_finder import find_base_path
 
 
 # View to list all students in current school
-def students(request):
+def student_list_view(request):
     current_user = request.user
     student_list = current_user.students.all()
     return render(request, 'main/students.html', {'students': student_list})
 
 
 # View to manually add a new student
-def add_student(request):
+def student_create_view(request):
     current_user = request.user
 
     if request.method == 'POST':
@@ -75,7 +75,7 @@ def add_student(request):
 
 # View to add students from Excel and ZIP files
 @login_required
-def add_students_from_excel(request):
+def student_bulk_upload_view(request):
     if request.method == 'POST':
         current_user = request.user
         uploaded_excel = request.FILES['file_input']
@@ -172,7 +172,7 @@ def add_students_from_excel(request):
 
 
 # View to edit student info
-def edit_student(request, national_code):
+def student_edit_view(request, national_code):
     current_user = request.user
     student = Student.objects.filter(
         Q(student_national_code=national_code) & Q(school_id=current_user.id)
@@ -213,7 +213,7 @@ def edit_student(request, national_code):
 
 
 # View to delete a student
-def remove_student(request, national_code):
+def student_delete_view(request, national_code):
     current_user = request.user
     student = Student.objects.filter(
         Q(student_national_code=national_code) & Q(school_id=current_user.id)
@@ -234,7 +234,7 @@ def remove_student(request, national_code):
 
 
 # View to show student profile
-def student_info(request, national_code):
+def student_detail_view(request, national_code):
     current_user = request.user
     student = Student.objects.filter(
         Q(student_national_code=national_code) & Q(school_id=current_user.id)
@@ -247,23 +247,23 @@ def student_info(request, national_code):
 
 
 # Error page views
-def duplicated_student_info(request):
+def duplicate_student_error_view(request):
     return render(request, 'error/duplicated_student_info.html')
 
 
-def error_in_student_excel(request):
+def student_excel_error_view(request):
     errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
     return render(request, 'error/error_in_student_excel.html', {'texts': errors})
 
 
-def error_in_student_zip(request):
+def student_zip_error_view(request):
     errors = json.loads(request.COOKIES.get('zip_errors', '[]'))
     return render(request, 'error/error_in_student_zip.html', {'texts': errors})
 
 
-def student_file_permission_error(request):
+def student_file_permission_error_view(request):
     return render(request, 'error/student_file_permission_error.html')
 
 
-def unknown_student_info(request):
+def unknown_student_error_view(request):
     return render(request, 'error/unknown_student_info.html')

@@ -13,13 +13,13 @@ from .tasks import (
 
 # View to show main analytics menu
 @login_required
-def analytics_menu(request):
+def analytics_dashboard_view(request):
     return render(request, 'main/analytics_menu.html')
 
 
 # View to select a class and trigger student accuracy report generation
 @login_required
-def select_class_for_students_accuracy(request):
+def class_accuracy_report_view(request):
     current_user = request.user
 
     if request.method == "POST":
@@ -40,7 +40,7 @@ def select_class_for_students_accuracy(request):
 
 # View to select a student and generate accuracy-by-lesson report
 @login_required
-def select_student_for_lesson_accuracy(request):
+def student_lesson_accuracy_report_view(request):
     if request.method == "POST":
         current_user = request.user
         student_nc = request.POST.get('student_national_code')
@@ -61,7 +61,7 @@ def select_student_for_lesson_accuracy(request):
 
 # View to select a student and generate accuracy-by-week report
 @login_required
-def select_student_for_week_accuracy(request):
+def student_week_accuracy_report_view(request):
     if request.method == "POST":
         current_user = request.user
         student_nc = request.POST.get('student_national_code')
@@ -82,7 +82,7 @@ def select_student_for_week_accuracy(request):
 
 # View to trigger school teachers performance report
 @login_required
-def school_teachers_performance(request):
+def school_teachers_performance_report_view(request):
     current_user = request.user
 
     task_generate_school_teachers_performance(
@@ -95,7 +95,7 @@ def school_teachers_performance(request):
 
 # View to trigger school classes accuracy report
 @login_required
-def school_classes_accuracy(request):
+def school_classes_accuracy_report_view(request):
     current_user = request.user
 
     task_generate_school_classes_accuracy(

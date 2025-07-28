@@ -4,13 +4,13 @@ from django.shortcuts import render
 
 # View for displaying the main dashboard after login
 @login_required
-def panel_entry(request):
+def dashboard_view(request):
     return render(request, 'main/panel_entry.html')
 
 
 # View to display school-related statistics and current school info
 @login_required
-def school_info(request):
+def school_overview_view(request):
     current_user = request.user
 
     class_count = len(current_user.classes.all())

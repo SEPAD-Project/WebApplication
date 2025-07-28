@@ -17,7 +17,7 @@ from utils.server.Website.directory_manager import dm_create_class, dm_delete_cl
 
 # View to list all classes for the current logged-in user (school)
 @login_required
-def classes(request):
+def class_list_view(request):
     current_user = request.user
     class_list = current_user.classes.all()
     return render(request, 'main/classes.html', {'classes': class_list})
@@ -25,7 +25,7 @@ def classes(request):
 
 # View to manually add a single class
 @login_required
-def add_class(request):
+def class_create_view(request):
     if request.method == 'POST':
         class_name = request.POST.get('class_name')
         current_user = request.user
@@ -55,7 +55,7 @@ def add_class(request):
 
 # View to import classes from an uploaded Excel file
 @login_required
-def add_classes_from_excel(request):
+def class_bulk_upload_view(request):
     if request.method == 'POST':
         uploaded_file = request.FILES['file_input']
         fs = FileSystemStorage()
@@ -107,7 +107,7 @@ def add_classes_from_excel(request):
 
 # View to display details of a specific class
 @login_required
-def class_info(request, class_name):
+def class_detail_view(request, class_name):
     current_user = request.user
     data = Class.objects.filter(
         Q(class_name=class_name) & Q(school=current_user.id)
@@ -129,7 +129,7 @@ def class_info(request, class_name):
 
 # View to edit a class’s name or upload new schedule file
 @login_required
-def edit_class(request, class_name):
+def class_edit_view(request, class_name):
     current_user = request.user
     data = Class.objects.filter(
         Q(class_name=class_name) & Q(school=current_user.id)
@@ -166,7 +166,7 @@ def edit_class(request, class_name):
 
 # View to delete a class
 @login_required
-def remove_class(request, class_name):
+def class_delete_view(request, class_name):
     current_user = request.user
     cls = Class.objects.filter(
         Q(class_name=class_name) & Q(school=current_user.id)
@@ -182,26 +182,26 @@ def remove_class(request, class_name):
 
 
 # View to handle duplicated class error
-def duplicated_class_info(request):
+def duplicate_class_error_view(request):
     return render(request, 'error/duplicated_class_info.html')
 
 
 # View to handle Excel-related import errors
-def error_in_class_excel(request):
+def class_excel_error_view(request):
     errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
     return render(request, 'error/error_in_class_excel.html', {'texts': errors})
 
 
 # View for class file permission error
-def class_file_permission_error(request):
+def class_file_permission_error_view(request):
     return render(request, 'error/class_file_permission_error.html')
 
 
 # View for unknown class name error
-def unknown_class_info(request):
+def unknown_class_error_view(request):
     return render(request, 'error/unknown_class_info.html')
 
 
 # View for general schedule error
-def error_in_schedule(request):
+def schedule_error_view(request):
     return render(request, 'error/error_in_schedule.html')
