@@ -34,7 +34,7 @@ def class_create_view(request):
         class_code = generate_class_code(school_code, class_name)
 
         if Class.objects.filter(class_code=class_code).exists():
-            return redirect('duplicated_class_info')
+            return redirect('error_duplicate')
 
         new_class = Class.objects.create(
             class_name=class_name,
@@ -48,7 +48,7 @@ def class_create_view(request):
             class_id=str(new_class.id)
         )
 
-        return redirect('classes')
+        return redirect('list')
 
     return render(request, 'form/add_class.html')
 
@@ -74,7 +74,7 @@ def class_bulk_upload_view(request):
 
         if result in ['sheet_not_found', 'bad_column_letter']:
             excel_errors = [result]
-            response = HttpResponseRedirect(reverse('error_in_class_excel'))
+            response = HttpResponseRedirect(reverse('error_excel'))
             response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
             return response
 
@@ -89,7 +89,7 @@ def class_bulk_upload_view(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            response = HttpResponseRedirect(reverse('error_in_class_excel'))
+            response = HttpResponseRedirect(reverse('error_excel'))
             response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
             return response
 
@@ -100,7 +100,7 @@ def class_bulk_upload_view(request):
                 school_id=school_user.id,
             )
 
-        return redirect('classes')
+        return redirect('list')
 
     return render(request, 'form/add_classes_from_excel.html')
 
@@ -114,7 +114,7 @@ def class_detail_view(request, class_name):
     ).first()
 
     if data is None:
-        return redirect('unknown_class_info')
+        return redirect('error_not_found')
 
     return render(
         request,
@@ -136,7 +136,7 @@ def class_edit_view(request, class_name):
     ).first()
 
     if data is None:
-        return redirect('unknown_class_info')
+        return redirect('error_not_found')
 
     if request.method == 'POST':
         new_name = request.POST.get("class_name")
@@ -144,7 +144,7 @@ def class_edit_view(request, class_name):
 
         if new_name != class_name:
             if Class.objects.filter(Q(class_name=new_name) & Q(school=current_user.id)).exists():
-                return redirect('duplicated_class_info')
+                return redirect('error_duplicate')
 
             new_code = generate_class_code(current_user.school_code, new_name)
             data.class_name = new_name
@@ -159,7 +159,7 @@ def class_edit_view(request, class_name):
                 for chunk in uploaded_file.chunks():
                     dest.write(chunk)
 
-        return redirect('classes')
+        return redirect('list')
 
     return render(request, 'form/edit_class.html', {'name': data.class_name})
 
@@ -173,12 +173,12 @@ def class_delete_view(request, class_name):
     ).first()
 
     if cls is None:
-        return redirect('unknown_student_info')
+        return redirect('error_not_found')
 
     dm_delete_class(school_id=str(current_user.id), class_id=str(cls.id))
     cls.delete()
 
-    return redirect('classes')
+    return redirect('list')
 
 
 # View to handle duplicated class error

@@ -18,8 +18,8 @@ def school_login_view(request):
 
         if school_user is not None:
             login(request, school_user)
-            return redirect('panel_entry')
-        return redirect('unknown_school_info')
+            return redirect('')
+        return redirect('error_unknown_school')
 
     return render(request, 'form/login.html')
 
@@ -38,7 +38,7 @@ def school_signup_view(request):
             Q(school_code=school_code) | Q(manager_personal_code=manager_code)
         )
         if existing_school.exists():
-            return redirect('duplicated_school_info')
+            return redirect('error_duplicate_school')
 
         new_school = School.objects.create_user(
             school_name=school_name,
@@ -52,7 +52,7 @@ def school_signup_view(request):
         # Create directory for new school
         dm_create_school(str(new_school.id))
 
-        return redirect('notify_username_password')
+        return redirect('success_registration')
 
     return render(request, 'form/signup.html')
 

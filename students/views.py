@@ -41,7 +41,7 @@ def student_create_view(request):
         if Student.objects.filter(
             Q(student_national_code=national_code) | Q(student_phone_number=phone)
         ).exists():
-            return redirect('duplicated_student_info')
+            return redirect('error_duplicate')
 
         student_class = Class.objects.get(id=int(selected_class_id))
 
@@ -68,7 +68,7 @@ def student_create_view(request):
             student_code=national_code
         )
 
-        return redirect('students')
+        return redirect('list')
 
     return render(request, 'form/add_student.html', {'classes': current_user.classes.all()})
 
@@ -104,7 +104,7 @@ def student_bulk_upload_view(request):
         )
 
         if result in ['sheet_not_found', 'bad_column_letter']:
-            response = HttpResponseRedirect(reverse('error_in_student_excel'))
+            response = HttpResponseRedirect(reverse('error_excel'))
             response.set_cookie('excel_errors', json.dumps([result]), max_age=3600)
             return response
 
@@ -121,7 +121,7 @@ def student_bulk_upload_view(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            response = HttpResponseRedirect(reverse('error_in_student_excel'))
+            response = HttpResponseRedirect(reverse('error_excel'))
             response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
             return response
 
@@ -134,7 +134,7 @@ def student_bulk_upload_view(request):
                     zip_errors.append(expected_path)
 
         if zip_errors:
-            response = HttpResponseRedirect(reverse('error_in_student_zip'))
+            response = HttpResponseRedirect(reverse('error_zip'))
             response.set_cookie('zip_errors', json.dumps(zip_errors), max_age=3600)
             return response
 
@@ -166,7 +166,7 @@ def student_bulk_upload_view(request):
                 student_code=student['national_code']
             )
 
-        return redirect('students')
+        return redirect('list')
 
     return render(request, 'form/add_students_from_excel.html')
 
@@ -179,7 +179,7 @@ def student_edit_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('unknown_student_info')
+        return redirect('error_not_found')
 
     if request.method == 'POST':
         name = request.POST.get("student_name")
@@ -191,7 +191,7 @@ def student_edit_view(request, national_code):
         if Student.objects.filter(
             Q(student_national_code=new_nc) & Q(student_phone_number=phone)
         ).exclude(id=student.id).exists():
-            return redirect('duplicated_student_info')
+            return redirect('error_duplicate')
 
         student.student_name = name
         student.student_family = family
@@ -207,7 +207,7 @@ def student_edit_view(request, national_code):
             new_student_code=new_nc
         )
 
-        return redirect('students')
+        return redirect('list')
 
     return render(request, 'form/edit_student.html', {'student': student})
 
@@ -220,7 +220,7 @@ def student_delete_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('unknown_student_info')
+        return redirect('error_not_found')
 
     dm_delete_student(
         school_id=str(current_user.id),
@@ -230,7 +230,7 @@ def student_delete_view(request, national_code):
 
     student.delete()
 
-    return redirect('students')
+    return redirect('list')
 
 
 # View to show student profile
@@ -241,7 +241,7 @@ def student_detail_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('unknown_student_info')
+        return redirect('error_not_found')
 
     return render(request, 'content/student_info.html', {'data': student})
 

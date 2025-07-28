@@ -26,7 +26,7 @@ def teacher_add_view(request):
         ).first()
 
         if teacher is None:
-            return redirect('wrong_teacher_info')
+            return redirect('error_invalid')
 
         class_ids = request.POST.getlist('selected_classes')
         for class_id in class_ids:
@@ -36,7 +36,7 @@ def teacher_add_view(request):
 
         current_user.teachers.add(teacher)
 
-        return redirect('teachers')
+        return redirect('list')
 
     school_classes = current_user.classes.all()
     return render(request, 'form/add_teacher.html', {'classes': school_classes})
@@ -46,11 +46,11 @@ def teacher_add_view(request):
 def teacher_detail_view(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
-        return redirect('wrong_teacher_info')
+        return redirect('error_invalid')
 
     current_user = request.user
     if teacher not in current_user.teachers.all():
-        return redirect('wrong_teacher_info')
+        return redirect('error_invalid')
 
     return render(request, 'content/teacher_info.html', {'data': teacher})
 
@@ -67,11 +67,11 @@ def teacher_update_view(request, national_code):
     if request.method == 'POST':
         new_classes = request.POST.getlist('selected_classes')
         if not new_classes:
-            return redirect('teachers')
+            return redirect('list')
 
         teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
         if teacher is None:
-            return redirect('wrong_teacher_info')
+            return redirect('error_invalid')
 
         # Remove teacher from existing classes in current school
         for cls in teacher.classes.all():
@@ -86,14 +86,14 @@ def teacher_update_view(request, national_code):
             if cls:
                 teacher.classes.add(cls)
 
-        return redirect('teachers')
+        return redirect('list')
 
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
-        return redirect('wrong_teacher_info')
+        return redirect('error_invalid')
 
     if teacher not in current_user.teachers.all():
-        return redirect('wrong_teacher_info')
+        return redirect('error_invalid')
 
     school_classes = current_user.classes.all()
 
@@ -107,12 +107,12 @@ def teacher_update_view(request, national_code):
 def teacher_remove_view(request, national_code):
     teacher = Teacher.objects.filter(teacher_national_code=national_code).first()
     if teacher is None:
-        return redirect('wrong_teacher_info')
+        return redirect('error_invalid')
 
     current_user = request.user
 
     if teacher not in current_user.teachers.all():
-        return redirect('wrong_teacher_info')
+        return redirect('error_invalid')
 
     # Remove teacher from classes belonging to this school
     for cls in teacher.classes.all():
@@ -123,4 +123,4 @@ def teacher_remove_view(request, national_code):
 
     current_user.teachers.remove(teacher)
 
-    return redirect('teachers')
+    return redirect('list')
