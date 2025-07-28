@@ -10,7 +10,7 @@ from utils.generate_class_code import reverse_class_code
 def teacher_list_view(request):
     current_user = request.user
     teacher_list = current_user.teachers.all()
-    return render(request, 'main/teachers.html', {'teachers': teacher_list})
+    return render(request, 'teachers/teacher_list.html', {'teachers': teacher_list})
 
 
 # View to add an existing teacher to the school and assign classes
@@ -39,7 +39,7 @@ def teacher_add_view(request):
         return redirect('list')
 
     school_classes = current_user.classes.all()
-    return render(request, 'form/add_teacher.html', {'classes': school_classes})
+    return render(request, 'teachers/teacher_add.html', {'classes': school_classes})
 
 
 # View to display teacher information if they belong to current school
@@ -52,12 +52,12 @@ def teacher_detail_view(request, national_code):
     if teacher not in current_user.teachers.all():
         return redirect('error_invalid')
 
-    return render(request, 'content/teacher_info.html', {'data': teacher})
+    return render(request, 'teachers/teacher_detail.html', {'data': teacher})
 
 
 # View to render error page when teacher info is invalid
 def invalid_teacher_error_view(request):
-    return render(request, 'error/wrong_teacher_info.html')
+    return render(request, 'teachers/invalid_teacher_error.html')
 
 
 # View to edit teacher’s assigned classes
@@ -97,7 +97,7 @@ def teacher_update_view(request, national_code):
 
     school_classes = current_user.classes.all()
 
-    return render(request, 'form/edit_teacher.html', {
+    return render(request, 'teachers/teacher_update.html', {
         'teacher': teacher,
         'classes': school_classes
     })

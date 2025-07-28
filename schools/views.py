@@ -5,7 +5,7 @@ from django.shortcuts import render
 # View for displaying the main dashboard after login
 @login_required
 def dashboard_view(request):
-    return render(request, 'main/panel_entry.html')
+    return render(request, 'schools/dashboard.html')
 
 
 # View to display school-related statistics and current school info
@@ -19,7 +19,7 @@ def school_overview_view(request):
 
     return render(
         request,
-        'content/school_info.html',
+        'schools/school_overview.html',
         {
             'data': current_user,
             'cc': class_count,

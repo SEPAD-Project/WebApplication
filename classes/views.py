@@ -20,7 +20,7 @@ from utils.server.Website.directory_manager import dm_create_class, dm_delete_cl
 def class_list_view(request):
     current_user = request.user
     class_list = current_user.classes.all()
-    return render(request, 'main/classes.html', {'classes': class_list})
+    return render(request, 'classes/class_list.html', {'classes': class_list})
 
 
 # View to manually add a single class
@@ -50,7 +50,7 @@ def class_create_view(request):
 
         return redirect('list')
 
-    return render(request, 'form/add_class.html')
+    return render(request, 'classes/class_create.html')
 
 
 # View to import classes from an uploaded Excel file
@@ -102,7 +102,7 @@ def class_bulk_upload_view(request):
 
         return redirect('list')
 
-    return render(request, 'form/add_classes_from_excel.html')
+    return render(request, 'classes/class_bulk_upload.html')    
 
 
 # View to display details of a specific class
@@ -118,7 +118,7 @@ def class_detail_view(request, class_name):
 
     return render(
         request,
-        'content/class_info.html',
+        'classes/class_detail.html',
         {
             'data': data,
             'teachers': data.teachers.all(),
@@ -161,7 +161,7 @@ def class_edit_view(request, class_name):
 
         return redirect('list')
 
-    return render(request, 'form/edit_class.html', {'name': data.class_name})
+    return render(request, 'classes/class_edit.html', {'name': data.class_name})
 
 
 # View to delete a class
@@ -183,25 +183,24 @@ def class_delete_view(request, class_name):
 
 # View to handle duplicated class error
 def duplicate_class_error_view(request):
-    return render(request, 'error/duplicated_class_info.html')
+    return render(request, 'classes/duplicate_class_error.html')
 
 
 # View to handle Excel-related import errors
 def class_excel_error_view(request):
     errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
-    return render(request, 'error/error_in_class_excel.html', {'texts': errors})
-
+    return render(request, 'classes/class_excel_error.html', {'texts': errors})
 
 # View for class file permission error
 def class_file_permission_error_view(request):
-    return render(request, 'error/class_file_permission_error.html')
+    return render(request, 'classes/class_file_permission_error.html')
 
 
 # View for unknown class name error
 def unknown_class_error_view(request):
-    return render(request, 'error/unknown_class_info.html')
+    return render(request, 'classes/unknown_class_error.html')
 
 
 # View for general schedule error
 def schedule_error_view(request):
-    return render(request, 'error/error_in_schedule.html')
+    return render(request, 'errors/schedule_error.html')

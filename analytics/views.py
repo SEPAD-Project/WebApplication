@@ -33,7 +33,7 @@ def class_accuracy_report_view(request):
 
     return render(
         request,
-        'form/select_class_for_students_accuracy.html',
+        'analytics/class_accuracy_report.html',
         {'classes': current_user.classes.all()}
     )
 
@@ -56,7 +56,7 @@ def student_lesson_accuracy_report_view(request):
                 school_email=current_user.email
             )
 
-    return render(request, 'form/select_student_for_lesson_accuracy.html')
+    return render(request, 'analytics/student_lesson_accuracy_report.html')
 
 
 # View to select a student and generate accuracy-by-week report
@@ -77,7 +77,7 @@ def student_week_accuracy_report_view(request):
                 school_email=current_user.email
             )
 
-    return render(request, 'form/select_student_for_week_accuracy.html')
+    return render(request, 'analytics/student_week_accuracy_report.html')
 
 
 # View to trigger school teachers performance report

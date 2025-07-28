@@ -22,7 +22,7 @@ from utils.base_path_finder import find_base_path
 def student_list_view(request):
     current_user = request.user
     student_list = current_user.students.all()
-    return render(request, 'main/students.html', {'students': student_list})
+    return render(request, 'students/student_list.html', {'students': student_list})
 
 
 # View to manually add a new student
@@ -70,7 +70,7 @@ def student_create_view(request):
 
         return redirect('list')
 
-    return render(request, 'form/add_student.html', {'classes': current_user.classes.all()})
+    return render(request, 'students/student_create.html', {'classes': current_user.classes.all()})
 
 
 # View to add students from Excel and ZIP files
@@ -168,7 +168,7 @@ def student_bulk_upload_view(request):
 
         return redirect('list')
 
-    return render(request, 'form/add_students_from_excel.html')
+    return render(request, 'students/student_bulk_upload.html')
 
 
 # View to edit student info
@@ -209,7 +209,7 @@ def student_edit_view(request, national_code):
 
         return redirect('list')
 
-    return render(request, 'form/edit_student.html', {'student': student})
+    return render(request, 'students/student_edit.html', {'student': student})
 
 
 # View to delete a student
@@ -243,27 +243,27 @@ def student_detail_view(request, national_code):
     if student is None:
         return redirect('error_not_found')
 
-    return render(request, 'content/student_info.html', {'data': student})
+    return render(request, 'students/student_detail.html', {'data': student})
 
 
 # Error page views
 def duplicate_student_error_view(request):
-    return render(request, 'error/duplicated_student_info.html')
+    return render(request, 'students/duplicate_student_error.html')
 
 
 def student_excel_error_view(request):
     errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
-    return render(request, 'error/error_in_student_excel.html', {'texts': errors})
+    return render(request, 'students/student_excel_error.html', {'texts': errors})
 
 
 def student_zip_error_view(request):
     errors = json.loads(request.COOKIES.get('zip_errors', '[]'))
-    return render(request, 'error/error_in_student_zip.html', {'texts': errors})
+    return render(request, 'students/student_zip_error.html', {'texts': errors})
 
 
 def student_file_permission_error_view(request):
-    return render(request, 'error/student_file_permission_error.html')
+    return render(request, 'students/student_file_permission_error.html')
 
 
 def unknown_student_error_view(request):
-    return render(request, 'error/unknown_student_info.html')
+    return render(request, 'students/unknown_student_error.html')

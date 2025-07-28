@@ -21,7 +21,7 @@ def school_login_view(request):
             return redirect('')
         return redirect('error_unknown_school')
 
-    return render(request, 'form/login.html')
+    return render(request, 'accounts/school_login.html')
 
 
 # View to handle school signup and user creation
@@ -54,19 +54,19 @@ def school_signup_view(request):
 
         return redirect('success_registration')
 
-    return render(request, 'form/signup.html')
+    return render(request, 'accounts/school_signup.html')
 
 
 # View for duplicate school registration error
 def duplicate_school_error_view(request):
-    return render(request, 'error/duplicated_school_info.html')
+    return render(request, 'accounts/duplicate_school_error.html')
 
 
 # View to notify user of their username and password after registration
 def registration_success_view(request):
-    return render(request, 'error/notify_username_password.html')
+    return render(request, 'accounts/registration_success.html')
 
 
 # View for unknown school info error during login
 def unknown_school_error_view(request):
-    return render(request, 'error/unknown_school_info.html')
+    return render(request, 'accounts/unknown_school_error.html')
