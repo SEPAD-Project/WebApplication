@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -14,7 +15,7 @@ from utils.server.Website.directory_manager import dm_create_student, dm_edit_st
 from utils.base_path_finder import find_base_path
 
 import zipfile
-
+import json
 
 def students(request):
     currect_user = request.user
@@ -64,7 +65,8 @@ def duplicated_student_info(request):
     return render(request, 'error/duplicated_student_info.html')
 
 def error_in_student_excel(request):
-    return render(request, 'error/error_in_student_excel.html')
+    errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
+    return render(request, 'error/error_in_student_excel.html', {'texts':errors})
 
 def student_file_permission_error(request):
     return render(request, 'error/student_file_permission_error.html')
@@ -99,11 +101,11 @@ def add_students_from_excel(request):
                               [student.student_phone_number for student in students],
                               school_user.school_code)
         
-        if result == 'sheet_not_found':
-            return redirect('error_in_student_excel')
-
-        if result == 'bad_column_letter':
-            return redirect('error_in_student_excel')
+        if result == 'sheet_not_found' or result == 'bad_column_letter':
+            excel_errors = [result]
+            response = HttpResponseRedirect(reverse('error_in_student_excel'))
+            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
+            return response
         
         if isinstance(result[0], list):
             excel_errors = []
@@ -119,8 +121,9 @@ def add_students_from_excel(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            print(excel_errors)
-            return redirect('error_in_student_excel')
+            response = HttpResponseRedirect(reverse('error_in_student_excel'))
+            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
+            return response
         
         for student in result:
             cls = Class.objects.filter(class_code=student['class']).first()
