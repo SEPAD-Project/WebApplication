@@ -3,15 +3,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Management Panel - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
-    <link rel="stylesheet" href="{% static 'css/main/panel_entry.css' %}">
+
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/schools/dashboard.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
-
+    <!-- Background Particles -->
     <div id="particles-js"></div>
 
     <!-- Hamburger Menu Button -->
@@ -19,8 +21,9 @@
         <i class="fas fa-bars" id="hamburger-icon"></i>
     </div>
 
+    <!-- Sidebar Navigation -->
     <div class="sidebar" id="sidebar">
-        <a href="{% url 'schools:school_overview' %}" class="sidebar-item"> 
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item">
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
@@ -46,70 +49,70 @@
         </a>
     </div>
 
+    <!-- Main Content -->
     <div class="content-area">
         <div class="glass-morphism">
             <h1 class="content-title">Welcome!</h1>
             <div class="divider"></div>
             <p class="content-description">
-                Here is the school panel. Enjoy our features.
+                This is your school management panel. Explore the features and manage your data efficiently.
             </p>
         </div>
     </div>
 
-    <!-- Particles.js -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // Initialize particles.js
         particlesJS('particles-js', {
-            "particles": {
-                "number": { "value": 70, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#4ECDC4" },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 3, "random": true },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#4ECDC4",
-                    "opacity": 0.4,
-                    "width": 1
+            particles: {
+                number: { value: 70, density: { enable: true, value_area: 800 } },
+                color: { value: "#4ECDC4" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4ECDC4",
+                    opacity: 0.4,
+                    width: 1
                 },
-                "move": {
-                    "enable": true,
-                    "speed": 1.5,
-                    "direction": "none",
-                    "random": true,
-                    "out_mode": "out"
+                move: {
+                    enable: true,
+                    speed: 1.5,
+                    direction: "none",
+                    random: true,
+                    out_mode: "out"
                 }
             },
-            "interactivity": {
-                "events": {
-                    "onhover": { "enable": true, "mode": "grab" },
-                    "onclick": { "enable": true, "mode": "push" }
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" }
                 }
             }
         });
 
-        // Toggle sidebar with hamburger + change icon
-        document.addEventListener('DOMContentLoaded', function () {
+        // Sidebar toggle logic
+        document.addEventListener('DOMContentLoaded', () => {
             const hamburger = document.getElementById('hamburger');
             const sidebar = document.getElementById('sidebar');
             const icon = document.getElementById('hamburger-icon');
 
-            if (hamburger && sidebar) {
-                hamburger.addEventListener('click', function () {
-                    sidebar.classList.toggle('open');
-                    icon.classList.toggle('fa-bars');
-                    icon.classList.toggle('fa-xmark');
-                });
+            hamburger.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-xmark');
+            });
 
-                document.addEventListener('click', function (e) {
-                    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                        sidebar.classList.remove('open');
-                        icon.classList.remove('fa-xmark');
-                        icon.classList.add('fa-bars');
-                    }
-                });
-            }
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
         });
     </script>
 </body>

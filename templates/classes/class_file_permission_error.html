@@ -6,28 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File Permission Error - SEPAD</title>
+
     <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/error/class_file_permission_error.css' %}">
+    <link rel="stylesheet" href="{% static 'css/classes/class_file_permission_error.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div id="particles-js"></div>
-    
+
     <div class="content-area">
         <div class="glass-card notification-container">
             <div class="notification-icon">
                 <i class="fas fa-file-shield"></i>
             </div>
-            <h1 class="notification-title">FILE ACCESS DENIED</h1>
+
+            <h1 class="notification-title">File Access Denied</h1>
+
             <div class="notification-content">
                 <p class="notification-text">
-                    We couldn't access your file due to permission restrictions.
+                    We couldn’t access the file due to permission restrictions.
                 </p>
                 <p class="notification-text">
-                    Please check file permissions and try again.
+                    Please check the file's permissions and try again.
                 </p>
             </div>
+
             <a href="{% url 'classes:import' %}" class="notification-action">
                 <i class="fas fa-redo"></i> Retry
             </a>
@@ -36,33 +40,33 @@
 
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             particlesJS('particles-js', {
-                "particles": {
-                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
-                    "color": { "value": "#FF6B6B" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.5, "random": true },
-                    "size": { "value": 3, "random": true },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#FF6B6B",
-                        "opacity": 0.4,
-                        "width": 1
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#FF6B6B" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#FF6B6B",
+                        opacity: 0.4,
+                        width: 1
                     },
-                    "move": {
-                        "enable": true,
-                        "speed": 1.5,
-                        "direction": "none",
-                        "random": true,
-                        "out_mode": "out"
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: "none",
+                        random: true,
+                        out_mode: "out"
                     }
                 },
-                "interactivity": {
-                    "events": {
-                        "onhover": { "enable": true, "mode": "grab" },
-                        "onclick": { "enable": true, "mode": "push" }
+                interactivity: {
+                    events: {
+                        onhover: { enable: true, mode: "grab" },
+                        onclick: { enable: true, mode: "push" }
                     }
                 }
             });

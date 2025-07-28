@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Signup - SEPAD</title>
+
     <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/form/signup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/accounts/school_signup.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -24,42 +25,43 @@
     <!-- Signup Form -->
     <form method="POST" action="{% url 'accounts:signup' %}" class="signup-form">
         {% csrf_token %}
-        <h1 class="form-title">Signup</h1>
+        <h1 class="form-title">Sign Up</h1>
+
         <div class="inputs-part">
             <div class="input-container">
-                <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Should only contain letters, numbers, space, and dash">
+                <input type="text" id="school-name" name="school_name" placeholder="School Name" required pattern="[A-Za-z0-9\s\-]+" title="Letters, numbers, spaces, and dashes only">
             </div>
-            
+
             <div class="row-wrapper">
                 <div class="input-container">
-                    <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Should only contain numbers" required>
+                    <input type="text" id="school-code" name="school_code" placeholder="School Code" pattern="[0-9]+" title="Numbers only" required>
                 </div>
                 <div class="input-container">
-                    <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Personal Code" pattern="[0-9]+" title="Should only contain numbers" required>
+                    <input type="text" id="manager-personal-code" name="manager_personal_code" placeholder="Manager Code" pattern="[0-9]+" title="Numbers only" required>
                 </div>
             </div>
-            
+
             <div class="row-wrapper">
                 <div class="input-container">
-                    <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+                    <input type="text" id="province" name="province" placeholder="Province" required pattern="[A-Za-z\s\-']+" title="Letters, spaces, and dashes only">
                 </div>
                 <div class="input-container">
-                    <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Should only contain letters, space, and dash">
+                    <input type="text" id="city" name="city" placeholder="City" required pattern="[A-Za-z\s\-']+" title="Letters, spaces, and dashes only">
                 </div>
             </div>
-            
+
             <div class="input-container">
                 <input type="email" id="email" name="email" placeholder="Email" required>
             </div>
         </div>
 
-        <button type="submit" class="submit-button">Signup</button>
+        <button type="submit" class="submit-button">Sign Up</button>
         <p class="form-footer">
             Already have an account? 
-            <a href="{% url 'accounts:login' %}">Login here</a>
+            <a href="{% url 'accounts:login' %}">Log in here</a>
         </p>
     </form>
-    
+
     <script src="{% static 'js/particles.min.js' %}"></script>
     <script src="{% static 'js/particles_config.js' %}"></script>
 </body>

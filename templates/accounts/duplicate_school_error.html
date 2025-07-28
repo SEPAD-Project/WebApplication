@@ -5,35 +5,36 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Duplicate Information - SEPAD</title>
+    <title>Duplicate School Info - SEPAD</title>
+
     <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/error/duplicated_school_info.css' %}">
+    <link rel="stylesheet" href="{% static 'css/accounts/duplicate_school_error.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div id="particles-js"></div>
-    
+
     <div class="notification-container">
         <div class="error-icon">
             <i class="fas fa-exclamation-circle"></i>
         </div>
-        <h1 class="notification-title">Duplicate Information</h1>
-        
+        <h1 class="notification-title">Duplicate School Information</h1>
+
         <div class="error-message">
             <i class="fas fa-info-circle"></i>
-            <p>The information you entered is already registered in our system.</p>
+            <p>The school information you provided is already registered in our system.</p>
         </div>
-        
+
         <div class="suggestions">
-            <h3>Possible Solutions:</h3>
+            <h3>Suggested Actions:</h3>
             <ul>
-                <li><i class="fas fa-check-circle"></i> Check if you've already registered before</li>
-                <li><i class="fas fa-check-circle"></i> Try using different school code or manager code</li>
-                <li><i class="fas fa-check-circle"></i> Contact support if you believe this is an error</li>
+                <li><i class="fas fa-check-circle"></i> Verify if your school has already been registered.</li>
+                <li><i class="fas fa-check-circle"></i> Try using a different school or manager code.</li>
+                <li><i class="fas fa-check-circle"></i> Contact support if you believe this is a mistake.</li>
             </ul>
         </div>
-        
+
         <div class="action-buttons">
             <a href="{% url 'accounts:signup' %}" class="secondary-button">
                 <i class="fas fa-edit"></i> Try Again

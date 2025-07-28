@@ -203,4 +203,4 @@ def unknown_class_error_view(request):
 
 # View for general schedule error
 def schedule_error_view(request):
-    return render(request, 'errors/schedule_error.html')
+    return render(request, 'classes/schedule_error.html')

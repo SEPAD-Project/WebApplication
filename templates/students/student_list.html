@@ -2,24 +2,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Students - SEPAD</title>
-    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
-    <link rel="stylesheet" href="{% static 'css/main/students.css' %}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/students/student_list.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 <body>
     <div id="particles-js"></div>
-    
+
     <!-- Hamburger Menu -->
     <div class="hamburger" id="hamburger">
         <i class="fas fa-bars" id="hamburger-icon"></i>
     </div>
-    
+
+    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <a href="{% url 'schools:school_overview' %}" class="sidebar-item"> 
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item">
             <i class="fa-solid fa-school"></i>
             <span class="sidebar-text">School Info</span>
         </a>
@@ -45,19 +48,27 @@
         </a>
     </div>
 
+    <!-- Main Content -->
     <div class="content-area">
         <div class="glass-card header-section">
             <div class="header">
                 <h1>Manage Students</h1>
                 <div class="button-group">
-                    <a class="add-excel" href="{% url 'students:import' %}">Add from Excel</a>
+                    <a href="{% url 'students:import' %}" class="add-excel">Add from Excel</a>
                     <a href="{% url 'students:create' %}" class="add-student-button">Add Student</a>
                 </div>
             </div>
 
             <div class="search-section">
-                <form class="search-form" method="GET" action="{% url 'students:list' %}">
-                    <input type="search" class="search-input" name="q" placeholder="Search..." pattern="[A-Za-z0-9\s\-']+" title="Should only contain letters, numbers, space, and dash">
+                <form method="GET" action="{% url 'students:list' %}" class="search-form">
+                    <input
+                        type="search"
+                        name="q"
+                        class="search-input"
+                        placeholder="Search..."
+                        pattern="[A-Za-z0-9\s\-']+"
+                        title="Only letters, numbers, spaces, and dashes allowed"
+                    />
                     <button type="submit" class="search-button">Search</button>
                 </form>
             </div>
@@ -72,67 +83,67 @@
                         <p class="student-code">{{ student.student_national_code }}</p>
                     </div>
                     <div class="action-buttons">
-                        <a href="{% url 'students:detail' student.student_national_code%}"class="action-button see">See</a>
-                        <a href="{% url 'students:edit' student.student_national_code%}" class="action-button edit">Edit</a>
-                        <a href="{% url 'students:delete' student.student_national_code%}"class="action-button remove">Remove</a>
+                        <a href="{% url 'students:detail' student.student_national_code %}" class="action-button see">View</a>
+                        <a href="{% url 'students:edit' student.student_national_code %}" class="action-button edit">Edit</a>
+                        <a href="{% url 'students:delete' student.student_national_code %}" class="action-button remove">Delete</a>
                     </div>
                 </div>
+                {% empty %}
+                <p class="no-data-text">No students found.</p>
                 {% endfor %}
             </div>
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Hamburger menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
             const hamburger = document.getElementById('hamburger');
             const sidebar = document.getElementById('sidebar');
             const icon = document.getElementById('hamburger-icon');
-            
-            if (hamburger && sidebar) {
-                hamburger.addEventListener('click', function() {
-                    sidebar.classList.toggle('open');
-                    icon.classList.toggle('fa-bars');
-                    icon.classList.toggle('fa-xmark');
-                });
-                
-                document.addEventListener('click', function(e) {
-                    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                        sidebar.classList.remove('open');
-                        icon.classList.remove('fa-xmark');
-                        icon.classList.add('fa-bars');
-                    }
-                });
-            }
-            
-            // Initialize particles.js
+
+            hamburger.addEventListener('click', () => {
+                sidebar.classList.toggle('open');
+                icon.classList.toggle('fa-bars');
+                icon.classList.toggle('fa-xmark');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Init particles
             particlesJS('particles-js', {
-                "particles": {
-                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 }},
-                    "color": { "value": "#4ECDC4" },
-                    "shape": { "type": "circle" },
-                    "opacity": { "value": 0.5, "random": true },
-                    "size": { "value": 3, "random": true },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#4ECDC4",
-                        "opacity": 0.4,
-                        "width": 1
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#4ECDC4" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#4ECDC4",
+                        opacity: 0.4,
+                        width: 1
                     },
-                    "move": {
-                        "enable": true,
-                        "speed": 1.5,
-                        "direction": "none",
-                        "random": true,
-                        "out_mode": "out"
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: "none",
+                        random: true,
+                        out_mode: "out"
                     }
                 },
-                "interactivity": {
-                    "events": {
-                        "onhover": { "enable": true, "mode": "grab" },
-                        "onclick": { "enable": true, "mode": "push" }
+                interactivity: {
+                    events: {
+                        onhover: { enable: true, mode: "grab" },
+                        onclick: { enable: true, mode: "push" }
                     }
                 }
             });

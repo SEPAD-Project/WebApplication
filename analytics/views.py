@@ -14,7 +14,7 @@ from .tasks import (
 # View to show main analytics menu
 @login_required
 def analytics_dashboard_view(request):
-    return render(request, 'main/analytics_menu.html')
+    return render(request, 'analytics/analytics_dashboard.html')
 
 
 # View to select a class and trigger student accuracy report generation
