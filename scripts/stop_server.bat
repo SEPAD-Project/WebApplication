@@ -1,0 +1,6 @@
+@echo off
+echo Stopping Django runserver...
+for /f "tokens=2" %%a in ('tasklist ^| findstr "manage.py"') do taskkill /PID %%a /F
+
+echo Stopping Celery worker...
+for /f "tokens=2" %%a in ('tasklist ^| findstr "celery"') do taskkill /PID %%a /F
