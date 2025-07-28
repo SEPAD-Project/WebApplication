@@ -1,60 +1,72 @@
-from django.shortcuts import render
 from django.contrib.auth import login
-from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.shortcuts import redirect, render
 
 from schools.models import School
-
 from utils.server.Website.directory_manager import dm_create_school
 
+
+# View for school login using school code and manager personal code
 def login_view(request):
     if request.method == 'POST':
         school_code = request.POST.get('school_code')
-        manager_personal_code = request.POST.get('manager_personal_code')
+        manager_code = request.POST.get('manager_personal_code')
 
-        user = School.objects.filter(Q(school_code=school_code)&Q(manager_personal_code=manager_personal_code)).first()
-        print(user)
+        school_user = School.objects.filter(
+            Q(school_code=school_code) & Q(manager_personal_code=manager_code)
+        ).first()
 
-        if user is not None:
-            login(request, user)
+        if school_user is not None:
+            login(request, school_user)
             return redirect('panel_entry')
-        else:
-            return redirect('unknown_school_info')
-            
+        return redirect('unknown_school_info')
+
     return render(request, 'form/login.html')
 
+
+# View to handle school signup and user creation
 def signup(request):
     if request.method == 'POST':
         school_name = request.POST.get('school_name')
         school_code = request.POST.get('school_code')
-        manager_personal_code = request.POST.get('manager_personal_code')
+        manager_code = request.POST.get('manager_personal_code')
         province = request.POST.get('province')
         city = request.POST.get('city')
         email = request.POST.get('email')
 
-        if School.objects.filter(Q(school_code=school_code) | Q(manager_personal_code=manager_personal_code)):
+        existing_school = School.objects.filter(
+            Q(school_code=school_code) | Q(manager_personal_code=manager_code)
+        )
+        if existing_school.exists():
             return redirect('duplicated_school_info')
 
-        School.objects.create_user(
+        new_school = School.objects.create_user(
             school_name=school_name,
             school_code=school_code,
-            manager_personal_code=manager_personal_code,
+            manager_personal_code=manager_code,
             province=province,
             city=city,
             email=email
         )
 
-        dm_create_school(str(School.objects.get(school_code=school_code).id))
+        # Create directory for new school
+        dm_create_school(str(new_school.id))
 
         return redirect('notify_username_password')
-    
+
     return render(request, 'form/signup.html')
 
+
+# View for duplicate school registration error
 def duplicated_school_info(request):
     return render(request, 'error/duplicated_school_info.html')
 
+
+# View to notify user of their username and password after registration
 def notify_username_password(request):
     return render(request, 'error/notify_username_password.html')
 
+
+# View for unknown school info error during login
 def unknown_school_info(request):
     return render(request, 'error/unknown_school_info.html')

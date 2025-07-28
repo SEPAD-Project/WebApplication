@@ -1,17 +1,29 @@
-from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+
+# View for displaying the main dashboard after login
 @login_required
 def panel_entry(request):
     return render(request, 'main/panel_entry.html')
 
+
+# View to display school-related statistics and current school info
 @login_required
 def school_info(request):
     current_user = request.user
-    
-    cc = len(current_user.classes.all())
-    tc = len(current_user.teachers.all())
-    sc = len(current_user.students.all())
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-    return render(request, 'content/school_info.html', {'data':current_user, 'cc':cc, 'tc':tc, 'sc':sc})
+
+    class_count = len(current_user.classes.all())
+    teacher_count = len(current_user.teachers.all())
+    student_count = len(current_user.students.all())
+
+    return render(
+        request,
+        'content/school_info.html',
+        {
+            'data': current_user,
+            'cc': class_count,
+            'tc': teacher_count,
+            'sc': student_count
+        }
+    )
