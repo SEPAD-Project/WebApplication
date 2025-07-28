@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics Dashboard - SEPAD</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/analytics/analytics_dashboard.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item">
+            <i class="fa-solid fa-school"></i>
+            <span class="sidebar-text">School Info</span>
+        </a>
+        <a href="{% url 'classes:list' %}" class="sidebar-item">
+            <i class="fa-solid fa-chalkboard"></i>
+            <span class="sidebar-text">Class List</span>
+        </a>
+        <a href="{% url 'teachers:list' %}" class="sidebar-item">
+            <i class="fa-solid fa-user-tie"></i>
+            <span class="sidebar-text">Teachers</span>
+        </a>
+        <a href="{% url 'students:list' %}" class="sidebar-item">
+            <i class="fa-solid fa-users"></i>
+            <span class="sidebar-text">Students</span>
+        </a>
+        <a href="{% url 'analytics:dashboard' %}" class="sidebar-item">
+            <i class="fa-solid fa-chart-line"></i>
+            <span class="sidebar-text">Analytics</span>
+        </a>
+        <a href="{% url 'pages:home' %}" class="sidebar-item">
+            <i class="fa-solid fa-house"></i>
+            <span class="sidebar-text">Home</span>
+        </a>
+    </div>
+
+    <div class="content-area">
+        <div class="glass-card header-section">
+            <div class="header">
+                <h1>Analytics Dashboard</h1>
+            </div>
+        </div>
+
+        <div class="glass-card analytics-container">
+            <div class="button-group">
+                <a href="{% url 'analytics:class_accuracy' %}" class="analytics-button">Compare Students</a>
+                <a href="{% url 'analytics:school_classes_accuracy' %}" class="analytics-button">Compare Classes</a>
+                <a href="{% url 'analytics:school_teachers_performance' %}" class="analytics-button">Compare Teachers</a>
+                <a href="{% url 'analytics:student_week_accuracy' %}" class="analytics-button">Weekly Student Accuracy</a>
+                <a href="{% url 'analytics:student_lesson_accuracy' %}" class="analytics-button">Lesson-Based Accuracy</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const icon = document.getElementById('hamburger-icon');
+
+            if (hamburger && sidebar) {
+                hamburger.addEventListener('click', function () {
+                    sidebar.classList.toggle('open');
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-xmark');
+                });
+
+                document.addEventListener('click', function (e) {
+                    if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                        sidebar.classList.remove('open');
+                        icon.classList.remove('fa-xmark');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            }
+
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#4ECDC4" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.5, random: true },
+                    size: { value: 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: "#4ECDC4",
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 1.5,
+                        direction: "none",
+                        random: true,
+                        out_mode: "out"
+                    }
+                },
+                interactivity: {
+                    events: {
+                        onhover: { enable: true, mode: "grab" },
+                        onclick: { enable: true, mode: "push" }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

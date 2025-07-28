@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Created Successfully - SEPAD</title>
+
+    <link rel="stylesheet" href="{% static 'css/accounts/registration_success.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="notification-container">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h1 class="notification-title">Account Successfully Created</h1>
+
+        <div class="credentials-box">
+            <div class="credential-item">
+                <i class="fas fa-user"></i>
+                <span><strong>Username:</strong> Your School Code</span>
+            </div>
+            <div class="credential-item">
+                <i class="fas fa-key"></i>
+                <span><strong>Password:</strong> Your Manager Code</span>
+            </div>
+        </div>
+
+        <div class="important-note">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Please save your credentials securely. Recovery might not be possible if lost.</p>
+        </div>
+
+        <div class="next-steps">
+            <h3>Next Steps:</h3>
+            <ul>
+                <li><i class="fas fa-arrow-right"></i> Log in to your account</li>
+                <li><i class="fas fa-arrow-right"></i> Change your password after first login</li>
+                <li><i class="fas fa-arrow-right"></i> Reach out to support for assistance</li>
+            </ul>
+        </div>
+
+        <a href="{% url 'accounts:login' %}" class="notification-action">
+            Proceed to Login <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/particles_config.js' %}"></script>
+</body>
+</html>

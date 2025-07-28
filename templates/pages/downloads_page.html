@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Downloads | SEPAD</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/downloads_page.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>SEPAD Application Downloads</h1>
+            <p class="hero-description">
+                Teachers and students can download applications from this section.
+                Schools can manage from the <a href="{% url 'schools:dashboard' %}">management panel</a>.
+            </p>
+        </div>
+    </section>
+
+    <section class="download-grid">
+        <!-- Student Section -->
+        <div class="download-section student">
+            <h2 class="section-title">Student</h2>
+            <div class="download-card">
+                <div class="card-icon">
+                    <i class="fas fa-user-graduate" aria-hidden="true"></i>
+                </div>
+                <div class="version-selector">
+                    <button class="version-btn active">
+                        <i class="fab fa-windows" aria-hidden="true"></i> Windows
+                    </button>
+                </div>
+                <h3 class="version-title">Windows Version</h3>
+                <p class="card-description version-description">Desktop version for Windows</p>
+                <a href="https://github.com/SEPAD-Project/Student-Desktop-App/releases" class="download-btn" target="_blank" rel="noopener">
+                    <span>Download</span>
+                    <i class="fas fa-download" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Teacher Section -->
+        <div class="download-section teacher">
+            <h2 class="section-title">Teacher</h2>
+            <div class="download-card">
+                <div class="card-icon">
+                    <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
+                </div>
+                <div class="version-selector">
+                    <button class="version-btn active" data-version="windows">
+                        <i class="fab fa-windows" aria-hidden="true"></i> Windows
+                    </button>
+                    <button class="version-btn" data-version="android">
+                        <i class="fab fa-android" aria-hidden="true"></i> Android
+                    </button>
+                </div>
+                <h3 class="version-title">Windows Version</h3>
+                <p class="card-description version-description">Desktop version for Windows</p>
+                <a href="https://github.com/SEPAD-Project/teacher-Desktop-App/releases" class="download-btn windows-download" target="_blank" rel="noopener">
+                    <span>Download</span>
+                    <i class="fas fa-download" aria-hidden="true"></i>
+                </a>
+                <a href="https://github.com/SEPAD-Project/Teacher-Android-App/releases" class="download-btn android-download" style="display: none;" target="_blank" rel="noopener">
+                    <span>Download</span>
+                    <i class="fas fa-download" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/particles_config.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const teacherCard = document.querySelector('.teacher .download-card');
+            if (!teacherCard) return;
+
+            const versionButtons = teacherCard.querySelectorAll('.version-btn');
+            const versionTitle = teacherCard.querySelector('.version-title');
+            const versionDescription = teacherCard.querySelector('.version-description');
+            const windowsBtn = teacherCard.querySelector('.windows-download');
+            const androidBtn = teacherCard.querySelector('.android-download');
+
+            versionButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    versionButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    const version = btn.dataset.version;
+                    if (version === 'android') {
+                        versionTitle.textContent = 'Android Version';
+                        versionDescription.textContent = 'Mobile version for Android';
+                        windowsBtn.style.display = 'none';
+                        androidBtn.style.display = 'inline-flex';
+                    } else {
+                        versionTitle.textContent = 'Windows Version';
+                        versionDescription.textContent = 'Desktop version for Windows';
+                        windowsBtn.style.display = 'inline-flex';
+                        androidBtn.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

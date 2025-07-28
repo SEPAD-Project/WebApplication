@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - SEPAD</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/pages/about_page.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <a href="{% url 'pages:home' %}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Back to Home
+    </a>
+
+    <div class="main-container">
+        <!-- About SEPAD Section -->
+        <section class="about-sepad">
+            <h1>About the SEPAD Project</h1>
+            <p>
+                SEPAD is a comprehensive school management system designed to streamline educational operations.
+                Our mission was to build an intuitive platform that combines robust functionality with a clean, modern interface.
+            </p>
+            <p>
+                The system includes real-time monitoring of student engagement using advanced computer vision technologies,
+                offering educators valuable insights to refine their teaching strategies.
+            </p>
+            <p>
+                This project reflects a collaborative effort between two dedicated developers, each contributing unique expertise to deliver a powerful, unified product.
+            </p>
+        </section>
+
+        <!-- Downloads Section -->
+        <section class="downloads-section">
+            <h2>Project Documentation</h2>
+            <div class="download-grid">
+
+                <!-- PDF Report -->
+                <div class="download-card">
+                    <div class="download-header">
+                        <div class="download-icon pdf-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="download-info">
+                            <h3>Final Report (PDF)</h3>
+                            <p>Complete project documentation</p>
+                        </div>
+                    </div>
+                    <p class="download-description">
+                        A comprehensive report detailing every aspect of the SEPAD project—methodology, implementation, and results.
+                    </p>
+                    <div class="download-meta">
+                        <span class="file-size"><i class="fas fa-database"></i> 661 KB</span>
+                        <span class="file-format"><i class="fas fa-file-pdf"></i> PDF</span>
+                    </div>
+                    <a href="{% url 'pages:home' %}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <!-- Word Report -->
+                <div class="download-card">
+                    <div class="download-header">
+                        <div class="download-icon word-icon">
+                            <i class="fas fa-file-word"></i>
+                        </div>
+                        <div class="download-info">
+                            <h3>Final Report (Word)</h3>
+                            <p>Editable project document</p>
+                        </div>
+                    </div>
+                    <p class="download-description">
+                        An editable Word version of the final report, allowing for easy updates and customization.
+                    </p>
+                    <div class="download-meta">
+                        <span class="file-size"><i class="fas fa-database"></i> 655 KB</span>
+                        <span class="file-format"><i class="fas fa-file-word"></i> DOCX</span>
+                    </div>
+                    <a href="{% url 'pages:home' %}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <!-- Full Introduction Video -->
+                <div class="download-card">
+                    <div class="download-header">
+                        <div class="download-icon video-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="download-info">
+                            <h3>Project Introduction (10 min)</h3>
+                            <p>Comprehensive overview</p>
+                        </div>
+                    </div>
+                    <p class="download-description">
+                        A 10-minute video introducing SEPAD, highlighting its features and key advantages.
+                    </p>
+                    <div class="download-meta">
+                        <span class="file-size"><i class="fas fa-database"></i> 45.5 MB</span>
+                        <span class="file-format"><i class="fas fa-file-video"></i> MP4</span>
+                    </div>
+                    <a href="{% url 'pages:home' %}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <!-- Pitch Video -->
+                <div class="download-card">
+                    <div class="download-header">
+                        <div class="download-icon video-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <div class="download-info">
+                            <h3>Project Pitch (3 min)</h3>
+                            <p>Brief presentation</p>
+                        </div>
+                    </div>
+                    <p class="download-description">
+                        A concise 3-minute video summarizing the SEPAD project for quick overviews.
+                    </p>
+                    <div class="download-meta">
+                        <span class="file-size"><i class="fas fa-database"></i> 7.92 MB</span>
+                        <span class="file-format"><i class="fas fa-file-video"></i> MP4</span>
+                    </div>
+                    <a href="{% url 'pages:home' %}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <!-- Presentation Slides -->
+                <div class="download-card">
+                    <div class="download-header">
+                        <div class="download-icon ppt-icon">
+                            <i class="fas fa-file-powerpoint"></i>
+                        </div>
+                        <div class="download-info">
+                            <h3>Project Presentation</h3>
+                            <p>PowerPoint slides</p>
+                        </div>
+                    </div>
+                    <p class="download-description">
+                        Slide deck covering the entire SEPAD project for presentations.
+                    </p>
+                    <div class="download-meta">
+                        <span class="file-size"><i class="fas fa-database"></i> 368 KB</span>
+                        <span class="file-format"><i class="fas fa-file-powerpoint"></i> PPTX</span>
+                    </div>
+                    <a href="{% url 'pages:home' %}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+
+                <!-- Source Code -->
+                <div class="download-card">
+                    <div class="download-header">
+                        <div class="download-icon zip-icon">
+                            <i class="fas fa-file-archive"></i>
+                        </div>
+                        <div class="download-info">
+                            <h3>Complete Source Code</h3>
+                            <p>Full project archive</p>
+                        </div>
+                    </div>
+                    <p class="download-description">
+                        All source code and project files, including backend, frontend, and documentation.
+                    </p>
+                    <div class="download-meta">
+                        <span class="file-size"><i class="fas fa-database"></i> 114 MB</span>
+                        <span class="file-format"><i class="fas fa-file-archive"></i> ZIP</span>
+                    </div>
+                    <a href="{% url 'pages:home' %}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <h2>The Team</h2>
+            <div class="contribution-info">
+                <p class="equal-contribution">Equal Contribution</p>
+                <div class="contribution-bar">
+                    <div class="bar-fill abolfazl"></div>
+                    <div class="bar-fill parsa"></div>
+                </div>
+                <div class="contribution-names">
+                    <span>Abolfazl Rashidian</span>
+                    <span>Parsa Safaie</span>
+                </div>
+            </div>
+
+            <div class="team-members">
+                <!-- Abolfazl -->
+                <div class="member-card abolfazl-card">
+                    <div class="member-image">
+                        <img src="https://github.com/0xAbolfazl.png" alt="Abolfazl Rashidian">
+                    </div>
+                    <div class="member-info">
+                        <h3>Abolfazl Rashidian</h3>
+                        <div class="social-link">
+                            <i class="fab fa-github"></i>
+                            <a href="https://github.com/0xAbolfazl" target="_blank">github.com/0xAbolfazl</a>
+                        </div>
+                        <p class="member-bio">
+                            Full-stack developer with expertise in system architecture and web development. Passionate about building scalable and intuitive applications.
+                        </p>
+                        <div class="contributions">
+                            <h4>Key Contributions:</h4>
+                            <ul>
+                                <li>Student Management System</li>
+                                <li>Teacher Management System</li>
+                                <li>Website Update System</li>
+                                <li>Backend API Development</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parsa -->
+                <div class="member-card parsa-card">
+                    <div class="member-image">
+                        <img src="https://github.com/parsasafaie.png" alt="Parsa Safaei">
+                    </div>
+                    <div class="member-info">
+                        <h3>Parsa Safaie</h3>
+                        <div class="social-link">
+                            <i class="fab fa-github"></i>
+                            <a href="https://github.com/parsasafaie" target="_blank">github.com/parsasafaie</a>
+                        </div>
+                        <p class="member-bio">
+                            Developer focused on image processing and data analysis. Committed to delivering reliable, efficient solutions to complex challenges.
+                        </p>
+                        <div class="contributions">
+                            <h4>Key Contributions:</h4>
+                            <ul>
+                                <li>Image Processing Module</li>
+                                <li>Website Frontend Development</li>
+                                <li>Statistics and Analytics System</li>
+                                <li>Data Visualization</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/particles_config.js' %}"></script>
+</body>
+</html>

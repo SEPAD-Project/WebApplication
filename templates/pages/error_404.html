@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found - SEPAD</title>
+
+    <link rel="icon" type="image/x-icon" href="{% static 'icons/icon.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/pages/error_404.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="glass-container">
+        <div class="error-content">
+            <div class="error-icon">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            </div>
+            <h1 class="error-title">404</h1>
+            <h2 class="error-subtitle">Oops! Page Not Found</h2>
+            <p class="error-description">
+                The page you’re looking for doesn’t exist or has been moved.<br />
+                Let’s get you back on track.
+            </p>
+
+            <div class="error-actions">
+                <a href="{% url 'pages:home' %}" class="home-btn">
+                    <i class="fas fa-home" aria-hidden="true"></i> Go to Homepage
+                </a>
+                <a href="{% url 'pages:contact' %}" class="contact-btn">
+                    <i class="fas fa-headset" aria-hidden="true"></i> Contact Support
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/particles.min.js' %}"></script>
+    <script src="{% static 'js/particles_config.js' %}"></script>
+</body>
+</html>

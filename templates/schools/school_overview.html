@@ -1,0 +1,179 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>School Info - SEPAD</title>
+
+    <link rel="icon" href="{% static 'icons/icon.ico' %}" type="image/x-icon" />
+    <link rel="stylesheet" href="{% static 'css/schools/school_overview.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main/home.css' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+    <!-- Background Particles -->
+    <div id="particles-js"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <a href="{% url 'schools:school_overview' %}" class="sidebar-item"> 
+            <i class="fa-solid fa-school"></i>
+            <span class="sidebar-text">School Info</span>
+        </a>
+        <a href="{% url 'classes:list' %}" class="sidebar-item">
+            <i class="fa-solid fa-chalkboard"></i>
+            <span class="sidebar-text">Classes</span>
+        </a>
+        <a href="{% url 'teachers:list' %}" class="sidebar-item">
+            <i class="fa-solid fa-user-tie"></i>
+            <span class="sidebar-text">Teachers</span>
+        </a>
+        <a href="{% url 'students:list' %}" class="sidebar-item">
+            <i class="fa-solid fa-users"></i>
+            <span class="sidebar-text">Students</span>
+        </a>
+        <a href="{% url 'analytics:dashboard' %}" class="sidebar-item">
+            <i class="fa-solid fa-chart-line"></i>
+            <span class="sidebar-text">Analytics</span>
+        </a>
+        <a href="{% url 'pages:home' %}" class="sidebar-item">
+            <i class="fa-solid fa-house"></i>
+            <span class="sidebar-text">Go to Home</span>
+        </a>
+    </div>
+
+    <!-- Content Area -->
+    <div class="content-area">
+        <div class="cards-container">
+            <!-- School Identity Card -->
+            <div class="glass-card primary-info">
+                <div class="card-header">
+                    <i class="fa-solid fa-id-card"></i>
+                    <h2>School Identity</h2>
+                </div>
+                <div class="card-body">
+                    <div class="data-item">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <div class="data-content">
+                            <span class="data-label">School Name</span>
+                            <span class="data-value">{{ data.school_name }}</span>
+                        </div>
+                    </div>
+                    <div class="data-item">
+                        <i class="fa-solid fa-hashtag"></i>
+                        <div class="data-content">
+                            <span class="data-label">School Code</span>
+                            <span class="data-value">{{ data.school_code }}</span>
+                        </div>
+                    </div>
+                    <div class="data-item">
+                        <i class="fa-solid fa-id-badge"></i>
+                        <div class="data-content">
+                            <span class="data-label">Manager Code</span>
+                            <span class="data-value">{{ data.manager_personal_code }}</span>
+                        </div>
+                    </div>
+                    <div class="data-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div class="data-content">
+                            <span class="data-label">Location</span>
+                            <span class="data-value">{{ data.city }}, {{ data.province }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- School Statistics Card -->
+            <div class="glass-card secondary-info">
+                <div class="card-header">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <h2>School Statistics</h2>
+                </div>
+                <div class="card-body">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <i class="fa-solid fa-chalkboard"></i>
+                            <span class="stat-value">{{ cc }}</span>
+                            <span class="stat-label">Classes</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <span class="stat-value">{{ tc }}</span>
+                            <span class="stat-label">Teachers</span>
+                        </div>
+                        <div class="stat-item">
+                            <i class="fa-solid fa-users"></i>
+                            <span class="stat-value">{{ sc }}</span>
+                            <span class="stat-label">Students</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // Particles.js
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 60, density: { enable: true, value_area: 800 }},
+                color: { value: "#4ECDC4" },
+                shape: { type: "circle" },
+                opacity: { value: 0.5, random: true },
+                size: { value: 3, random: true },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#4ECDC4",
+                    opacity: 0.3,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1.2,
+                    direction: "none",
+                    random: true,
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                events: {
+                    onhover: { enable: true, mode: "grab" },
+                    onclick: { enable: true, mode: "push" }
+                }
+            }
+        });
+
+        // Sidebar toggle
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.getElementById('hamburger-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+
+            hamburger.addEventListener('click', function () {
+                sidebar.classList.toggle('open');
+                this.classList.toggle('is-active');
+                body.classList.toggle('menu-open');
+            });
+
+            document.addEventListener('click', function (e) {
+                if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                    hamburger.classList.remove('is-active');
+                    body.classList.remove('menu-open');
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.pageYOffset > 50);
+        });
+    </script>
+</body>
+</html>
