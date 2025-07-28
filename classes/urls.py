@@ -6,7 +6,7 @@ urlpatterns = [
     path('add/', views.class_create_view, name='create'),
     path('import/', views.class_bulk_upload_view, name='import'),
     path('<str:class_name>/', views.class_detail_view, name='detail'),
-    path('<str:class_name>/edit/', views.class_update_view, name='edit'),
+    path('<str:class_name>/edit/', views.class_edit_view, name='edit'),
     path('<str:class_name>/delete/', views.class_delete_view, name='delete'),
 
     # Error pages
