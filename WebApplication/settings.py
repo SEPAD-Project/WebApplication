@@ -25,8 +25,7 @@ SECRET_KEY = 'django-insecure-^bitx0ak3+mpr^xdw_7%5qbqosnpk6zb5_w39pr)ik&i$q5_bm
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['185.4.28.110', 'django.sepad-project.ir', '127.0.0.1', 'localhost']
 
 # Application definition
 
