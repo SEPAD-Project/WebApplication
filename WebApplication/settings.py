@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'WebApplication.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'test',
+        'NAME': 'django',
         'USER': 'root',
         'PASSWORD': 'sapprogram2583',
         'HOST': '185.4.28.110',
