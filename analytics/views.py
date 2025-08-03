@@ -90,7 +90,7 @@ def school_teachers_performance_report_view(request):
         school_email=current_user.email
     )
 
-    return redirect('dashboard')
+    return redirect('analytics:dashboard')
 
 
 # View to trigger school classes accuracy report
@@ -103,4 +103,4 @@ def school_classes_accuracy_report_view(request):
         school_email=current_user.email
     )
 
-    return redirect('dashboard')
+    return redirect('analytics:dashboard')
