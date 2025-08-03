@@ -41,7 +41,7 @@ def student_create_view(request):
         if Student.objects.filter(
             Q(student_national_code=national_code) | Q(student_phone_number=phone)
         ).exists():
-            return redirect('error_duplicate')
+            return redirect('students:error_duplicate')
 
         student_class = Class.objects.get(id=int(selected_class_id))
 
@@ -68,7 +68,7 @@ def student_create_view(request):
             student_code=national_code
         )
 
-        return redirect('list')
+        return redirect('students:list')
 
     return render(request, 'students/student_create.html', {'classes': current_user.classes.all()})
 
@@ -166,7 +166,7 @@ def student_bulk_upload_view(request):
                 student_code=student['national_code']
             )
 
-        return redirect('list')
+        return redirect('students:list')
 
     return render(request, 'students/student_bulk_upload.html')
 
@@ -179,7 +179,7 @@ def student_edit_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('error_not_found')
+        return redirect('students:error_not_found')
 
     if request.method == 'POST':
         name = request.POST.get("student_name")
@@ -191,7 +191,7 @@ def student_edit_view(request, national_code):
         if Student.objects.filter(
             Q(student_national_code=new_nc) & Q(student_phone_number=phone)
         ).exclude(id=student.id).exists():
-            return redirect('error_duplicate')
+            return redirect('students:error_duplicate')
 
         student.student_name = name
         student.student_family = family
@@ -207,7 +207,7 @@ def student_edit_view(request, national_code):
             new_student_code=new_nc
         )
 
-        return redirect('list')
+        return redirect('students:list')
 
     return render(request, 'students/student_edit.html', {'student': student})
 
@@ -220,7 +220,7 @@ def student_delete_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('error_not_found')
+        return redirect('students:error_not_found')
 
     dm_delete_student(
         school_id=str(current_user.id),
@@ -230,7 +230,7 @@ def student_delete_view(request, national_code):
 
     student.delete()
 
-    return redirect('list')
+    return redirect('students:list')
 
 
 # View to show student profile
@@ -241,7 +241,7 @@ def student_detail_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('error_not_found')
+        return redirect('students:error_not_found')
 
     return render(request, 'students/student_detail.html', {'data': student})
 
