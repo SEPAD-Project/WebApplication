@@ -18,7 +18,7 @@ def school_login_view(request):
 
         if school_user is not None:
             login(request, school_user)
-            return redirect('')
+            return redirect('schools:dashboard')
         return redirect('error_unknown_school')
 
     return render(request, 'accounts/school_login.html')
@@ -52,7 +52,7 @@ def school_signup_view(request):
         # Create directory for new school
         dm_create_school(str(new_school.id))
 
-        return redirect('success_registration')
+        return redirect('accounts:success_registration')
 
     return render(request, 'accounts/school_signup.html')
 
