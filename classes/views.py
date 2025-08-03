@@ -10,7 +10,7 @@ from django.urls import reverse
 
 from .models import Class
 from utils.base_path_finder import find_base_path
-from utils.excel_reading import add_classes
+from utils.excel_reading import add_classes, schedule_checking
 from utils.generate_class_code import generate_class_code
 from utils.server.Website.directory_manager import dm_create_class, dm_delete_class
 
@@ -48,7 +48,7 @@ def class_create_view(request):
             class_id=str(new_class.id)
         )
 
-        return redirect('list')
+        return redirect('classes:list')
 
     return render(request, 'classes/class_create.html')
 
@@ -100,7 +100,7 @@ def class_bulk_upload_view(request):
                 school_id=school_user.id,
             )
 
-        return redirect('list')
+        return redirect('classes:list')
 
     return render(request, 'classes/class_bulk_upload.html')    
 
@@ -159,7 +159,15 @@ def class_edit_view(request, class_name):
                 for chunk in uploaded_file.chunks():
                     dest.write(chunk)
 
-        return redirect('list')
+            class_teachers = [teacher.teacher_national_code for teacher in data.teachers.all()]
+            problems = schedule_checking(file_path, 'Sheet1', class_teachers)
+            if problems != []:
+                os.remove(file_path)
+                response = HttpResponseRedirect(reverse('accounts:error_schedule'))
+                response.set_cookie('excel_errors', json.dumps(problems), max_age=3600)
+                return response
+
+        return redirect('classes:list')
 
     return render(request, 'classes/class_edit.html', {'name': data.class_name})
 
@@ -178,7 +186,7 @@ def class_delete_view(request, class_name):
     dm_delete_class(school_id=str(current_user.id), class_id=str(cls.id))
     cls.delete()
 
-    return redirect('list')
+    return redirect('classes:list')
 
 
 # View to handle duplicated class error
@@ -203,4 +211,5 @@ def unknown_class_error_view(request):
 
 # View for general schedule error
 def schedule_error_view(request):
-    return render(request, 'classes/schedule_error.html')
+    errors = json.loads(request.COOKIES.get('schedule_errors', '[]'))
+    return render(request, 'classes/schedule_error.html', {'texts': errors})
