@@ -6,10 +6,10 @@ from accounts.models import SchoolManager
 class School(AbstractBaseUser):
     class Meta:
         db_table = 'schools'
-
-    school_code = models.CharField(max_length=100, unique=True)
-    manager_personal_code = models.CharField(max_length=100, unique=True)
-    school_name = models.CharField(max_length=100)
+    
+    school_name = models.CharField(max_length=100, db_column='school_name')
+    school_code = models.CharField(max_length=100, unique=True, db_column='school_code')
+    manager_personal_code = models.CharField(max_length=100, unique=True, db_column='manager_personal_code')
     province = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
     email = models.CharField(max_length=100)
