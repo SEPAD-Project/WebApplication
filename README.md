@@ -16,6 +16,7 @@ cd WebApplication
 ```
 
 ## Installing Dependencies
+> Recommended Python version for this project is: 3.10.*
    1. Create a virtual environment:
       ```bash
       python -m venv .venv
@@ -68,5 +69,5 @@ To start the project (Django + Celery), use the scripts file:
 
 After starting, the application will be accessible at:
 ```
-http://0.0.0.0:8080
+http://0.0.0.0:8000
 ```
