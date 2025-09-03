@@ -52,7 +52,7 @@ def student_lesson_accuracy_report_view(request):
         current_user = request.user
         student_nc = request.POST.get('student_national_code')
 
-        student = Student.objects.filter(student_national_code=student_nc).first()
+        student = Student.objects.filter(student_national_code=student_nc, school_id=current_user.id).first()
         if student:
             task_generate_student_accuracy_by_lesson.delay(
                 school_id=current_user.id,
@@ -62,6 +62,8 @@ def student_lesson_accuracy_report_view(request):
                 class_id=student.student_class.id,
                 school_email=current_user.email
             )
+        else:
+            return redirect("students:error_not_found")
 
     return render(request, 'analytics/student_lesson_accuracy_report.html')
 
