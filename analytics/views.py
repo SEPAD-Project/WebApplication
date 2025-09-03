@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from students.models import Student
+from classes.models import Class
+
 from .tasks import (
     task_generate_class_students_accuracy,
     task_generate_student_accuracy_by_lesson,
@@ -24,6 +26,11 @@ def class_accuracy_report_view(request):
 
     if request.method == "POST":
         class_id = request.POST.get('selected_class')
+
+        school_classes = [str(cls.id) for cls in current_user.classes.all()]
+
+        if not (str(class_id) in school_classes):
+            return redirect("classes:error_not_found")
 
         task_generate_class_students_accuracy.delay(
             school_id=current_user.id,
