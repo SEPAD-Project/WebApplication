@@ -207,20 +207,51 @@ def schedule_checking(path_to_xlsx, sheet_name, class_teachers):
         return [schedule]
 
     problems = []
+    
     for weekday_str in schedule.keys():
+        # Validate weekdays
         if not (weekday_str.lower() in ["saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"]):
             problems.append(f"Invalid weekday: '{weekday_str}'.")
+        
+        # Get all time ranges as strings
+        time_ranges = [item[0] for item in schedule.get(weekday_str, {}).items()]
 
-        for (time_range, teacher_nc) in schedule.get(weekday_str).items():
+        # Parse and validate time ranges
+        parsed_ranges = []
+        for time_range in time_ranges:
             try:
                 start_str, end_str = time_range.split('-')
                 start_time = datetime.time.fromisoformat(start_str)
                 end_time = datetime.time.fromisoformat(end_str)
+
                 if start_time >= end_time:
                     problems.append(f"Invalid time range format: '{time_range}'.")
+                else:
+                    parsed_ranges.append([start_time, end_time])
             except ValueError:
                 problems.append(f"Invalid time range format: '{time_range}'.")
 
+        # Sort ranges by start time
+        parsed_ranges.sort(key=lambda r: r[0])
+
+        # Check for overlaps
+        for i, time_range in enumerate(parsed_ranges):
+            if i == len(parsed_ranges) - 1:
+                break
+
+            _, self_end = time_range
+            start_to_check, _ = parsed_ranges[i + 1]
+
+            if start_to_check > self_end:
+                pass  # no overlap
+            else:
+                problems.append(
+                    f"Overlap detected: '{parsed_ranges[i + 1][0].isoformat()}-{parsed_ranges[i + 1][1].isoformat()}' "
+                    f"and '{time_range[0].isoformat()}-{time_range[1].isoformat()}'"
+                )
+            
+        # Validate teacher national codes
+        for (_, teacher_nc) in schedule.get(weekday_str).items():
             if not (str(teacher_nc) in class_teachers):
                 problems.append(f"Unrecognized teacher code: '{teacher_nc}'.")
 
