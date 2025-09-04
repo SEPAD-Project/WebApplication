@@ -1,5 +1,6 @@
 # Third-party Imports
 import openpyxl
+import re
 
 # Internal Imports
 from utils.generate_class_code import generate_class_code
@@ -64,9 +65,9 @@ def add_students(
         row_number = row[0].row
 
         # Validate name and family
-        if not isinstance(name, str):
+        if not isinstance(name, str) or not re.fullmatch(r"[a-zA-Z\u0600-\u06FF\s]+$", name):
             problems.append(['bad_format', row_number, name_letter])
-        if not isinstance(family, str):
+        if not isinstance(family, str) or not re.fullmatch(r"[a-zA-Z\u0600-\u06FF\s]+$", family):
             problems.append(['bad_format', row_number, family_letter])
 
         # Validate national code
@@ -79,6 +80,8 @@ def add_students(
 
         # Validate class
         if not isinstance(class_raw, (str, int)):
+            problems.append(['bad_format', row_number, class_letter])
+        elif isinstance(class_raw, str) and not re.fullmatch(r'[a-zA-Z\u0600-\u06FF0-9\u06F0-\u06F9\s]+$', class_raw):
             problems.append(['bad_format', row_number, class_letter])
         elif str(class_raw) not in available_classes:
             problems.append(['unknown_class', row_number, class_letter])
