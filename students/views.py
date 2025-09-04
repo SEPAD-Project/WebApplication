@@ -189,7 +189,7 @@ def student_edit_view(request, national_code):
         phone = request.POST.get("student_phone_number")
 
         if Student.objects.filter(
-            Q(student_national_code=new_nc) & Q(student_phone_number=phone)
+            Q(student_national_code=new_nc) | Q(student_phone_number=phone)
         ).exclude(id=student.id).exists():
             return redirect('students:error_duplicate')
 
