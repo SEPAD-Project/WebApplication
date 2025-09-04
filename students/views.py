@@ -248,11 +248,13 @@ def student_detail_view(request, national_code):
     student = Student.objects.filter(
         Q(student_national_code=national_code) & Q(school_id=current_user.id)
     ).first()
+    
+    class_name = Class.objects.get(id=student.student_class.id).class_name
 
     if student is None:
         return redirect('students:error_not_found')
 
-    return render(request, 'students/student_detail.html', {'data': student})
+    return render(request, 'students/student_detail.html', {'data': student, 'class_name': class_name})
 
 
 # Error page views
