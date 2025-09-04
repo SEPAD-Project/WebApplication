@@ -83,8 +83,8 @@ def class_bulk_upload_view(request):
 
         if result in ['sheet_not_found', 'bad_column_letter']:
             excel_errors = [result]
-            response = HttpResponseRedirect(reverse('error_excel'))
-            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
+            response = HttpResponseRedirect(reverse('classes:error_excel'))
+            response.set_cookie('excel_errors', json.dumps(['Unknown sheet name.' if result=='sheet_bot_found' else 'Unknown column letter.']), max_age=3600)
             return response
 
         if isinstance(result[0], list):
@@ -98,7 +98,7 @@ def class_bulk_upload_view(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            response = HttpResponseRedirect(reverse('error_excel'))
+            response = HttpResponseRedirect(reverse('classes:error_excel'))
             response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
             return response
 
