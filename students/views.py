@@ -25,8 +25,7 @@ def student_list_view(request):
     if request.method == 'POST':
         if request.POST.get('q'):        
             query = request.POST.get('q')
-            print(query)
-            student_list = Student.objects.filter(Q(student_name__icontains=query) | Q(student_family__icontains=query) | Q(student_national_code__icontains=query))
+            student_list = Student.objects.filter(Q(student_name__icontains=query) | Q(student_family__icontains=query) | Q(student_national_code__icontains=query) & Q(school_id=current_user.id))
         else:
             student_list = current_user.students.all()
         return render(request, 'students/student_list.html', {'students': student_list})
