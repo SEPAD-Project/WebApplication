@@ -172,8 +172,8 @@ def class_edit_view(request, class_name):
             problems = schedule_checking(file_path, 'Sheet1', class_teachers)
             if problems != []:
                 os.remove(file_path)
-                response = HttpResponseRedirect(reverse('accounts:error_schedule'))
-                response.set_cookie('excel_errors', json.dumps(problems), max_age=3600)
+                response = HttpResponseRedirect(reverse('classes:error_schedule'))
+                response.set_cookie('schedule_errors', json.dumps(problems), max_age=3600)
                 return response
 
         return redirect('classes:list')
