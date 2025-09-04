@@ -9,6 +9,20 @@ from utils.generate_class_code import reverse_class_code
 # View to list all teachers for the current school user
 def teacher_list_view(request):
     current_user = request.user
+    
+    if request.method == 'POST':
+        if request.POST.get('q'):        
+            query = request.POST.get('q')
+            teachers_list = Teacher.objects.filter(Q(teacher_name__icontains=query) | Q(teacher_family__icontains=query) | Q(teacher_national_code__icontains=query))
+            school_teachers = current_user.teachers.all()
+            final = []
+            for teacher in teachers_list:
+                if teacher in school_teachers:
+                    final.append(teacher)
+        else:
+            teachers_list = current_user.teachers.all()
+        return render(request, 'teachers/teacher_list.html', {'teachers': final})
+    
     teacher_list = current_user.teachers.all()
     return render(request, 'teachers/teacher_list.html', {'teachers': teacher_list})
 

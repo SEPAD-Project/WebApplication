@@ -54,7 +54,8 @@
             </div>
 
             <div class="search-section">
-                <form class="search-form" method="GET" action="{% url 'teachers:list' %}">
+                <form class="search-form" method="POST" action="{% url 'teachers:list' %}">
+                    {% csrf_token %}
                     <input type="search" class="search-input" name="q" placeholder="Search..." 
                            pattern="[A-Za-z0-9\s\-']+" 
                            title="Only letters, numbers, spaces, and dashes are allowed">
