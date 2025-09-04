@@ -21,6 +21,16 @@ from utils.base_path_finder import find_base_path
 # View to list all students in current school
 def student_list_view(request):
     current_user = request.user
+    
+    if request.method == 'POST':
+        if request.POST.get('q'):        
+            query = request.POST.get('q')
+            print(query)
+            student_list = Student.objects.filter(Q(student_name__icontains=query) | Q(student_family__icontains=query) | Q(student_national_code__icontains=query))
+        else:
+            student_list = current_user.students.all()
+        return render(request, 'students/student_list.html', {'students': student_list})
+    
     student_list = current_user.students.all()
     return render(request, 'students/student_list.html', {'students': student_list})
 
