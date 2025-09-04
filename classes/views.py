@@ -19,6 +19,15 @@ from utils.server.Website.directory_manager import dm_create_class, dm_delete_cl
 @login_required
 def class_list_view(request):
     current_user = request.user
+    
+    if request.method == 'POST':
+        if request.POST.get('q'):        
+            query = request.POST.get('q')
+            class_list = Class.objects.filter(Q(class_name__icontains=query) | Q(class_code__icontains=query) & Q(school_id=current_user.id))
+        else:
+            class_list = current_user.classes.all()
+        return render(request, 'classes/class_list.html', {'classes': class_list})
+    
     class_list = current_user.classes.all()
     return render(request, 'classes/class_list.html', {'classes': class_list})
 
