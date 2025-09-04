@@ -192,7 +192,7 @@ def schedule_extraction(path_to_xlsx, sheet_name):
         schedule[row_label] = {}
 
         # Match each column header (time) with value for that day
-        for col_index, column in enumerate(sheet.iter_cols(values_only=True, min_col=2), start=1):
+        for column in sheet.iter_cols(values_only=True, min_col=2):
             header = str(column[0])
             value = column[row_index + 1]
             schedule[row_label][header] = value
@@ -216,6 +216,8 @@ def schedule_checking(path_to_xlsx, sheet_name, class_teachers):
                 start_str, end_str = time_range.split('-')
                 start_time = datetime.time.fromisoformat(start_str)
                 end_time = datetime.time.fromisoformat(end_str)
+                if start_time >= end_time:
+                    problems.append(f"Invalid time range format: '{time_range}'.")
             except ValueError:
                 problems.append(f"Invalid time range format: '{time_range}'.")
 
