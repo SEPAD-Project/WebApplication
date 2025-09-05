@@ -9,7 +9,4 @@ urlpatterns = [
     path('<str:national_code>/', views.teacher_detail_view, name='detail'),
     path('<str:national_code>/update/', views.teacher_update_view, name='update'),
     path('<str:national_code>/remove/', views.teacher_remove_view, name='remove'),
-
-    # Errors
-    path('error/not-found/', views.invalid_teacher_error_view, name='error_invalid'),
 ]
