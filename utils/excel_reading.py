@@ -152,6 +152,8 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes, school
         # Check format and duplication
         if not isinstance(name, (str, int)):
             problems.append(['bad_format', row_number, name_letter])
+        elif isinstance(name, str) and not re.fullmatch(r'[a-zA-Z\u0600-\u06FF0-9\u06F0-\u06F9\s]+$', name):
+            problems.append(['bad_format', row_number, name_letter])
         elif str(name) in available_classes or str(name) in names_list:
             problems.append(['duplicated_name', row_number, name_letter])
         else:
