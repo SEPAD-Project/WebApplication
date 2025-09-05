@@ -43,7 +43,7 @@ def class_create_view(request):
         class_code = generate_class_code(school_code, class_name)
 
         if Class.objects.filter(class_code=class_code).exists():
-            return redirect('classes:error_duplicate')
+                return render(request, 'classes/duplicate_class_error.html')
 
         new_class = Class.objects.create(
             class_name=class_name,
@@ -82,10 +82,7 @@ def class_bulk_upload_view(request):
         )
 
         if result in ['sheet_not_found', 'bad_column_letter']:
-            excel_errors = [result]
-            response = HttpResponseRedirect(reverse('classes:error_excel'))
-            response.set_cookie('excel_errors', json.dumps(['Unknown sheet name.' if result=='sheet_bot_found' else 'Unknown column letter.']), max_age=3600)
-            return response
+            return render(request, 'classes/class_excel_error.html', {'texts': ['Unknown sheet name.' if result=='sheet_not_found' else 'Unknown column letter.']})
 
         if isinstance(result[0], list):
             excel_errors = []
@@ -98,9 +95,7 @@ def class_bulk_upload_view(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            response = HttpResponseRedirect(reverse('classes:error_excel'))
-            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
-            return response
+            return render(request, 'classes/class_excel_error.html', {'texts': excel_errors})
 
         for cls in result:
             Class.objects.create(
@@ -123,7 +118,7 @@ def class_detail_view(request, class_name):
     ).first()
 
     if data is None:
-        return redirect('classes:error_not_found')
+        return render(request, 'classes/unknown_class_error.html')
 
     return render(
         request,
@@ -145,7 +140,7 @@ def class_edit_view(request, class_name):
     ).first()
 
     if data is None:
-        return redirect('classes:error_not_found')
+        return render(request, 'classes/unknown_class_error.html')
 
     if request.method == 'POST':
         new_name = request.POST.get("class_name")
@@ -153,7 +148,7 @@ def class_edit_view(request, class_name):
 
         if new_name != class_name:
             if Class.objects.filter(Q(class_name=new_name) & Q(school=current_user.id)).exists():
-                return redirect('classes:error_duplicate')
+                    return render(request, 'classes/duplicate_class_error.html')
 
             new_code = generate_class_code(current_user.school_code, new_name)
             data.class_name = new_name
@@ -172,9 +167,7 @@ def class_edit_view(request, class_name):
             problems = schedule_checking(file_path, 'Sheet1', class_teachers)
             if problems != []:
                 os.remove(file_path)
-                response = HttpResponseRedirect(reverse('classes:error_schedule'))
-                response.set_cookie('schedule_errors', json.dumps(problems), max_age=3600)
-                return response
+                return render(request, 'classes/schedule_error.html', {'texts': problems})
 
         return redirect('classes:list')
 
@@ -190,35 +183,9 @@ def class_delete_view(request, class_name):
     ).first()
 
     if cls is None:
-        return redirect('classes:error_not_found')
+        return render(request, 'classes/unknown_class_error.html')
 
     dm_delete_class(school_id=str(current_user.id), class_id=str(cls.id))
     cls.delete()
 
     return redirect('classes:list')
-
-
-# View to handle duplicated class error
-def duplicate_class_error_view(request):
-    return render(request, 'classes/duplicate_class_error.html')
-
-
-# View to handle Excel-related import errors
-def class_excel_error_view(request):
-    errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
-    return render(request, 'classes/class_excel_error.html', {'texts': errors})
-
-# View for class file permission error
-def class_file_permission_error_view(request):
-    return render(request, 'classes/class_file_permission_error.html')
-
-
-# View for unknown class name error
-def unknown_class_error_view(request):
-    return render(request, 'classes/unknown_class_error.html')
-
-
-# View for general schedule error
-def schedule_error_view(request):
-    errors = json.loads(request.COOKIES.get('schedule_errors', '[]'))
-    return render(request, 'classes/schedule_error.html', {'texts': errors})
