@@ -19,7 +19,7 @@ def school_login_view(request):
         if school_user is not None:
             login(request, school_user)
             return redirect('schools:dashboard')
-        return redirect('accounts:error_unknown_school')
+        return render(request, 'accounts/unknown_school_error.html')
 
     return render(request, 'accounts/school_login.html')
 
@@ -38,7 +38,7 @@ def school_signup_view(request):
             Q(school_code=school_code) | Q(manager_personal_code=manager_code)
         )
         if existing_school.exists():
-            return redirect('accounts:error_duplicate_school')
+            return render(request, 'accounts/duplicate_school_error.html')
 
         new_school = School.objects.create_user(
             school_name=school_name,
@@ -52,21 +52,7 @@ def school_signup_view(request):
         # Create directory for new school
         dm_create_school(str(new_school.id))
 
-        return redirect('accounts:success_registration')
+        return render(request, 'accounts/registration_success.html')
 
     return render(request, 'accounts/school_signup.html')
 
-
-# View for duplicate school registration error
-def duplicate_school_error_view(request):
-    return render(request, 'accounts/duplicate_school_error.html')
-
-
-# View to notify user of their username and password after registration
-def registration_success_view(request):
-    return render(request, 'accounts/registration_success.html')
-
-
-# View for unknown school info error during login
-def unknown_school_error_view(request):
-    return render(request, 'accounts/unknown_school_error.html')
