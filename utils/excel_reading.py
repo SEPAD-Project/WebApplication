@@ -65,9 +65,9 @@ def add_students(
         row_number = row[0].row
 
         # Validate name and family
-        if not isinstance(name, str) or not re.fullmatch(r"[a-zA-Z\u0600-\u06FF\s]+$", name):
+        if not isinstance(name, str) or not re.fullmatch(r"[a-zA-Z\s]+$", name):
             problems.append(['bad_format', row_number, name_letter])
-        if not isinstance(family, str) or not re.fullmatch(r"[a-zA-Z\u0600-\u06FF\s]+$", family):
+        if not isinstance(family, str) or not re.fullmatch(r"[a-zA-Z\s]+$", family):
             problems.append(['bad_format', row_number, family_letter])
 
         # Validate national code
@@ -81,7 +81,7 @@ def add_students(
         # Validate class
         if not isinstance(class_raw, (str, int)):
             problems.append(['bad_format', row_number, class_letter])
-        elif isinstance(class_raw, str) and not re.fullmatch(r'[a-zA-Z\u0600-\u06FF0-9\u06F0-\u06F9\s]+$', class_raw):
+        elif isinstance(class_raw, str) and not re.fullmatch(r'[a-zA-Z0-9\s]+$', class_raw):
             problems.append(['bad_format', row_number, class_letter])
         elif str(class_raw) not in available_classes:
             problems.append(['unknown_class', row_number, class_letter])
@@ -152,7 +152,7 @@ def add_classes(path_to_xlsx, sheet_name, name_letter, available_classes, school
         # Check format and duplication
         if not isinstance(name, (str, int)):
             problems.append(['bad_format', row_number, name_letter])
-        elif isinstance(name, str) and not re.fullmatch(r'[a-zA-Z\u0600-\u06FF0-9\u06F0-\u06F9\s]+$', name):
+        elif isinstance(name, str) and not re.fullmatch(r'[a-zA-Z0-9\s]+$', name):
             problems.append(['bad_format', row_number, name_letter])
         elif str(name) in available_classes or str(name) in names_list:
             problems.append(['duplicated_name', row_number, name_letter])
