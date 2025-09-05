@@ -100,7 +100,7 @@ def student_bulk_upload_view(request):
         pass_letter = request.POST.get('password')
         phone_letter = request.POST.get('phone_number')
 
-        classes = Class.objects.all()
+        classes = Class.objects.filter(school=current_user.id).all()
         students = Student.objects.all()
 
         result = add_students(
