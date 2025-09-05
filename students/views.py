@@ -50,7 +50,7 @@ def student_create_view(request):
         if Student.objects.filter(
             Q(student_national_code=national_code) | Q(student_phone_number=phone)
         ).exists():
-            return redirect('students:error_duplicate')
+            return render(request, 'students/duplicate_student_error.html')
 
         student_class = Class.objects.get(id=int(selected_class_id))
 
@@ -113,9 +113,7 @@ def student_bulk_upload_view(request):
         )
 
         if result in ['sheet_not_found', 'bad_column_letter']:
-            response = HttpResponseRedirect(reverse('students:error_excel'))
-            response.set_cookie('excel_errors', json.dumps(['Unknown sheet name.' if result=='sheet_bot_found' else 'Unknown column letter.']), max_age=3600)
-            return response
+            return render(request, 'students/student_excel_error.html', {'texts': ['Unknown sheet name.' if result=='sheet_not_found' else 'Unknown column letter.']})
 
         if isinstance(result[0], list):
             excel_errors = []
@@ -130,9 +128,7 @@ def student_bulk_upload_view(request):
                 else:
                     excel_errors.append(f"Unknown issue in cell {cell}.")
 
-            response = HttpResponseRedirect(reverse('students:error_excel'))
-            response.set_cookie('excel_errors', json.dumps(excel_errors), max_age=3600)
-            return response
+            return render(request, 'students/student_excel_error.html', {'texts': excel_errors})
 
         zip_errors = []
         for student in result:
@@ -143,9 +139,7 @@ def student_bulk_upload_view(request):
                     zip_errors.append(expected_path)
 
         if zip_errors:
-            response = HttpResponseRedirect(reverse('error_zip'))
-            response.set_cookie('zip_errors', json.dumps(zip_errors), max_age=3600)
-            return response
+            return render(request, 'students/student_zip_error.html', {'texts': zip_errors})
 
         for student in result:
             cls = Class.objects.filter(class_code=student['class']).first()
@@ -188,7 +182,7 @@ def student_edit_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('students:error_not_found')
+        return render(request, 'students/unknown_student_error.html')
 
     if request.method == 'POST':
         name = request.POST.get("student_name")
@@ -200,7 +194,7 @@ def student_edit_view(request, national_code):
         if Student.objects.filter(
             Q(student_national_code=new_nc) | Q(student_phone_number=phone)
         ).exclude(id=student.id).exists():
-            return redirect('students:error_duplicate')
+            return render(request, 'students/duplicate_student_error.html')
 
         student.student_name = name
         student.student_family = family
@@ -229,7 +223,7 @@ def student_delete_view(request, national_code):
     ).first()
 
     if student is None:
-        return redirect('students:error_not_found')
+        return render(request, 'students/unknown_student_error.html')
 
     dm_delete_student(
         school_id=str(current_user.id),
@@ -249,32 +243,9 @@ def student_detail_view(request, national_code):
         Q(student_national_code=national_code) & Q(school_id=current_user.id)
     ).first()
     
+    if student is None:
+        return render(request, 'students/unknown_student_error.html')
+    
     class_name = Class.objects.get(id=student.student_class.id).class_name
 
-    if student is None:
-        return redirect('students:error_not_found')
-
     return render(request, 'students/student_detail.html', {'data': student, 'class_name': class_name})
-
-
-# Error page views
-def duplicate_student_error_view(request):
-    return render(request, 'students/duplicate_student_error.html')
-
-
-def student_excel_error_view(request):
-    errors = json.loads(request.COOKIES.get('excel_errors', '[]'))
-    return render(request, 'students/student_excel_error.html', {'texts': errors})
-
-
-def student_zip_error_view(request):
-    errors = json.loads(request.COOKIES.get('zip_errors', '[]'))
-    return render(request, 'students/student_zip_error.html', {'texts': errors})
-
-
-def student_file_permission_error_view(request):
-    return render(request, 'students/student_file_permission_error.html')
-
-
-def unknown_student_error_view(request):
-    return render(request, 'students/unknown_student_error.html')
