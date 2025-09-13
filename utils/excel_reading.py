@@ -193,7 +193,7 @@ def schedule_extraction(path_to_xlsx, sheet_name):
     schedule = {}
 
     for row_index, row in enumerate(sheet.iter_rows(values_only=True, min_row=2)):
-        row_label = str(row[0])
+        row_label = str(row[0]).lower()
         schedule[row_label] = {}
 
         # Match each column header (time) with value for that day
