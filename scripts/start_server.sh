@@ -1,31 +1,72 @@
 #!/bin/bash
+set -e
 
+# ==========================
+# Configuration
+# ==========================
+DJANGO_PORT=8000
+LOG_DIR=logs
+VENV_PATH=.venv/bin/activate
+CELERY_APP=WebApplication
+
+# ==========================
+# Go up one directory
+# ==========================
 cd ..
 
-# Create logs directory if it doesn't exist
-mkdir -p logs
+# ==========================
+# Create logs directory
+# ==========================
+mkdir -p "$LOG_DIR"
 
-# Generate timestamp for log files
+# ==========================
+# Generate timestamp
+# ==========================
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
-source .venv/bin/activate
+# ==========================
+# Activate virtual environment
+# ==========================
+if [ -f "$VENV_PATH" ]; then
+    echo "Activating virtual environment..."
+    source "$VENV_PATH"
+else
+    echo "Virtual environment not found at '$VENV_PATH'."
+    exit 1
+fi
 
-echo "Starting Django server..."
-python3 manage.py runserver 0.0.0.0:8000 > "logs/django_$TIMESTAMP.log" 2>&1 &
+# ==========================
+# Start Django server
+# ==========================
+echo "Starting Django server on port $DJANGO_PORT..."
+python3 manage.py runserver 0.0.0.0:$DJANGO_PORT > "$LOG_DIR/django_$TIMESTAMP.log" 2>&1 &
+DJANGO_PID=$!
+echo $DJANGO_PID > "$LOG_DIR/django.pid"
 
-# Save PID to file
-echo $! > logs/django.pid
-
+# ==========================
+# Wait a little before starting Celery
+# ==========================
 sleep 2
 
+# ==========================
+# Start Celery worker
+# ==========================
 echo "Starting Celery worker..."
-celery -A WebApplication worker --loglevel=info > "logs/celery_$TIMESTAMP.log" 2>&1 &
+celery -A $CELERY_APP worker --loglevel=info > "$LOG_DIR/celery_$TIMESTAMP.log" 2>&1 &
+CELERY_PID=$!
+echo $CELERY_PID > "$LOG_DIR/celery.pid"
 
-# Save PID to file
-echo $! > logs/celery.pid
-
+# ==========================
+# Summary
+# ==========================
+echo
+echo "========================================"
 echo "Services started successfully!"
-echo "Django PID: $(cat logs/django.pid)"
-echo "Celery PID: $(cat logs/celery.pid)"
-echo "Logs: logs/django_$TIMESTAMP.log"
-echo "Logs: logs/celery_$TIMESTAMP.log"
+echo "Django PID: $DJANGO_PID"
+echo "Celery PID: $CELERY_PID"
+echo "Django log: $LOG_DIR/django_$TIMESTAMP.log"
+echo "Celery log: $LOG_DIR/celery_$TIMESTAMP.log"
+echo "The window will close in 5 seconds..."
+echo "========================================"
+
+sleep 5

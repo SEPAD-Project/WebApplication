@@ -1,91 +1,65 @@
 @echo off
-setlocal enabledelayedexpansion
+setlocal
 
+REM ==========================
+REM Configuration
+REM ==========================
+set DJANGO_PORT=8000
+set VENV_PATH=.venv\Scripts\activate.bat
+set DJANGO_CMD=python manage.py runserver 0.0.0.0:%DJANGO_PORT%
+set CELERY_CMD=celery -A WebApplication worker --pool=solo --loglevel=info
+
+REM ==========================
+REM Go up one directory
+REM ==========================
+echo Changing directory to project root...
 cd ..
 
+REM ==========================
 REM Activate virtual environment
-call .venv\Scripts\activate.bat
+REM ==========================
+if exist "%VENV_PATH%" (
+    echo Activating virtual environment...
+    call "%VENV_PATH%"
+) else (
+    echo Virtual environment not found at "%VENV_PATH%".
+    goto :end
+)
 
-REM Create logs directory if it doesn't exist
-if not exist logs mkdir logs
-
-REM Get current timestamp for log files
-for /f "tokens=2 delims=." %%a in ('echo %time%') do set timestamp=%%a
-set timestamp=%date:~-4%%date:~-7,2%%date:~-10,2%_%time:~0,2%%time:~3,2%%time:~6,2%
-set timestamp=%timestamp: =0%
-
-REM Function to check if port is available
-:check_port
-for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":8000"') do (
-    echo Port 8000 is occupied by PID %%a
+REM ==========================
+REM Free the port if occupied
+REM ==========================
+echo Checking if port %DJANGO_PORT% is in use...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr ":%DJANGO_PORT%"') do (
+    echo Port %DJANGO_PORT% is occupied by PID %%a. Terminating process...
     taskkill /PID %%a /F >nul 2>&1
-    timeout /t 1 >nul
-    goto check_port
 )
 
-REM Start Django development server with logging
-echo Starting Django development server...
-start "Django Server" cmd /c "python manage.py runserver 0.0.0.0:8000 > logs\django_%timestamp%.log 2>&1 & echo Django server started on port 8000 & pause"
+REM ==========================
+REM Start Django server
+REM ==========================
+echo Starting Django server on port %DJANGO_PORT%...
+start "Django Server" cmd /c "%DJANGO_CMD%"
 
-REM Wait for Django to start
-echo Waiting for Django to start...
-timeout /t 5 >nul
-
-REM Check if Django started successfully
-tasklist /fi "windowtitle eq Django Server" | find /i "cmd.exe" >nul
-if errorlevel 1 (
-    echo ERROR: Django server failed to start!
-    goto error
-)
-
-REM Start Celery worker with logging
+REM ==========================
+REM Start Celery worker
+REM ==========================
 echo Starting Celery worker...
-start "Celery Worker" cmd /c "celery -A WebApplication worker --pool=solo --loglevel=info > logs\celery_%timestamp%.log 2>&1 & echo Celery worker started & pause"
-
-REM Wait for Celery to start
-echo Waiting for Celery to start...
-timeout /t 3 >nul
-
-REM Check if Celery started successfully
-tasklist /fi "windowtitle eq Celery Worker" | find /i "cmd.exe" >nul
-if errorlevel 1 (
-    echo ERROR: Celery worker failed to start!
-    goto error
-)
-
-REM Save PIDs to files for easy stopping
-for /f "tokens=2" %%a in ('tasklist /fi "windowtitle eq Django Server" /fo csv /nh') do (
-    set django_pid=%%~a
-    echo !django_pid! > logs\django_pid.txt
-)
-
-for /f "tokens=2" %%a in ('tasklist /fi "windowtitle eq Celery Worker" /fo csv /nh') do (
-    set celery_pid=%%~a
-    echo !celery_pid! > logs\celery_pid.txt
-)
+start "Celery Worker" cmd /c "%CELERY_CMD%"
 
 echo.
 echo ========================================
-echo Services started successfully!
+echo All services started successfully!
+echo Django Server: http://0.0.0.0:%DJANGO_PORT%
+echo Close the windows or use the stop script to terminate services.
 echo ========================================
-echo Django Server: http://0.0.0.0:8000
-echo Django PID: !django_pid!
-echo Celery PID: !celery_pid!
-echo Logs: logs\django_%timestamp%.log
-echo Logs: logs\celery_%timestamp%.log
-echo.
-echo Use 'stop_server.bat' to stop both services
-echo ========================================
-goto end
 
-:error
-echo.
-echo ========================================
-echo Failed to start services!
-echo Check the log files in the logs directory
-echo ========================================
-pause
-exit /b 1
+REM ==========================
+REM Wait a few seconds before closing this window
+REM ==========================
+echo The window will automatically close in 5 seconds.
+timeout /t 5 /nobreak >nul
 
 :end
 endlocal
+exit

@@ -1,21 +1,21 @@
 @echo off
-echo Stopping services...
+setlocal
 
-REM Stop processes by window title (most reliable method)
-echo Stopping Django server...
-taskkill /fi "windowtitle eq Django Server" /f >nul 2>&1
+echo Stopping Django and Celery processes...
 
-echo Stopping Celery worker...
-taskkill /fi "windowtitle eq Celery Worker" /f >nul 2>&1
+for /f "tokens=2 delims=," %%a in ('tasklist /FI "IMAGENAME eq python.exe" /FO CSV /NH') do (
+    tasklist /FI "PID eq %%~a" /FO LIST | findstr /I "manage.py celery" >nul
+    if %ERRORLEVEL%==0 (
+        echo Killing process PID %%a...
+        taskkill /PID %%a /F >nul 2>&1
+    )
+)
 
-REM Additional cleanup - kill Python processes that might be orphaned
-echo Cleaning up Python processes...
-timeout /t 1 >nul
-taskkill /im python.exe /f >nul 2>&1
+echo All Django and Celery processes have been terminated.
 
-REM Clean up PID files if they exist
-if exist logs\django_pid.txt del logs\django_pid.txt >nul 2>&1
-if exist logs\celery_pid.txt del logs\celery_pid.txt >nul 2>&1
+REM Wait a few seconds so the user can read the message
+echo The window will automatically close in 5 seconds.
+timeout /t 5 /nobreak >nul
 
-echo All services stopped successfully!
-pause
+endlocal
+exit
